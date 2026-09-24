@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title desc">
+  <title id="title">Icono Sustentabll</title>
+  <desc id="desc">Dos letras L negras, un cuadro verde y una rama blanca</desc>
+  <rect width="100" height="100" rx="18" fill="#eeedeb"/>
+  <path fill="#111111" d="M12 8h18v70h68v14H12z"/>
+  <path fill="#111111" d="M35 8h18v52h45v17H35z"/>
+  <path fill="#5f9638" d="M57 8h35v35H57z"/>
+  <path fill="none" stroke="#f9f6f0" stroke-width="2.6" stroke-linecap="square" d="M59 41 90 10M60 39l14-14M74 25l14-4M77 22l-3 14M83 16l8-7"/>
+</svg>

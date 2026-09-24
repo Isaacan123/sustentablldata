@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustentabll | Sistema de Punto de Venta</title>
+    <!-- Fuentes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:wght@400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Libre+Barcode+128&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-base: #F4F1EA; 
+            --bg-panel: #FFFFFF; 
+            --accent-primary: #173026; 
+            --accent-gold: #B0925A; 
+            --text-main: #2C3539; 
+            --text-muted: #7A858A;
+            --success: #10b981; 
+            --warning: #947219; 
+            --danger: #802324; 
+            --border-color: #E8E3D8;
+            --radius-card: 20px;
+            --radius-btn: 14px;
+            --transition: all 0.3s ease;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, .logo { font-family: 'Playfair Display', serif; }
+
+        .top-bar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 18px 30px; background: var(--bg-panel);
+            border-radius: var(--radius-card); box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            border: 1px solid var(--border-color);
+        }
+        .logo { color: var(--accent-primary); line-height: 0.95; }
+        .full-logo { display: block; width: 250px; height: auto; }
+        .receipt-logo .full-logo { width: 280px; max-width: 100%; margin: 0 auto; }
+        .sync-status { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+        .dot { width: 8px; height: 8px; background-color: var(--accent-gold); border-radius: 50%; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.7; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.7; } }
+
+        .dashboard-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 25px; }
+        @media (max-width: 768px) { .dashboard-grid { grid-template-columns: 1fr; } }
+
+        .panel {
+            background: var(--bg-panel); border-radius: var(--radius-card); padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05); border: 1px solid var(--border-color);
+        }
+        .panel-title { font-size: 1.3rem; color: var(--accent-primary); margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+        
+        .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        @media (max-width: 600px) { .form-grid-2 { grid-template-columns: 1fr; } }
+
+        .input-group { margin-bottom: 10px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+        .help-text { font-size: 0.8rem; color: var(--success); margin-top: 6px; display: block; font-weight: 500; }
+        
+        input, select {
+            width: 100%; padding: 14px 18px; background: #F9F8F5; border: 1px solid var(--border-color);
+            border-radius: var(--radius-btn); color: var(--text-main); font-size: 1rem; transition: var(--transition);
+            font-family: 'DM Sans', sans-serif;
+        }
+        input:focus, select:focus { outline: none; border-color: var(--accent-gold); box-shadow: 0 0 0 3px rgba(176, 146, 90, 0.1); background: #FFFFFF; }
+
+        .payment-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px; }
+        button { cursor: pointer; padding: 12px; border: none; border-radius: var(--radius-btn); font-weight: 600; transition: var(--transition); font-family: 'DM Sans', sans-serif; font-size: 0.95rem; }
+        .btn-option { background: transparent; color: var(--accent-primary); border: 2px solid var(--border-color); }
+        .btn-option:hover { border-color: var(--accent-gold); color: var(--accent-gold); transform: translateY(-2px); }
+        .btn-option.active { background: var(--accent-primary); color: #FFFFFF; border-color: var(--accent-primary); }
+        .btn-action { background: var(--accent-gold); color: #FFFFFF; width: 100%; padding: 16px; margin-top: 25px; font-size: 1.1rem; border-radius: var(--radius-btn); }
+        .btn-action:hover { background: #9c804c; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(176, 146, 90, 0.2); }
+
+        .data-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 0.95rem; }
+        .highlight-box {
+            background: #F9F8F5; padding: 25px; border-radius: 16px; margin-top: 20px;
+            border-left: 4px solid var(--accent-gold); border-right: 1px solid var(--border-color); border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color);
+        }
+        .highlight-box h3 { color: var(--accent-gold); font-size: 1.1rem; font-style: italic; margin-bottom: 15px; }
+        .money-number { font-family: 'Playfair Display', serif; font-weight: 600; }
+        .profit-text { color: #2A5A40; font-weight: 700; font-size: 1.15rem; }
+        .config-section { background: #fdfcfa; border: 1px dashed var(--border-color); padding: 15px; border-radius: var(--radius-btn); margin-bottom: 25px; }
+
+        /* TICKET COMERCIAL */
+        .receipt-container { display: flex; justify-content: center; align-items: center; background: var(--bg-base); }
+        .receipt {
+            background: #FFFFFF; color: #000000; padding: 40px 30px; width: 100%; max-width: 380px; position: relative; display: none;
+            border-radius: 0px; box-shadow: 0 25px 50px rgba(0,0,0,0.15), 0 0 0 1px #EAEAEA; font-family: 'DM Mono', monospace;
+        }
+        .receipt-logo { text-align: center; margin-bottom: 15px; }
+        .receipt-logo h2 { font-family: 'Playfair Display', serif; font-size: 2.2rem; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; color: #000; }
+        .receipt-header-info { text-align: center; font-size: 0.75rem; color: #444; margin-bottom: 25px; line-height: 1.5; text-transform: uppercase; }
+        .receipt-divider { border-top: 1px dashed #000; margin: 15px 0; }
+        .receipt-divider-solid { border-top: 2px solid #000; margin: 15px 0; }
+        .receipt-row { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 8px; color: #000; }
+        .receipt-row.bold { font-weight: 600; }
+        .receipt-total-box { font-size: 1.6rem; font-weight: 500; display: flex; justify-content: space-between; align-items: center; margin: 20px 0 5px 0; }
+        .badge-status {
+            color: #000; padding: 8px 15px; border: 1px solid #000; font-size: 0.8rem; font-weight: 600; display: inline-block;
+            margin-top: 15px; text-transform: uppercase; letter-spacing: 1px; background: transparent;
+        }
+        .barcode { font-family: 'Libre Barcode 128', cursive; font-size: 4rem; text-align: center; margin-top: 25px; color: #000; line-height: 0.8; }
+    </style>
+</head>
+<body>
+
+    <header class="top-bar">
+        <div class="logo" aria-label="Sustentabll - The Last Life">
+            <svg class="full-logo" viewBox="0 0 330 72" role="img" aria-label="SUSTENTABLL THE LAST LIFE">
+                <text x="165" y="39" fill="currentColor" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="900" letter-spacing="1">SUSTENTABLL</text>
+                <text x="165" y="64" fill="currentColor" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="3">THE LAST LIFE</text>
+            </svg>
+        </div>
+        <div class="sync-status">
+            <div class="dot"></div>
+            Punto de Venta Activo
+        </div>
+    </header>
+
+    <main class="dashboard-grid">
+        <!-- PANEL DE CONTROL -->
+        <section class="panel">
+            <h2 class="panel-title">Punto de Venta</h2>
+            
+            <!-- NUEVA SECCIÓN DE CONFIGURACIÓN -->
+            <div class="config-section form-grid-2">
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label>Tipo de Cambio (MXN)</label>
+                    <input type="number" id="exchangeRate" value="21.00" step="0.10" oninput="updateConversionText()">
+                </div>
+                <div class="input-group" style="margin-bottom: 0;">
+                    <label>Tarifa Logística (%)</label>
+                    <input type="number" id="logisticsPercent" value="5">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Buscar Producto (Inventario)</label>
+                    <select>
+                        <option>-- Manual / Sin seleccionar --</option>
+                        <option>Air Jordan 1 Low</option>
+                        <option>Bolso de Diseñador</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>O Escribe Descripción Manual</label>
+                    <input type="text" id="productName" placeholder="Ej. Air Jordan 1 Low">
+                </div>
+            </div>
+
+            <div class="form-grid-2">
+                <div class="input-group">
+                    <label>Costo de Origen (USD)</label>
+                    <input type="number" id="productPrice" placeholder="Ej. 45.00" oninput="updateConversionText()">
+                    <span class="help-text" id="conversionText">Conversión: $0.00 MXN</span>
+                </div>
+                <div class="input-group">
+                    <label>Precio Venta (MXN)</label>
+                    <input type="number" id="finalPriceMXN" placeholder="Ej. 2000">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Términos de Pago</label>
+                <div class="payment-grid">
+                    <button class="btn-option btn-payment" id="pay50" onclick="setPaymentMode('50/50')">Anticipo 50%</button>
+                    <button class="btn-option btn-payment" id="pay100" onclick="setPaymentMode('100')">Liquidación 100%</button>
+                </div>
+            </div>
+
+            <button class="btn-action" onclick="calculate()">Emitir Recibo de Venta</button>
+
+            <!-- Resumen Interno (Proyección Financiera) -->
+            <div class="highlight-box">
+                <h3>Libro Mayor (Proyección de esta venta)</h3>
+                <div class="data-row">
+                    <span style="color: var(--text-muted);">Costo Origen + Tax (7%):</span> 
+                    <span class="money-number" id="intBaseCost">$0.00</span>
+                </div>
+                <div class="data-row">
+                    <span style="color: var(--text-muted);">Gastos Logísticos (<span id="lblLogisticsPercent">5%</span>):</span> 
+                    <span class="money-number" id="intLogisticsCost">$0.00</span>
+                </div>
+                <div class="data-row">
+                    <span>Inversión Total (USD):</span> 
+                    <span class="money-number" id="intTotalUSD" style="color: var(--accent-primary);">$0.00</span>
+                </div>
+                <div class="data-row" style="border-bottom: 1px solid var(--border-color); padding-bottom: 12px; margin-bottom: 12px;">
+                    <span>Costo Convertido:</span> 
+                    <span class="money-number" id="intConvertedCost">$0.00</span>
+                </div>
+                <div class="data-row">
+                    <span>Precio Venta Final:</span> 
+                    <span class="money-number" id="intFinalPrice">$0.00</span>
+                </div>
+                <div class="data-row">
+                    <span>Anticipo a Recibir:</span> 
+                    <span class="money-number" id="intAdvance" style="color: var(--warning);">$0.00</span>
+                </div>
+                <div class="data-row" style="margin-top: 15px;">
+                    <span style="font-weight: 700; color: var(--text-main);">Utilidad Limpia:</span> 
+                    <span class="money-number profit-text" id="intProfit">$0.00</span>
+                </div>
+                <div class="data-row" style="margin-top: 5px; color: var(--text-muted); font-size: 0.85rem;">
+                    <span>Margen Efectivo:</span> 
+                    <span class="money-number" id="intMargin">0.0%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- TICKET DEL CLIENTE -->
+        <section class="receipt-container">
+            <div id="ticketView" class="receipt">
+                <div class="receipt-logo">
+                    <svg class="full-logo" viewBox="0 0 330 72" role="img" aria-label="SUSTENTABLL THE LAST LIFE">
+                        <text x="165" y="39" fill="currentColor" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="900" letter-spacing="1">SUSTENTABLL</text>
+                        <text x="165" y="64" fill="currentColor" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="3">THE LAST LIFE</text>
+                    </svg>
+                </div>
+                <div class="receipt-header-info">
+                    BOUTIQUE DE IMPORTACIÓN<br>
+                    Miramar, FL — Minatitlán, VER<br>
+                    ORDEN: <span id="tkOrderNumber">#ORD-0000</span><br>
+                    FECHA: <span id="tkDate">00/00/0000</span>
+                </div>
+                
+                <div class="receipt-divider-solid"></div>
+                
+                <div class="receipt-row bold" style="color: #666; font-size: 0.75rem;">
+                    <span>CANT. / DESCRIPCIÓN</span>
+                    <span>IMPORTE</span>
+                </div>
+                
+                <div class="receipt-row" style="margin-top: 10px;">
+                    <span id="tkProduct" style="text-transform: uppercase;">-</span>
+                    <span id="tkTotalUSD">$0.00</span>
+                </div>
+                
+                <div class="receipt-row" style="font-size: 0.75rem; color: #666; margin-bottom: 20px;">
+                    <span>1 UNIDAD x T.C. <span id="tkExchangeRate">$21.00</span> MXN</span>
+                </div>
+                
+                <div class="receipt-divider"></div>
+                
+                <div class="receipt-total-box">
+                    <span>TOTAL</span>
+                    <span id="tkTotalMXN">$0.00</span>
+                </div>
+                <div style="text-align: right; font-size: 0.75rem; color: #000; margin-top: -5px; font-weight: 600;">MXN - PESOS MEXICANOS</div>
+
+                <div class="receipt-divider"></div>
+
+                <div id="paymentBreakdownContainer">
+                    <div class="receipt-row bold">
+                        <span>ANTICIPO RECIBIDO:</span> 
+                        <span id="tkAdvance">$0.00</span>
+                    </div>
+                    <div class="receipt-row bold" id="tkBalanceRow">
+                        <span>SALDO PENDIENTE:</span> 
+                        <span id="tkBalance">$0.00</span>
+                    </div>
+                </div>
+
+                <div style="text-align: center;">
+                    <div id="tkBadge" class="badge-status">ESTADO: POR PAGAR</div>
+                </div>
+
+                <div class="barcode" id="tkBarcode">
+                    SUSTENTABLL
+                </div>
+                
+                <div style="text-align: center; font-size: 0.75rem; margin-top: 5px; font-weight: 600;">
+                    GRACIAS POR SU COMPRA
+                </div>
+            </div>
+            
+            <div id="placeholderText" style="text-align: center;">
+                <p style="color: var(--text-muted); font-size: 1.1rem; font-family: 'Playfair Display', serif; font-style: italic;">
+                    El recibo comercial se generará<br>al procesar la venta.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const TAX_RATE = 0.07;
+        let paymentMode = '50/50';
+
+        document.getElementById('pay50').classList.add('active');
+
+        function getExchangeRate() {
+            return parseFloat(document.getElementById('exchangeRate').value) || 21.00;
+        }
+
+        function getLogisticsRate() {
+            return parseFloat(document.getElementById('logisticsPercent').value) || 5;
+        }
+
+        function updateConversionText() {
+            const priceUSD = parseFloat(document.getElementById('productPrice').value);
+            const currentExchangeRate = getExchangeRate();
+            const displaySpan = document.getElementById('conversionText');
+            
+            if (isNaN(priceUSD) || priceUSD <= 0) {
+                displaySpan.innerText = "Conversión: $0.00 MXN";
+            } else {
+                const priceMXN = priceUSD * currentExchangeRate;
+                displaySpan.innerText = `Conversión: $${priceMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})} MXN`;
+            }
+        }
+
+        function setPaymentMode(mode) {
+            paymentMode = mode;
+            document.querySelectorAll('.btn-payment').forEach(btn => btn.classList.remove('active'));
+            if (mode === '50/50') {
+                document.getElementById('pay50').classList.add('active');
+            } else {
+                document.getElementById('pay100').classList.add('active');
+            }
+        }
+
+        function generateOrderNumber() {
+            return Math.floor(1000 + Math.random() * 9000);
+        }
+
+        function getCurrentDate() {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            let mm = today.getMonth() + 1; 
+            let dd = today.getDate();
+            let hh = today.getHours();
+            let min = today.getMinutes();
+            let ampm = hh >= 12 ? 'PM' : 'AM';
+            
+            hh = hh % 12;
+            hh = hh ? hh : 12; 
+            
+            if (dd < 10) dd = '0' + dd;
+            if (mm < 10) mm = '0' + mm;
+            if (min < 10) min = '0' + min;
+
+            return `${dd}/${mm}/${yyyy} ${hh}:${min} ${ampm}`;
+        }
+
+        function calculate() {
+            const name = document.getElementById('productName').value || "ARTICULO IMPORTADO";
+            const priceUSD = parseFloat(document.getElementById('productPrice').value);
+            const inputPriceMXN = parseFloat(document.getElementById('finalPriceMXN').value);
+
+            if (isNaN(priceUSD) || priceUSD <= 0) {
+                alert("Por favor, ingrese el costo de origen en USD.");
+                return;
+            }
+            if (isNaN(inputPriceMXN) || inputPriceMXN <= 0) {
+                alert("Por favor, ingrese el Precio de Venta (MXN).");
+                return;
+            }
+
+            // Obtener variables de la configuración
+            const currentExchangeRate = getExchangeRate();
+            const logisticsPercentValue = getLogisticsRate();
+            const logisticsDecimal = logisticsPercentValue / 100;
+
+            // Costos Internos: Costo producto + Tax (7%) + Logística (Porcentaje sobre el costo base)
+            const taxAmount = priceUSD * TAX_RATE;
+            const baseCostUSD = priceUSD + taxAmount;
+            const logisticsCostUSD = priceUSD * logisticsDecimal;
+            const realInvestmentUSD = baseCostUSD + logisticsCostUSD;
+            const realInvestmentMXN = realInvestmentUSD * currentExchangeRate;
+            
+            // Cálculos Finales basados en tu precio de venta
+            const finalPriceMXN = inputPriceMXN;
+            const finalPriceUSD = finalPriceMXN / currentExchangeRate;
+            
+            const profitMXN = finalPriceMXN - realInvestmentMXN;
+            
+            let effectiveMargin = 0;
+            if (finalPriceMXN > 0) {
+                effectiveMargin = (profitMXN / finalPriceMXN) * 100;
+            }
+
+            let advanceMXN = 0;
+            let balanceMXN = 0;
+
+            if (paymentMode === '50/50') {
+                advanceMXN = finalPriceMXN / 2;
+                balanceMXN = finalPriceMXN / 2;
+            } else {
+                advanceMXN = finalPriceMXN;
+                balanceMXN = 0;
+            }
+
+            // Actualizar Panel Interno (Libro Mayor)
+            document.getElementById('lblLogisticsPercent').innerText = `${logisticsPercentValue}%`;
+            document.getElementById('intBaseCost').innerText = `$${baseCostUSD.toFixed(2)}`;
+            document.getElementById('intLogisticsCost').innerText = `$${logisticsCostUSD.toFixed(2)}`;
+            document.getElementById('intTotalUSD').innerText = `$${realInvestmentUSD.toFixed(2)}`;
+            document.getElementById('intConvertedCost').innerText = `$${realInvestmentMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('intFinalPrice').innerText = `$${finalPriceMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('intAdvance').innerText = `$${advanceMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('intProfit').innerText = `$${profitMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('intMargin').innerText = `${effectiveMargin.toFixed(1)}%`;
+
+            // Configurar datos comerciales del recibo
+            const orderNum = generateOrderNumber();
+            document.getElementById('tkOrderNumber').innerText = `#ORD-${orderNum}`;
+            document.getElementById('tkDate').innerText = getCurrentDate();
+            document.getElementById('tkBarcode').innerText = `GAB${orderNum}`;
+
+            // Actualizar Ticket del Cliente
+            document.getElementById('tkProduct').innerText = name.substring(0, 22);
+            document.getElementById('tkTotalUSD').innerText = `$${finalPriceUSD.toFixed(2)}`;
+            document.getElementById('tkExchangeRate').innerText = `$${currentExchangeRate.toFixed(2)}`;
+            document.getElementById('tkTotalMXN').innerText = `$${finalPriceMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('tkAdvance').innerText = `$${advanceMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+            document.getElementById('tkBalance').innerText = `$${balanceMXN.toLocaleString('es-MX', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+            const balanceRow = document.getElementById('tkBalanceRow');
+            const badge = document.getElementById('tkBadge');
+
+            if (paymentMode === '50/50') {
+                balanceRow.style.display = 'flex';
+                badge.innerText = "ESTADO: PENDIENTE (50%)";
+            } else {
+                balanceRow.style.display = 'none';
+                badge.innerText = "ESTADO: PAGADO (100%)";
+            }
+
+            document.getElementById('placeholderText').style.display = 'none';
+            document.getElementById('ticketView').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

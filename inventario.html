@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sustentabll - Dashboard Administrativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        .brand-logo { line-height: 0.95; }
+        .full-logo { display: block; width: 250px; height: auto; }
+    </style>
+</head>
+<body class="text-gray-800 antialiased">
+
+    <header class="bg-gray-900 text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div>
+                    <div class="brand-logo" aria-label="Sustentabll - The Last Life">
+                        <svg class="full-logo" viewBox="0 0 330 72" role="img" aria-label="SUSTENTABLL THE LAST LIFE">
+                            <text x="165" y="39" fill="currentColor" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="900" letter-spacing="1">SUSTENTABLL</text>
+                            <text x="165" y="64" fill="currentColor" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="3">THE LAST LIFE</text>
+                        </svg>
+                    </div>
+                    <p class="text-sm text-gray-400">Dashboard Administrativo de Inventario</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-sm font-medium text-gray-300">Inventario Actual</p>
+                <p class="text-xs text-gray-500">Actualizado en tiempo real</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="glass-card rounded-2xl p-6 border-l-4 border-blue-500 hover:shadow-md transition-shadow">
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Total de Artículos</h3>
+                <p class="mt-2 text-4xl font-bold text-gray-900">69 <span class="text-lg font-normal text-gray-500">unidades</span></p>
+            </div>
+            <div class="glass-card rounded-2xl p-6 border-l-4 border-green-500 hover:shadow-md transition-shadow">
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Inversión Total</h3>
+                <p class="mt-2 text-4xl font-bold text-gray-900">$1,659.00 <span class="text-lg font-normal text-gray-500">USD</span></p>
+            </div>
+            <div class="glass-card rounded-2xl p-6 border-l-4 border-indigo-500 hover:shadow-md transition-shadow">
+                <h3 class="text-sm font-medium text-gray-500 uppercase tracking-wider">Top Categoría</h3>
+                <p class="mt-2 text-4xl font-bold text-gray-900">Tenis <span class="text-lg font-normal text-gray-500">(47 un)</span></p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Distribución por Categoría</h2>
+                <div class="relative h-64 w-full">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+            </div>
+            <div class="glass-card rounded-2xl p-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">Top 5 Marcas en Inventario</h2>
+                <div class="relative h-64 w-full">
+                    <canvas id="brandChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card rounded-2xl overflow-hidden shadow-sm">
+            <div class="px-6 py-5 border-b border-gray-200 bg-white flex justify-between items-center">
+                <h2 class="text-lg font-semibold text-gray-800">Catálogo Detallado</h2>
+                <span class="text-sm text-gray-500">Mostrando 69 productos</span>
+            </div>
+            <div class="overflow-x-auto custom-scrollbar" style="max-height: 600px;">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0 z-10 shadow-sm">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Categoría</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Marca</th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Producto</th>
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-bold text-gray-500 uppercase tracking-wider">Cantidad</th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-bold text-gray-500 uppercase tracking-wider">Costo (USD)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Aldo</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bolsa café  detalle jaguar</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$30.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Aldo</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bolsa café  gamuza</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$28.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Aldo</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Mochila reebok</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$22.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Guess</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bolsa café  con candado</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$43.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Guess</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bolsa playera</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nautica</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bolsa roja,blanco y azul</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$25.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Tommy Hilfiger</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bolsa beige</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$33.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-pink-100 text-pink-800">Bolsas</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">True Religion</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Bolsa negra</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$35.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Calvin Klein</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$17.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Guess</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$16.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Guess</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$16.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Guess</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$16.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Michael Kors</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Cinturon con estampado</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$20.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nautica</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$12.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Tommy Hilfiger</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$21.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Cinturones</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">True Religion</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$16.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Hoodie</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Jesus</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hoodie beige</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$9.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Hoodie</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Jordan</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hoodie negro</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$11.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Hoodie</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">New Balance</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hoodie negro</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$10.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Hoodie</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">New Balance</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hoodie beige</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$10.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Hoodie</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Puma</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hoodie rosa</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$10.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Hoodie</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Puma</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Hoodie beige</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$10.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Gazelle</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$47.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Spezial</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$0.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Light motion</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Courtquick</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Gazelle bold</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$47.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Advantage</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Corte 2.0</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Courset pro</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$38.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Samba the best</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$88.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Retrovulc mid</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$50.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Run falcon</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Adidas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Advantage base</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Calvin Klein</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"> granit</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Calvin Klein</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Talla 6</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Converse</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Run start  negro</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$35.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Converse</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Plataforma blanco</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$30.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Crocs</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Stomp</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$25.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Crocs</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Siren clong blancas</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$25.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Crocs</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Siren clong bone</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$25.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Guess</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Talla 5</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Hooka</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Mach x  (sin caja )</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$60.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Karl Lagerfeld</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Karl</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$48.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Karl Lagerfeld </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Maison 14</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$65.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Karl Lagerfeld </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Karl detail</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$48.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Karl Lagerfield</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Sandreea</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$0.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Micheal Kors</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Sandalias mk</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$30.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Micheal Kors</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Skyler knit bota</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Pegasus trail 5</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$70.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">A'one per aja wilson </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$55.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Nike downshifter</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$35.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Talla 6</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$35.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Flex control 4</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Run</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Retro gym</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Nike</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Retro gym blanco con negro</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Puma</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Puma reobouond</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$35.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Reebok</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Reebok de bota</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$30.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Reebok</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Talla 6</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$30.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Reebok</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Classic retro</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$30.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Steve Madden</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Tenis gris </td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$40.00 USD</td>
+    </tr>
+    
+    <tr class="hover:bg-gray-50 transition-colors border-b border-gray-100">
+        <td class="px-6 py-4 whitespace-nowrap"><span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Tenis</span></td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Tory Bush</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">Slipper minne</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">1</td>
+        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-right font-medium">$70.00 USD</td>
+    </tr>
+    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm py-8">
+        &copy; 2026 Sustentabll. Todos los derechos reservados.
+    </footer>
+
+    <script>
+        const catLabels = ["Bolsas", "Cinturones", "Hoodie", "Tenis"];
+        const catData = [8, 8, 6, 47];
+        
+        const brandLabels = ["Adidas", "Nike", "Guess", "Calvin Klein", "Crocs"];
+        const brandData = [12, 8, 5, 3, 3];
+
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#64748b';
+
+        new Chart(document.getElementById('categoryChart'), {
+            type: 'doughnut',
+            data: {
+                labels: catLabels,
+                datasets: [{
+                    data: catData,
+                    backgroundColor: ['#ec4899', '#eab308', '#22c55e', '#3b82f6'],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'right' }
+                },
+                cutout: '70%'
+            }
+        });
+
+        new Chart(document.getElementById('brandChart'), {
+            type: 'bar',
+            data: {
+                labels: brandLabels,
+                datasets: [{
+                    label: 'Unidades',
+                    data: brandData,
+                    backgroundColor: '#6366f1',
+                    borderRadius: 6,
+                    barPercentage: 0.6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false }
+                },
+                scales: {
+                    y: { beginAtZero: true, grid: { borderDash: [4, 4], color: '#e2e8f0' } },
+                    x: { grid: { display: false } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
