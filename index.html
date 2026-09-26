@@ -56,8 +56,8 @@
             background: rgba(249, 246, 240, 0.95);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            display: flex;
-            justify-content: space-between;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
             align-items: center;
             padding: 15px 40px;
             z-index: 1000;
@@ -65,7 +65,7 @@
             box-shadow: 0 4px 30px rgba(10, 17, 40, 0.08);
         }
 
-        .menu-container { position: relative; display: flex; align-items: center; }
+        .menu-container { position: relative; display: flex; align-items: center; grid-column: 1; justify-self: start; }
 
         .menu-btn {
             background: transparent;
@@ -149,16 +149,15 @@
 
         .logo {
             color: var(--navy);
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            grid-column: 2;
+            justify-self: center;
             cursor: pointer;
             transition: var(--transition);
             text-align: center;
             line-height: 0.95;
         }
         .logo:hover { text-shadow: 0 5px 15px rgba(10, 17, 40, 0.2); }
-        .full-logo { display: block; width: 350px; height: auto; overflow: visible; }
+        .full-logo { display: block; width: min(350px, 100%); height: auto; }
 
         .cart-toggle {
             background: var(--green);
@@ -176,6 +175,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            grid-column: 3;
+            justify-self: end;
             gap: 3px;
             position: relative;
             overflow: hidden;
@@ -240,7 +241,7 @@
             overflow: hidden;
             background: var(--navy);
         }
-        .main-carousel-item img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: center; }
+        .main-carousel-item img { width: 100%; height: 100%; display: block; object-fit: contain; object-position: center; }
         @keyframes main-carousel-loop {
             from { transform: translateX(0); }
             to { transform: translateX(-50%); }
@@ -442,11 +443,10 @@
             height: 260px;
             background: #f4f4f4;
             border-radius: calc(var(--radius) - 6px);
-            object-fit: cover;
+            object-fit: contain;
             transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
             display: block;
         }
-        .product-card:hover .product-img { transform: scale(1.09) rotate(0.3deg); }
 
         .product-info { display: flex; flex-direction: column; flex-grow: 1; }
         .product-info h3 { font-size: 1.5rem; color: var(--navy); margin-bottom: 6px; transition: color 0.4s ease; }
@@ -691,7 +691,7 @@
         .product-main-view-btn:hover { background: var(--green); color: white; border-color: var(--green); }
         .product-main-view-btn.prev { left: 8px; }
         .product-main-view-btn.next { right: 8px; }
-        .product-modal-image { width: 100%; aspect-ratio: 1 / 1; height: auto; min-height: 0; object-fit: contain; object-position: center; background: white; border-radius: calc(var(--radius) - 6px); transform: scale(1.12); transform-origin: center; }
+        .product-modal-image { width: 100%; aspect-ratio: 1 / 1; height: auto; min-height: 0; object-fit: contain; object-position: center; background: white; border-radius: calc(var(--radius) - 6px); }
         .product-modal-content { display: flex; flex-direction: column; min-width: 0; }
         .product-modal-kicker { color: var(--gold-hover); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; }
         .product-modal-content h2 { color: var(--navy); font-size: 2.25rem; line-height: 1.05; margin: 8px 0 10px; }
@@ -1041,13 +1041,13 @@
         }
 
         @media (max-width: 640px) {
-            header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 8px; padding: 10px 12px; }
+            header { grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 8px; padding: 10px 12px; }
             .menu-btn { width: 48px; }
             .menu-btn img { width: 42px; height: 42px; }
             .menu-text { font-size: 0.55rem; }
-            .logo { position: static; grid-column: 2; grid-row: 1; transform: none; }
+            .logo { grid-row: 1; width: 100%; min-width: 0; }
             .full-logo { width: min(100%, 210px); margin: 0 auto; }
-            .cart-toggle { grid-column: 3; grid-row: 1; width: 48px; min-height: 48px; padding: 6px; }
+            .cart-toggle { grid-row: 1; width: 48px; min-height: 48px; padding: 6px; }
             .cart-toggle svg { width: 20px; height: 20px; }
             .main-carousel-item { width: 95vw; min-width: 95vw; height: 320px; font-size: 2.2rem; }
             .section-title { font-size: 2.1rem; }
@@ -1087,7 +1087,7 @@
             </button>
             <div class="dropdown-menu" id="dropdown-menu"></div>
         </div>
-<br>
+        <div class="logo" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Sustentabll - The Last Life">
             <svg class="full-logo" viewBox="0 0 500 130" role="img" aria-label="SUSTENTABLL THE LAST LIFE">
                 <image href="images/sustentable.png" x="0" y="29" width="438" height="72"/>
             </svg>
