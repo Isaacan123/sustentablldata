@@ -164,20 +164,24 @@
             background: var(--green);
             border: 1px solid var(--green);
             color: var(--cream);
-            padding: 12px 25px;
-            border-radius: 50px;
+            width: 58px;
+            min-height: 58px;
+            padding: 8px;
+            border-radius: 50%;
             cursor: pointer;
             font-family: 'Montserrat', sans-serif;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: center;
+            gap: 3px;
             position: relative;
             overflow: hidden;
             box-shadow: 0 5px 15px rgba(10, 17, 40, 0.15);
         }
+        .cart-toggle #cart-count { font-size: 0.8rem; font-variant-numeric: tabular-nums; }
         .cart-toggle::after {
             content: '';
             position: absolute;
@@ -397,7 +401,7 @@
         .mini-carousel-btn.mini-next { right: -6px; }
         @media (min-width: 900px) {
             .mini-carousel-btn.mini-prev { left: -25px; }
-            .mini-carousel-btn.mini-next { right: -25px; }
+            .mini-carousel-btn.mini-next { right: -20px; }
         }
 
         .product-card {
@@ -934,6 +938,11 @@
         }
         .contact-form button:hover { background: var(--secondary); color: var(--navy); transform: translateY(-3px); }
 
+        @media (max-width: 800px) {
+            .contact-inner { grid-template-columns: minmax(0, 1fr); gap: 30px; max-width: 680px; }
+            .contact-action { border-left: 0; padding: 0; }
+        }
+
         /* ============ WHATSAPP / TOAST ============ */
         .whatsapp-contact {
             position: fixed;
@@ -1032,10 +1041,14 @@
         }
 
         @media (max-width: 640px) {
-            header { padding: 12px 16px; }
-            .full-logo { width: 210px; }
-            .cart-toggle { padding: 10px 14px; font-size: 0.85rem; }
-            .cart-toggle svg { width: 18px; height: 18px; }
+            header { display: grid; grid-template-columns: 48px minmax(0, 1fr) 48px; gap: 8px; padding: 10px 12px; }
+            .menu-btn { width: 48px; }
+            .menu-btn img { width: 42px; height: 42px; }
+            .menu-text { font-size: 0.55rem; }
+            .logo { position: static; grid-column: 2; grid-row: 1; transform: none; }
+            .full-logo { width: min(100%, 210px); margin: 0 auto; }
+            .cart-toggle { grid-column: 3; grid-row: 1; width: 48px; min-height: 48px; padding: 6px; }
+            .cart-toggle svg { width: 20px; height: 20px; }
             .main-carousel-item { width: 95vw; min-width: 95vw; height: 320px; font-size: 2.2rem; }
             .section-title { font-size: 2.1rem; }
             .product-card { min-width: 240px; max-width: 240px; padding: 16px; }
@@ -1051,6 +1064,16 @@
             .whatsapp-contact { width: 50px; height: 50px; left: 16px; bottom: 78px; }
             .instagram-contact { width: 50px; height: 50px; left: 16px; bottom: 140px; }
             .linkedin-contact { width: 50px; height: 50px; left: 16px; bottom: 16px; }
+        }
+
+        @media (max-width: 380px) {
+            header { grid-template-columns: 42px minmax(0, 1fr) 42px; gap: 5px; padding-inline: 8px; }
+            .menu-btn, .cart-toggle { width: 42px; }
+            .cart-toggle { min-height: 42px; }
+            .menu-btn img { width: 36px; height: 36px; }
+            .full-logo { width: 100%; }
+            .contact-form { padding: 16px; }
+            .contact-heading-row { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
@@ -1072,8 +1095,7 @@
             </svg>
         </div>
 
-        <button class="cart-toggle" onclick="toggleCart()" id="cart-btn">
-            Mi Compra ( <span id="cart-count">0</span> )
+        <button class="cart-toggle" onclick="toggleCart()" id="cart-btn" aria-label="Abrir carrito">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l1.5 7.5m0 0L8 18h10l2.5-10.5H6.5z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 10v-3a1.5 1.5 0 011.5-1.5h2a1.5 1.5 0 011.5 1.5v3" />
@@ -1081,6 +1103,7 @@
                 <circle cx="10" cy="21" r="1.5" fill="currentColor" stroke="none"/>
                 <circle cx="17" cy="21" r="1.5" fill="currentColor" stroke="none"/>
             </svg>
+            <span id="cart-count" aria-live="polite">0</span>
         </button>
     </header>
 
