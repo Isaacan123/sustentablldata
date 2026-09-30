@@ -4186,7 +4186,7 @@ body{
   width:100%;
   height:610px !important;
   min-height:610px !important;
-  border-radius:34px !important;
+  border-radius:4px !important;
   overflow:hidden;
   background:var(--green-dark) !important;
   box-shadow:0 30px 70px rgba(24,55,37,.13) !important;
@@ -4197,7 +4197,7 @@ body{
   position:absolute;
   inset:18px;
   border:1px solid rgba(255,255,255,.10);
-  border-radius:24px;
+  border-radius:2px;
   pointer-events:none;
   z-index:10;
 }
@@ -5574,12 +5574,12 @@ main > .post-water-brand{
 .story-alternating .story-stage-static{
   height:490px !important;
   min-height:490px !important;
-  border-radius:24px !important;
+  border-radius:4px !important;
   box-shadow:0 20px 48px rgba(22,54,35,.10) !important;
 }
 .story-alternating .story-stage-static::after{
   inset:12px !important;
-  border-radius:16px !important;
+  border-radius:2px !important;
 }
 
 .story-v2-num{
@@ -9820,13 +9820,26 @@ document.addEventListener('DOMContentLoaded', () => {
     collabSet.querySelectorAll('.collab-placeholder').forEach(card => card.remove());
     collabTrack.querySelector('.collab-set[aria-hidden="true"]')?.remove();
 
-    let nextCard = 0;
+    let nextCard = sourceCards.length;
     while (sourceCards.length && collabSet.scrollWidth < collabMarquee.clientWidth) {
       const repeatedCard = sourceCards[nextCard % sourceCards.length].cloneNode(true);
       repeatedCard.classList.add('collab-repeat');
       repeatedCard.setAttribute('aria-hidden', 'true');
       collabSet.appendChild(repeatedCard);
       nextCard += 1;
+    }
+    // Completar el ciclo para que el set no corte a mitad de la secuencia (evita repetir el mismo logo al unir el loop)
+    if (sourceCards.length) {
+      const remainder = nextCard % sourceCards.length;
+      if (remainder !== 0) {
+        for (let i = remainder; i < sourceCards.length; i++) {
+          const repeatedCard = sourceCards[nextCard % sourceCards.length].cloneNode(true);
+          repeatedCard.classList.add('collab-repeat');
+          repeatedCard.setAttribute('aria-hidden', 'true');
+          collabSet.appendChild(repeatedCard);
+          nextCard += 1;
+        }
+      }
     }
 
     const repeatedSet = collabSet.cloneNode(true);
