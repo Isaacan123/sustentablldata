@@ -110,7 +110,6 @@ a{color:inherit}img,svg{display:block;max-width:100%}button,input{font:inherit}
 .brand-pillar p{margin-top:9px;color:rgba(255,255,255,.58);font-size:.88rem;max-width:32ch}
 .brand-loop{position:relative;z-index:2;overflow:hidden;border-top:1px solid rgba(255,255,255,.12);background:#0d0f0c}
 .brand-loop-track{width:max-content;display:flex;align-items:center;animation:brandLoop 30s linear infinite}
-.brand-loop:hover .brand-loop-track{animation-play-state:paused}
 .brand-loop-chip{display:flex;align-items:center;gap:13px;min-height:98px;padding:0 32px;border-right:1px solid rgba(255,255,255,.1);white-space:nowrap}
 .brand-loop-chip::before{content:"";width:8px;height:8px;border-radius:50%;background:#9fc6a7;box-shadow:0 0 0 6px rgba(159,198,167,.08)}
 .brand-loop-chip b{font-family:var(--display);font-size:1.25rem;letter-spacing:-.025em}
@@ -2062,7 +2061,6 @@ html,body{overflow-x:hidden}
 .brand-loop::-webkit-scrollbar{display:none}
 .brand-loop-track{
   animation:none !important;
-  transform:none !important;
 }
 .brand-loop-track > :nth-child(n+7){
   display:none;
@@ -4356,9 +4354,6 @@ body{
   will-change:transform;
   animation:collabLoop 24s linear infinite;
 }
-.collab-marquee:hover .collab-track{
-  animation-play-state:paused;
-}
 .collab-set{
   display:flex;
   flex:none;
@@ -5756,7 +5751,6 @@ main > .post-water-brand{
 }
 .brand-loop-track{
   animation:none !important;
-  transform:none !important;
 }
 .brand-loop-track > :nth-child(n+7){
   display:none !important;
@@ -5839,7 +5833,7 @@ main > .post-water-brand{
   padding-right:10px !important;
 }
 .collab-track{
-  animation-duration:18s !important;
+  animation-duration:var(--collab-duration,24s) !important;
 }
 
 /* ---------- FOOTER ---------- */
@@ -6413,21 +6407,6 @@ main > .post-water-brand{
   overflow:hidden;
 }
 
-.contact-section::before{
-  content:"SUSTENTABLL";
-  position:absolute;
-  left:-.02em;
-  bottom:-.20em;
-  font-family:var(--display);
-  font-size:clamp(8rem,17vw,16rem);
-  font-weight:600;
-  line-height:.8;
-  letter-spacing:-.065em;
-  color:rgba(23,59,40,.028);
-  pointer-events:none;
-  white-space:nowrap;
-}
-
 .contact-grid{
   position:relative;
   z-index:2;
@@ -6990,10 +6969,6 @@ main > .post-water-brand{
   will-change:transform;
 }
 
-.brand-loop:hover .brand-loop-track{
-  animation-play-state:paused !important;
-}
-
 /* Mostrar también la segunda copia necesaria para un loop sin corte */
 .brand-loop-track > *{
   display:flex !important;
@@ -7490,10 +7465,6 @@ main > .post-water-brand{
   flex:none !important;
 }
 
-.brand-loop:hover .brand-loop-track{
-  animation-play-state:paused !important;
-}
-
 @keyframes sustentabllBrandMarquee{
   0%{
     transform:translate3d(0,0,0);
@@ -7558,7 +7529,6 @@ main > .post-water-brand{
   width:max-content !important;
   min-width:max-content !important;
   will-change:transform !important;
-  transform:translate3d(0,0,0) !important;
   animation:sustentabllMarqueePx 24s linear infinite !important;
 }
 
@@ -7574,16 +7544,12 @@ main > .post-water-brand{
   flex:none !important;
 }
 
-.brand-loop:hover .brand-loop-track--animated{
-  animation-play-state:paused !important;
-}
-
 @keyframes sustentabllMarqueePx{
   from{
-    transform:translate3d(0,0,0) !important;
+    transform:translate3d(0,0,0);
   }
   to{
-    transform:translate3d(calc(-1 * var(--loop-distance, 50%)),0,0) !important;
+    transform:translate3d(calc(-1 * var(--loop-distance, 50%)),0,0);
   }
 }
 
@@ -7677,10 +7643,6 @@ main > .post-water-brand{
 /* La franja sigue siendo un loop infinito dentro del bloque de tienda */
 .shop-zone .brand-loop-track--animated{
   animation:sustentabllMarqueePx 24s linear infinite !important;
-}
-
-.shop-zone .brand-loop:hover .brand-loop-track--animated{
-  animation-play-state:paused !important;
 }
 
 @media(max-width:980px){
@@ -7961,6 +7923,443 @@ main > .post-water-brand{
   }
 }
 
+.value-loop-logo-card{
+  min-height:0 !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+}
+.value-loop-logo{
+  width:min(100%,480px) !important;
+}
+.value-loop-head{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) !important;
+  justify-items:center !important;
+  gap:22px !important;
+}
+.value-loop-side{
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  width:100% !important;
+  gap:18px !important;
+  text-align:center !important;
+}
+.value-loop-logo-card{
+  width:min(100%,760px) !important;
+  justify-content:center !important;
+}
+.value-loop-head .brand-promise{
+  width:100% !important;
+  max-width:30ch !important;
+  margin:0 !important;
+  font-size:clamp(2rem,3.5vw,3.3rem) !important;
+  line-height:1.04 !important;
+  text-align:center !important;
+  text-wrap:balance;
+}
+.value-loop-head .value-loop-copy{
+  width:min(100%,900px) !important;
+  text-align:center !important;
+}
+
+.manifesto-box::after{
+  content:none !important;
+}
+
+
+/* ============================================================
+   PRODUCTOS — E-COMMERCE MINIMAL / SUSTENTABLL
+   Adaptado al index actualizado
+   ============================================================ */
+
+.shop-zone .shop-collection{
+  padding:50px 0 58px !important;
+}
+
+.shop-zone .collection-head{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) minmax(300px,.72fr) !important;
+  align-items:end !important;
+  gap:clamp(30px,5vw,68px) !important;
+  margin-bottom:28px !important;
+}
+
+.shop-zone .collection-head .display{
+  max-width:10ch !important;
+  margin:0 !important;
+  font-size:clamp(3rem,4.5vw,4.8rem) !important;
+  line-height:.93 !important;
+  letter-spacing:-.05em !important;
+  color:var(--green-dark) !important;
+}
+
+.shop-zone .collection-head .copy{
+  max-width:34ch !important;
+  margin:0 !important;
+  justify-self:end !important;
+  color:#69766e !important;
+  font-size:.84rem !important;
+  line-height:1.6 !important;
+}
+
+/* Grid limpio */
+.shop-zone .products{
+  display:grid !important;
+  width:100% !important;
+  grid-template-columns:repeat(3,minmax(0,1fr)) !important;
+  gap:18px !important;
+}
+
+/* El producto deja de sentirse como "tarjeta" pesada */
+.shop-zone .product-minimal{
+  position:relative !important;
+  min-width:0 !important;
+  display:block !important;
+  overflow:visible !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  text-decoration:none !important;
+  transform:none !important;
+}
+
+.shop-zone .product-minimal::before,
+.shop-zone .product-minimal::after{
+  display:none !important;
+  content:none !important;
+}
+
+.product-media-link{
+  display:block !important;
+  color:inherit !important;
+  text-decoration:none !important;
+}
+
+/* Imagen como catálogo de moda */
+.shop-zone .product-minimal .product-media{
+  position:relative !important;
+  width:100% !important;
+  min-height:0 !important;
+  aspect-ratio:.84 !important;
+  display:block !important;
+  overflow:hidden !important;
+  border:1px solid rgba(18,35,25,.045) !important;
+  border-radius:0 !important;
+  background:#f4f4f1 !important;
+  box-shadow:none !important;
+  isolation:isolate;
+}
+
+.shop-zone .product-minimal .product-media::before,
+.shop-zone .product-minimal .product-media::after{
+  display:none !important;
+  content:none !important;
+}
+
+.shop-zone .product-minimal .product-media img{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  padding:7% !important;
+  object-fit:contain !important;
+  z-index:2 !important;
+  filter:drop-shadow(0 16px 20px rgba(21,48,31,.08)) !important;
+  transform:scale(1) !important;
+  transition:transform .45s var(--ease), filter .45s var(--ease) !important;
+}
+
+.shop-zone .product-minimal:hover .product-media img{
+  transform:scale(1.028) !important;
+  filter:drop-shadow(0 20px 24px rgba(21,48,31,.11)) !important;
+}
+
+/* Bookmark visual discreto, como la referencia */
+.product-save{
+  position:absolute !important;
+  right:12px !important;
+  bottom:12px !important;
+  z-index:5 !important;
+  width:36px !important;
+  height:36px !important;
+  display:grid !important;
+  place-items:center !important;
+  background:rgba(255,255,255,.92) !important;
+  border:1px solid rgba(20,40,27,.055) !important;
+  color:var(--green-dark) !important;
+}
+
+.product-save svg{
+  display:block !important;
+  width:18px !important;
+  height:18px !important;
+  fill:none !important;
+  stroke:currentColor !important;
+  stroke-width:1.7 !important;
+  stroke-linejoin:round !important;
+}
+
+/* Información mínima debajo de la imagen */
+.shop-zone .product-minimal .product-body{
+  padding:12px 0 0 !important;
+  background:transparent !important;
+}
+
+.product-info-line{
+  display:grid !important;
+  grid-template-columns:1fr auto !important;
+  align-items:end !important;
+  gap:12px !important;
+  min-height:40px !important;
+  padding:0 1px 12px !important;
+}
+
+.shop-zone .product-minimal .product-info-line h3{
+  margin:0 !important;
+  font-family:var(--sans) !important;
+  font-size:.88rem !important;
+  line-height:1.1 !important;
+  font-weight:900 !important;
+  letter-spacing:.015em !important;
+  text-transform:uppercase !important;
+  color:var(--ink) !important;
+  -webkit-text-stroke:0 !important;
+}
+
+.shop-zone .product-minimal .price{
+  margin:0 !important;
+  font-family:var(--sans) !important;
+  font-size:.76rem !important;
+  line-height:1 !important;
+  font-weight:900 !important;
+  letter-spacing:.015em !important;
+  color:var(--ink) !important;
+  white-space:nowrap !important;
+}
+
+/* CTA de tienda: simple, fuerte y comercial */
+.product-shop-btn{
+  width:100% !important;
+  min-height:43px !important;
+  padding:0 16px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background:var(--green-dark) !important;
+  color:#fff !important;
+  text-decoration:none !important;
+  font-family:var(--sans) !important;
+  font-size:.66rem !important;
+  font-weight:900 !important;
+  letter-spacing:.065em !important;
+  transition:
+    background .28s ease,
+    transform .28s var(--ease),
+    box-shadow .28s ease !important;
+}
+
+.product-shop-btn:hover,
+.product-shop-btn:focus-visible{
+  background:var(--green) !important;
+  color:#fff !important;
+  transform:translateY(-1px) !important;
+  box-shadow:0 10px 22px rgba(23,59,40,.12) !important;
+  outline:none !important;
+}
+
+.product-shop-btn:active{
+  transform:translateY(0) scale(.99) !important;
+}
+
+/* Tablet */
+@media(max-width:900px){
+  .shop-zone .collection-head{
+    grid-template-columns:1fr !important;
+    gap:14px !important;
+  }
+
+  .shop-zone .collection-head .copy{
+    justify-self:start !important;
+    max-width:42ch !important;
+  }
+
+  .shop-zone .products{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:26px 16px !important;
+  }
+
+  .shop-zone .product-minimal:last-child{
+    grid-column:1 / -1 !important;
+    width:min(100%,calc(50% - 8px)) !important;
+    justify-self:center !important;
+  }
+}
+
+/* Mobile */
+@media(max-width:580px){
+  .shop-zone .shop-collection{
+    padding:36px 0 42px !important;
+  }
+
+  .shop-zone .collection-head{
+    margin-bottom:22px !important;
+  }
+
+  .shop-zone .collection-head .display{
+    font-size:clamp(2.65rem,11vw,3.7rem) !important;
+  }
+
+  .shop-zone .collection-head .copy{
+    font-size:.80rem !important;
+  }
+
+  .shop-zone .products{
+    grid-template-columns:1fr !important;
+    gap:28px !important;
+  }
+
+  .shop-zone .product-minimal:last-child{
+    grid-column:auto !important;
+    width:100% !important;
+  }
+
+  .shop-zone .product-minimal .product-media{
+    aspect-ratio:.92 !important;
+  }
+
+  .product-info-line{
+    padding-bottom:10px !important;
+  }
+
+  .product-shop-btn{
+    min-height:46px !important;
+  }
+}
+
+/* Acabado uniforme para las tres fichas del catálogo */
+.shop-zone .product-minimal{
+  display:flex !important;
+  flex-direction:column !important;
+  overflow:hidden !important;
+  border:1px solid rgba(25,55,37,.10) !important;
+  border-radius:8px !important;
+  background:#fffdfa !important;
+  box-shadow:0 12px 30px rgba(22,47,31,.07) !important;
+  transition:transform .28s ease,box-shadow .28s ease,border-color .28s ease !important;
+}
+.shop-zone .product-minimal:hover{
+  transform:translateY(-4px) !important;
+  border-color:rgba(43,103,61,.22) !important;
+  box-shadow:0 18px 38px rgba(22,47,31,.12) !important;
+}
+.shop-zone .product-minimal .product-media{
+  width:calc(100% - 16px) !important;
+  margin:8px 8px 0 !important;
+  aspect-ratio:4 / 4.5 !important;
+  border:0 !important;
+  border-radius:5px !important;
+  background:
+    radial-gradient(ellipse at 50% 40%,rgba(255,255,255,.82),rgba(255,255,255,0) 68%),
+    var(--bg,#f0f1ed) !important;
+}
+.shop-zone .product-minimal .product-media img{
+  padding:4% !important;
+  filter:drop-shadow(0 18px 22px rgba(21,48,31,.12)) !important;
+}
+.shop-zone .product-minimal:hover .product-media img{
+  transform:scale(1.045) translateY(-3px) !important;
+}
+.shop-zone .product-save{
+  top:12px !important;
+  right:12px !important;
+  bottom:auto !important;
+  width:34px !important;
+  height:34px !important;
+  border-radius:50% !important;
+  box-shadow:0 4px 14px rgba(17,38,24,.08) !important;
+}
+.shop-zone .product-minimal .product-body{
+  display:flex !important;
+  flex:1 1 auto !important;
+  flex-direction:column !important;
+  padding:15px 16px 16px !important;
+}
+.shop-zone .product-minimal .product-info-line{
+  min-height:42px !important;
+  align-items:center !important;
+  padding:0 0 13px !important;
+  border-bottom:1px solid rgba(25,55,37,.09) !important;
+}
+.shop-zone .product-minimal .product-info-line h3{
+  font-size:.94rem !important;
+  letter-spacing:.04em !important;
+}
+.shop-zone .product-minimal .price{
+  color:var(--green-dark) !important;
+  font-size:.82rem !important;
+}
+.shop-zone .product-minimal .product-shop-btn{
+  min-height:46px !important;
+  margin-top:13px !important;
+  border-radius:4px !important;
+  background:var(--green-dark) !important;
+  letter-spacing:.09em !important;
+  transition:background .22s ease,transform .22s ease,box-shadow .22s ease !important;
+}
+.shop-zone .product-minimal .product-shop-btn:hover,
+.shop-zone .product-minimal .product-shop-btn:focus-visible{
+  background:#2f6242 !important;
+  transform:translateY(-2px) !important;
+  box-shadow:0 8px 18px rgba(23,59,40,.18) !important;
+}
+@media(max-width:580px){
+  .shop-zone .product-minimal .product-body{
+    padding:13px 14px 14px !important;
+  }
+}
+
+</style>
+
+<style id="story-panel-images">
+/* Imágenes dentro del área central de los tres cuadros verdes.
+   Para una fotografía que deba llenar el área: cambia contain por cover. */
+.story-alternating .story-stage-static .story-panel-media {
+  position: absolute;
+  inset: 76px 30px 38px;
+  margin: 0;
+  z-index: 2;
+  overflow: hidden;
+  border-radius: 14px;
+}
+.story-alternating .story-panel-media .story-panel-image {
+  display: block;
+  position: static;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  padding: 0;
+  object-fit: contain;
+  object-position: center;
+  transform: none;
+  animation: none;
+}
+.story-alternating .story-v2-caption,
+.story-alternating .story-progress {
+  z-index: 3;
+}
+@media (max-width: 720px) {
+  .story-alternating .story-stage-static .story-panel-media {
+    inset: 66px 20px 36px;
+    border-radius: 12px;
+  }
+}
 </style>
 </head>
 <body id="inicio">
@@ -8002,11 +8401,9 @@ main > .post-water-brand{
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy reveal">
-      <span class="eyebrow">SUSTENTABLL · THE LAST LIFE</span>
       <h1>Lo que ya existe <span>puede volver a importar.</span></h1>
       <p>SUSTENTABLL convierte algodón reciclado preconsumo en básicos pensados para quedarse. No se trata de producir por producir: se trata de darle una nueva función al material y una identidad que quieras seguir usando.</p>
       <div class="hero-actions"><a class="btn btn-dark" href="#historia">Conoce por qué existe</a></div>
-      <div class="hero-proof"><span>Algodón reciclado preconsumo</span><span>Diseño atemporal</span><span>XS a XL</span></div>
     </div>
 
     <div class="hero-visual reveal">
@@ -8082,7 +8479,6 @@ main > .post-water-brand{
   <div class="container">
     <div class="story-v2-head reveal">
       <div>
-        <span class="eyebrow">La historia</span>
         <h2 class="display">Antes de ser prenda, <em>ya tenía una historia.</em></h2>
       </div>
       <div class="story-v2-lead">
@@ -8103,14 +8499,11 @@ main > .post-water-brand{
               <b>LO QUE QUEDA</b>
             </div>
 
-            <div class="story-scene story-scene-static">
-              <i class="fabric f1"></i>
-              <i class="fabric f2"></i>
-              <i class="fabric f3"></i>
-              <i class="fabric f4"></i>
-              <i class="fabric f5"></i>
-              <div class="scene-word">SOBRA</div>
-            </div>
+            <!-- Cambia este src si quieres usar otra imagen para este cuadro. -->
+            <figure class="story-panel-media">
+              <img class="story-panel-image" src="images/playera1.png"
+                   alt="Playera SUSTENTABLL" loading="lazy" decoding="async" width="800" height="1000">
+            </figure>
 
             <div class="story-progress" aria-hidden="true">
               <i class="active"></i><i></i><i></i>
@@ -8123,10 +8516,6 @@ main > .post-water-brand{
           <span class="story-v2-tag">Lo que queda</span>
           <h3>No todo sobrante es desperdicio.</h3>
           <p>En la producción textil quedan recortes y algodón preconsumo que nunca llegaron a convertirse en una prenda final. SUSTENTABLL parte de una idea simple: <strong>si el material todavía puede servir, la historia no debería terminar ahí.</strong></p>
-          <div class="story-v2-detail">
-            <span>Material</span>
-            <b>Algodón reciclado preconsumo</b>
-          </div>
         </article>
       </div>
 
@@ -8137,10 +8526,6 @@ main > .post-water-brand{
           <span class="story-v2-tag">Lo que vuelve</span>
           <h3>El material regresa al proceso.</h3>
           <p>Ese algodón recuperado puede reincorporarse como materia prima. Lo que antes era un sobrante cambia de función y vuelve a tener valor dentro de una nueva pieza.</p>
-          <div class="story-v2-detail">
-            <span>Idea</span>
-            <b>Recuperar · reincorporar · diseñar</b>
-          </div>
         </article>
 
         <div class="story-alt-panel">
@@ -8151,34 +8536,11 @@ main > .post-water-brand{
               <b>LO QUE VUELVE</b>
             </div>
 
-            <div class="story-scene story-scene-static">
-              <div class="story-icon-set process-icons">
-                <div class="story-icon-card">
-                  <svg viewBox="0 0 64 64" aria-hidden="true">
-                    <path d="M19 18c8-8 21-9 30-2l-6 1 4 7 8-11-12-6 1 6c-12-6-27-2-34 8"/>
-                    <path d="M45 46c-8 8-21 9-30 2l6-1-4-7-8 11 12 6-1-6c12 6 27 2 34-8"/>
-                  </svg>
-                  <span>Recuperar</span>
-                </div>
-
-                <div class="story-icon-card">
-                  <svg viewBox="0 0 64 64" aria-hidden="true">
-                    <path d="M10 22c11-10 22 10 33 0 5-4 8-5 11-4"/>
-                    <path d="M10 32c11-10 22 10 33 0 5-4 8-5 11-4"/>
-                    <path d="M10 42c11-10 22 10 33 0 5-4 8-5 11-4"/>
-                  </svg>
-                  <span>Reincorporar</span>
-                </div>
-
-                <div class="story-icon-card">
-                  <svg viewBox="0 0 64 64" aria-hidden="true">
-                    <path d="M18 18l9-6h10l9 6 9 8-8 8-5-5v24H22V29l-5 5-8-8 9-8z"/>
-                  </svg>
-                  <span>Diseñar</span>
-                </div>
-              </div>
-              <div class="scene-word">VUELVE</div>
-            </div>
+            <!-- Cambia este src si quieres usar otra imagen para este cuadro. -->
+            <figure class="story-panel-media">
+              <img class="story-panel-image" src="images/polo1.png"
+                   alt="Polo SUSTENTABLL" loading="lazy" decoding="async" width="800" height="1000">
+            </figure>
 
             <div class="story-progress" aria-hidden="true">
               <i></i><i class="active"></i><i></i>
@@ -8197,20 +8559,11 @@ main > .post-water-brand{
               <b>LO QUE CONTINÚA</b>
             </div>
 
-            <div class="story-scene story-scene-static">
-              <!-- misma animación CSS de recortes flotantes que en 01 -->
-              <i class="fabric f1"></i>
-              <i class="fabric f2"></i>
-              <i class="fabric f3"></i>
-              <i class="fabric f4"></i>
-              <i class="fabric f5"></i>
-
-              <div class="story-scene-caption">
-                <b>THE LAST LIFE</b>
-                <span>La siguiente vida empieza cuando la usas.</span>
-              </div>
-              <div class="scene-word">CONTINÚA</div>
-            </div>
+            <!-- Cambia este src si quieres usar otra imagen para este cuadro. -->
+            <figure class="story-panel-media">
+              <img class="story-panel-image" src="images/sudadera1.png"
+                   alt="Sudadera SUSTENTABLL" loading="lazy" decoding="async" width="800" height="1000">
+            </figure>
 
             <div class="story-progress" aria-hidden="true">
               <i></i><i></i><i class="active"></i>
@@ -8223,10 +8576,6 @@ main > .post-water-brand{
           <span class="story-v2-tag">Lo que continúa</span>
           <h3>La última vida empieza contigo.</h3>
           <p>El material vuelve convertido en una prenda limpia, versátil y pensada para acompañarte más allá de una temporada. Ahí cobra sentido <strong>THE LAST LIFE</strong>: la siguiente vida de la prenda es la que construyes al usarla.</p>
-          <div class="story-v2-detail">
-            <span>Resultado</span>
-            <b>Playera · Polo · Hoodie</b>
-          </div>
         </article>
       </div>
 
@@ -8242,7 +8591,6 @@ main > .post-water-brand{
   <div class="container">
     <div class="water-v3-head reveal">
       <div class="water-v3-title">
-        <span class="eyebrow">Agua · en escala real</span>
         <h2 class="display">284 L no se entienden <em>hasta que los ves.</em></h2>
       </div>
       <div class="water-v3-intro">
@@ -8255,7 +8603,6 @@ main > .post-water-brand{
       <div class="water-v3-editorial">
 
         <div class="water-v3-message">
-          <span class="water-v3-kicker">Referencia por prenda</span>
           <div class="water-v3-base">
             <span>≈</span><strong>284</strong><em>L</em>
           </div>
@@ -8293,10 +8640,6 @@ main > .post-water-brand{
         <div class="water-v3-visual-top">
           <span>Escala visual</span>
           <b id="dropIndicator">01 PRENDA</b>
-        </div>
-
-        <div class="water-v3-product" aria-hidden="true">
-          <img src="images/sudadera1.png" alt="">
         </div>
 
         <div class="garrafon-scene single-jug-scene">
@@ -8343,17 +8686,12 @@ main > .post-water-brand{
 <section class="value-loop" id="valor">
   <div class="container">
     <div class="value-loop-head reveal">
-      <div>
-        <span class="eyebrow">Por qué SUSTENTABLL</span>
-        <h2 class="brand-promise">No vendemos “verde”. <span>Damos otra vida al material.</span></h2>
-      </div>
       <div class="value-loop-side">
         <div class="value-loop-logo-card">
           <img class="value-loop-logo" src="images/sustentable.png" alt="Logo SUSTENTABLL en PNG">
         </div>
+        <h2 class="brand-promise">No vendemos “verde”. Damos otra vida al material.</h2>
         <p class="copy value-loop-copy">
-  <span>La marca funciona cuando la idea se entiende sin discursos largos: recuperar material antes de que llegue al consumidor.</span>
-  <span>Convertirlo en básicos atemporales y hacer que esa última vida empiece con quien los usa.</span>
 </p>
       </div>
     </div>
@@ -8378,7 +8716,7 @@ main > .post-water-brand{
   </div>
 </section>
 
-<section class="manifesto" id="ultima-vida"><div class="container"><div class="manifesto-box reveal"><div><span class="eyebrow">La última vida</span><h2>Una buena prenda no necesita gritar que es sustentable. Necesita darte razones para seguir usándola.</h2></div><div><p>SUSTENTABLL une material recuperado, diseño atemporal y una historia fácil de recordar. El siguiente capítulo empieza cuando eliges la pieza que quieres hacer parte de tu vida.</p><div class="manifesto-actions"><a class="btn btn-dark" id="waLink" href="#" target="_blank" rel="noopener">Hablar por WhatsApp</a></div></div></div></div></section>
+<section class="manifesto" id="ultima-vida"><div class="container"><div class="manifesto-box reveal"><div><h2>Una buena prenda no necesita gritar que es sustentable. Necesita darte razones para seguir usándola.</h2></div><div><p>SUSTENTABLL une material recuperado, diseño atemporal y una historia fácil de recordar. El siguiente capítulo empieza cuando eliges la pieza que quieres hacer parte de tu vida.</p><div class="manifesto-actions"><a class="btn btn-dark" id="waLink" href="#" target="_blank" rel="noopener">Hablar por WhatsApp</a></div></div></div></div></section>
 
   
 <section class="shop-zone" aria-label="Tienda SUSTENTABLL">
@@ -8387,7 +8725,6 @@ main > .post-water-brand{
     <div class="last-life-transition">
       <div class="container">
         <div class="story-v2-end story-v2-end-relocated reveal">
-          <span>De material recuperado a identidad</span>
           <h3>Lo que parecía el final, se convierte en <em>THE LAST LIFE.</em></h3>
           <a href="#coleccion">Conoce las prendas <b>↘</b></a>
         </div>
@@ -8418,47 +8755,60 @@ main > .post-water-brand{
 
     <div class="collection shop-collection" id="coleccion">
       <div class="container">
-        <div class="collection-head reveal">
-          <div>
-            
-            <h2 class="display">Tres básicos.<br>Una identidad.</h2>
-          </div>
-          <p class="copy">Playera, polo y hoodie: tres maneras de llevar la misma idea. Prendas fáciles de usar, combinar y convertir en parte de tu rutina.</p>
-        </div>
-
         <div class="products">
-          <a class="product reveal" href="TiendaOnline.html#section-playera">
-            <div class="product-media" style="--bg:#e8efe5">
-              <img src="images/playera1.png" alt="Playera SUSTENTABLL en PNG">
-            </div>
+          <article class="product reveal product-minimal">
+            <a class="product-media-link" href="TiendaOnline.html#section-playera" aria-label="Ver Playera en tienda">
+              <div class="product-media" style="--bg:#f5f5f2">
+                <img src="images/playera1.png" alt="Playera SUSTENTABLL">
+                <span class="product-save" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6.5 4.5h11v15l-5.5-3.8-5.5 3.8z"/></svg>
+                </span>
+              </div>
+            </a>
             <div class="product-body">
-              <div class="product-top"><h3>Playera</h3><span class="price">$350 MXN</span></div>
-              <p>Básica, limpia y fácil de combinar.</p>
-              <div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span><span>XL</span></div>
+              <div class="product-info-line">
+                <h3>Playera</h3>
+                <span class="price">$350 MXN</span>
+              </div>
+              <a class="product-shop-btn" href="TiendaOnline.html#section-playera">VER EN TIENDA</a>
             </div>
-          </a>
+          </article>
 
-          <a class="product reveal" href="TiendaOnline.html#section-polo">
-            <div class="product-media" style="--bg:#efe7dc">
-              <img src="images/polo1.png" alt="Polo SUSTENTABLL en PNG">
-            </div>
+          <article class="product reveal product-minimal">
+            <a class="product-media-link" href="TiendaOnline.html#section-polo" aria-label="Ver Polo en tienda">
+              <div class="product-media" style="--bg:#f5f5f2">
+                <img src="images/polo1.png" alt="Polo SUSTENTABLL">
+                <span class="product-save" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6.5 4.5h11v15l-5.5-3.8-5.5 3.8z"/></svg>
+                </span>
+              </div>
+            </a>
             <div class="product-body">
-              <div class="product-top"><h3>Polo</h3><span class="price">$450 MXN</span></div>
-              <p>Una pieza más estructurada, sin perder versatilidad.</p>
-              <div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span><span>XL</span></div>
+              <div class="product-info-line">
+                <h3>Polo</h3>
+                <span class="price">$450 MXN</span>
+              </div>
+              <a class="product-shop-btn" href="TiendaOnline.html#section-polo">VER EN TIENDA</a>
             </div>
-          </a>
+          </article>
 
-          <a class="product reveal" href="TiendaOnline.html#section-hoodie">
-            <div class="product-media" style="--bg:#dfe8dc">
-              <img src="images/sudadera1.png" alt="Hoodie SUSTENTABLL en PNG">
-            </div>
+          <article class="product reveal product-minimal">
+            <a class="product-media-link" href="TiendaOnline.html#section-hoodie" aria-label="Ver Hoodie en tienda">
+              <div class="product-media" style="--bg:#f5f5f2">
+                <img src="images/sudadera1.png" alt="Hoodie SUSTENTABLL">
+                <span class="product-save" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M6.5 4.5h11v15l-5.5-3.8-5.5 3.8z"/></svg>
+                </span>
+              </div>
+            </a>
             <div class="product-body">
-              <div class="product-top"><h3>Hoodie</h3><span class="price">$600 MXN</span></div>
-              <p>Capucha amplia, bolsillo frontal y una silueta para quedarse.</p>
-              <div class="sizes"><span>XS</span><span>S</span><span>M</span><span>L</span><span>XL</span></div>
+              <div class="product-info-line">
+                <h3>Hoodie</h3>
+                <span class="price">$600 MXN</span>
+              </div>
+              <a class="product-shop-btn" href="TiendaOnline.html#section-hoodie">VER EN TIENDA</a>
             </div>
-          </a>
+          </article>
         </div>
       </div>
     </div>
@@ -8553,19 +8903,11 @@ main > .post-water-brand{
 </section>
 
 </main>
-
-
 <section class="contact-section" id="contacto">
   <div class="container contact-grid">
     <div class="contact-intro reveal">
-      <span class="eyebrow">Contáctanos</span>
       <h2>Hablemos de tu próxima prenda.</h2>
       <p>Cuéntanos cómo podemos ayudarte. Déjanos tus datos y te contactaremos para continuar la conversación.</p>
-
-      <div class="contact-meta">
-        <span>SUSTENTABLL</span>
-        <b>THE LAST LIFE</b>
-      </div>
     </div>
 
     <form class="contact-form reveal" id="contactForm">
@@ -9043,6 +9385,36 @@ document.addEventListener('DOMContentLoaded', () => {
     track.style.animationIterationCount = 'infinite';
     track.style.animationDuration = window.innerWidth <= 650 ? '18s' : '24s';
   });
+
+  const collabMarquee = document.querySelector('.collab-marquee');
+  const collabTrack = collabMarquee?.querySelector('.collab-track');
+  const collabSet = collabTrack?.querySelector('.collab-set');
+  if (!collabMarquee || !collabTrack || !collabSet) return;
+
+  const sourceCards = Array.from(collabSet.querySelectorAll('.collab-logo-card:not(.collab-placeholder)'));
+  const fillCollabTrack = () => {
+    collabSet.querySelectorAll('.collab-repeat').forEach(card => card.remove());
+    collabSet.querySelectorAll('.collab-placeholder').forEach(card => card.remove());
+    collabTrack.querySelector('.collab-set[aria-hidden="true"]')?.remove();
+
+    let nextCard = 0;
+    while (sourceCards.length && collabSet.scrollWidth < collabMarquee.clientWidth) {
+      const repeatedCard = sourceCards[nextCard % sourceCards.length].cloneNode(true);
+      repeatedCard.classList.add('collab-repeat');
+      repeatedCard.setAttribute('aria-hidden', 'true');
+      collabSet.appendChild(repeatedCard);
+      nextCard += 1;
+    }
+
+    const repeatedSet = collabSet.cloneNode(true);
+    repeatedSet.setAttribute('aria-hidden', 'true');
+    collabTrack.appendChild(repeatedSet);
+    const cycleWidth = Math.ceil(collabSet.getBoundingClientRect().width);
+    collabTrack.style.setProperty('--collab-duration', `${Math.max(18, Math.round(cycleWidth / 45))}s`);
+  };
+
+  fillCollabTrack();
+  window.addEventListener('resize', fillCollabTrack);
 });
 </script>
 
