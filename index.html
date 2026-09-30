@@ -8328,36 +8328,189 @@ main > .post-water-brand{
 </style>
 
 <style id="story-panel-images">
-/* Imágenes dentro del área central de los tres cuadros verdes.
-   Para una fotografía que deba llenar el área: cambia contain por cover. */
-.story-alternating .story-stage-static .story-panel-media {
-  position: absolute;
-  inset: 76px 30px 38px;
-  margin: 0;
-  z-index: 2;
-  overflow: hidden;
-  border-radius: 14px;
+/* =========================================================
+   HISTORIA · misma imagen base en los 3 paneles
+   Guarda tu imagen como: images/huella-hidrica-base.png
+   La imagen mantiene proporción cuadrada, sin deformarse.
+   ========================================================= */
+.story-alternating .story-stage-static .story-panel-media{
+  position:absolute;
+  z-index:2;
+  width:min(68%, 440px);
+  aspect-ratio:1 / 1;
+  height:auto;
+  top:50%;
+  left:50%;
+  margin:0;
+  transform:translate(-50%,-48%);
+  overflow:hidden;
+  border-radius:2px;
+  background:#173b28;
+  box-shadow:0 18px 42px rgba(0,0,0,.16);
 }
-.story-alternating .story-panel-media .story-panel-image {
-  display: block;
-  position: static;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  padding: 0;
-  object-fit: contain;
-  object-position: center;
-  transform: none;
-  animation: none;
+.story-alternating .story-panel-media .story-panel-image{
+  display:block;
+  width:100%;
+  height:100%;
+  max-width:none;
+  padding:0;
+  object-fit:contain;
+  object-position:center;
+  transform:none;
+  animation:none;
 }
 .story-alternating .story-v2-caption,
-.story-alternating .story-progress {
-  z-index: 3;
+.story-alternating .story-progress{
+  z-index:3;
 }
-@media (max-width: 720px) {
-  .story-alternating .story-stage-static .story-panel-media {
-    inset: 66px 20px 36px;
-    border-radius: 12px;
+
+/* Tablet */
+@media (max-width:980px){
+  .story-alternating .story-stage-static .story-panel-media{
+    width:min(72%, 420px);
+    transform:translate(-50%,-46%);
+  }
+}
+
+/* Móvil */
+@media (max-width:720px){
+  .story-alternating .story-stage-static .story-panel-media{
+    width:min(82%, 350px);
+    transform:translate(-50%,-45%);
+    border-radius:2px;
+  }
+}
+</style>
+
+<style id="last-life-title-position">
+/* =========================================================
+   THE LAST LIFE — versión compacta
+   Reduce el espacio vacío y acerca el CTA al título.
+   ========================================================= */
+
+.shop-zone .last-life-transition{
+  min-height:0 !important;
+  height:auto !important;
+  padding:0 !important;
+}
+
+.shop-zone .last-life-transition .container{
+  width:min(100% - 56px, 1180px) !important;
+  max-width:1180px !important;
+  margin-inline:auto !important;
+}
+
+.shop-zone .last-life-transition .story-v2-end-relocated{
+  display:grid !important;
+  grid-template-columns:minmax(0, 1.25fr) minmax(210px, .45fr) !important;
+  align-items:center !important;
+  gap:clamp(32px, 4vw, 58px) !important;
+
+  min-height:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:30px 8px 32px !important;
+}
+
+/* Título: máximo 3 líneas en desktop */
+.shop-zone .last-life-transition .last-life-title{
+  width:auto !important;
+  max-width:17ch !important;
+  margin:0 !important;
+  justify-self:start !important;
+  text-align:left !important;
+
+  font-size:clamp(2.25rem, 3.15vw, 3.35rem) !important;
+  line-height:.94 !important;
+  letter-spacing:-.045em !important;
+}
+
+/* Primera parte más compacta */
+.shop-zone .last-life-title-intro{
+  display:block !important;
+  width:auto !important;
+  max-width:16ch !important;
+  margin:0 !important;
+  color:var(--green-dark) !important;
+  text-wrap:balance;
+}
+
+/* THE LAST LIFE queda como remate, sin ocupar media pantalla */
+.shop-zone .last-life-transition .last-life-title em{
+  display:block !important;
+  width:max-content !important;
+  max-width:100% !important;
+  margin-top:7px !important;
+
+  color:var(--sand) !important;
+  white-space:nowrap !important;
+  font-size:.98em !important;
+  line-height:.94 !important;
+}
+
+/* CTA más cerca del título */
+.shop-zone .last-life-transition .story-v2-end-relocated > a{
+  grid-column:2 !important;
+  justify-self:end !important;
+  align-self:center !important;
+
+  width:min(100%, 218px) !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:13px 0 !important;
+
+  font-size:.64rem !important;
+  letter-spacing:.10em !important;
+}
+
+/* Tablet */
+@media (max-width:980px){
+  .shop-zone .last-life-transition .container{
+    width:min(100% - 40px, 760px) !important;
+  }
+
+  .shop-zone .last-life-transition .story-v2-end-relocated{
+    grid-template-columns:1fr !important;
+    gap:20px !important;
+    padding:28px 4px 30px !important;
+  }
+
+  .shop-zone .last-life-transition .last-life-title{
+    max-width:16ch !important;
+    font-size:clamp(2.15rem, 5.5vw, 3rem) !important;
+  }
+
+  .shop-zone .last-life-transition .story-v2-end-relocated > a{
+    grid-column:1 !important;
+    justify-self:start !important;
+  }
+}
+
+/* Móvil */
+@media (max-width:650px){
+  .shop-zone .last-life-transition .container{
+    width:calc(100% - 28px) !important;
+  }
+
+  .shop-zone .last-life-transition .story-v2-end-relocated{
+    gap:16px !important;
+    padding:22px 2px 24px !important;
+  }
+
+  .shop-zone .last-life-transition .last-life-title{
+    max-width:15ch !important;
+    font-size:clamp(1.9rem, 9vw, 2.55rem) !important;
+    line-height:.96 !important;
+  }
+
+  .shop-zone .last-life-transition .last-life-title em{
+    margin-top:6px !important;
+    white-space:normal !important;
+  }
+
+  .shop-zone .last-life-transition .story-v2-end-relocated > a{
+    width:190px !important;
+    padding:11px 0 !important;
   }
 }
 </style>
@@ -8402,7 +8555,7 @@ main > .post-water-brand{
   <div class="container hero-grid">
     <div class="hero-copy reveal">
       <h1>Lo que ya existe <span>puede volver a importar.</span></h1>
-      <p>SUSTENTABLL convierte algodón reciclado preconsumo en básicos pensados para quedarse. No se trata de producir por producir: se trata de darle una nueva función al material y una identidad que quieras seguir usando.</p>
+      <p>SUSTENTABLL convierte algodón reciclado preconsumo en básicos pensados para quedarse. Se trata de producir con sentido, dándole una nueva y última vida al material textil, con una identidad que te hace más consciente.</p>
       <div class="hero-actions"><a class="btn btn-dark" href="#historia">Conoce por qué existe</a></div>
     </div>
 
@@ -8425,10 +8578,10 @@ main > .post-water-brand{
 
           <div class="hero-film-fallback" id="brandFilmFallback" aria-hidden="true">
             <div class="hero-film-fallback-product hero-film-product-a">
-              <img src="images/sudadera1.png" alt="">
+              <img src="images/logo1.png" alt="">
             </div>
             <div class="hero-film-fallback-product hero-film-product-b">
-              <img src="images/playera1.png" alt="">
+              <img src="images/huella-hidrica-base.png" alt="">
             </div>
             <div class="hero-film-fallback-copy">
               <span>SUSTENTABLL · BRAND FILM</span>
@@ -8501,8 +8654,8 @@ main > .post-water-brand{
 
             <!-- Cambia este src si quieres usar otra imagen para este cuadro. -->
             <figure class="story-panel-media">
-              <img class="story-panel-image" src="images/playera1.png"
-                   alt="Playera SUSTENTABLL" loading="lazy" decoding="async" width="800" height="1000">
+              <img class="story-panel-image" src="images/logo3.png"
+                   alt="SUSTENTABLL · Huella hídrica" loading="lazy" decoding="async" width="800" height="1000">
             </figure>
 
             <div class="story-progress" aria-hidden="true">
@@ -8515,7 +8668,7 @@ main > .post-water-brand{
           <span class="story-v2-num">01</span>
           <span class="story-v2-tag">Lo que queda</span>
           <h3>No todo sobrante es desperdicio.</h3>
-          <p>En la producción textil quedan recortes y algodón preconsumo que nunca llegaron a convertirse en una prenda final. SUSTENTABLL parte de una idea simple: <strong>si el material todavía puede servir, la historia no debería terminar ahí.</strong></p>
+          <p>La producción textil desechada es fuente de una nueva prenda, a través de la recuperación del algodón de preconsumo que estaba confinado al tiradero. SUSTENTABLL parte de una idea simple: <strong>si el material todavía puede servir, la historia no debería terminar ahí.</strong></p>
         </article>
       </div>
 
@@ -8538,8 +8691,8 @@ main > .post-water-brand{
 
             <!-- Cambia este src si quieres usar otra imagen para este cuadro. -->
             <figure class="story-panel-media">
-              <img class="story-panel-image" src="images/polo1.png"
-                   alt="Polo SUSTENTABLL" loading="lazy" decoding="async" width="800" height="1000">
+              <img class="story-panel-image" src="images/logo1.png"
+                   alt="SUSTENTABLL · Huella hídrica" loading="lazy" decoding="async" width="800" height="1000">
             </figure>
 
             <div class="story-progress" aria-hidden="true">
@@ -8561,8 +8714,8 @@ main > .post-water-brand{
 
             <!-- Cambia este src si quieres usar otra imagen para este cuadro. -->
             <figure class="story-panel-media">
-              <img class="story-panel-image" src="images/sudadera1.png"
-                   alt="Sudadera SUSTENTABLL" loading="lazy" decoding="async" width="800" height="1000">
+              <img class="story-panel-image" src="images/logo4.png"
+                   alt="SUSTENTABLL · Huella hídrica" loading="lazy" decoding="async" width="800" height="1000">
             </figure>
 
             <div class="story-progress" aria-hidden="true">
@@ -8691,8 +8844,7 @@ main > .post-water-brand{
           <img class="value-loop-logo" src="images/sustentable.png" alt="Logo SUSTENTABLL en PNG">
         </div>
         <h2 class="brand-promise">No vendemos “verde”. Damos otra vida al material.</h2>
-        <p class="copy value-loop-copy">
-</p>
+        <p class="copy value-loop-copy">La marca funciona cuando la idea se entiende sin discursos largos: recuperar material antes de que se convierta en un desperdicio permanente para nuestro ecosistema. Convertirlo en básicos atemporales y hacer que esa última vida empiece con quien los usa.</p>
       </div>
     </div>
 
@@ -8725,7 +8877,7 @@ main > .post-water-brand{
     <div class="last-life-transition">
       <div class="container">
         <div class="story-v2-end story-v2-end-relocated reveal">
-          <h3>Lo que parecía el final, se convierte en <em>THE LAST LIFE.</em></h3>
+          <h3 class="last-life-title"><span class="last-life-title-intro">Lo que parecía el final, se convierte en</span> <em>THE LAST LIFE.</em></h3>
           <a href="#coleccion">Conoce las prendas <b>↘</b></a>
         </div>
       </div>
@@ -8759,7 +8911,7 @@ main > .post-water-brand{
           <article class="product reveal product-minimal">
             <a class="product-media-link" href="TiendaOnline.html#section-playera" aria-label="Ver Playera en tienda">
               <div class="product-media" style="--bg:#f5f5f2">
-                <img src="images/playera1.png" alt="Playera SUSTENTABLL">
+                <img src="images/playera1.png" alt="SUSTENTABLL · Huella hídrica">
                 <span class="product-save" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M6.5 4.5h11v15l-5.5-3.8-5.5 3.8z"/></svg>
                 </span>
@@ -8777,7 +8929,7 @@ main > .post-water-brand{
           <article class="product reveal product-minimal">
             <a class="product-media-link" href="TiendaOnline.html#section-polo" aria-label="Ver Polo en tienda">
               <div class="product-media" style="--bg:#f5f5f2">
-                <img src="images/polo1.png" alt="Polo SUSTENTABLL">
+                <img src="images/polo1.png" alt="SUSTENTABLL · Huella hídrica">
                 <span class="product-save" aria-hidden="true">
                   <svg viewBox="0 0 24 24"><path d="M6.5 4.5h11v15l-5.5-3.8-5.5 3.8z"/></svg>
                 </span>
