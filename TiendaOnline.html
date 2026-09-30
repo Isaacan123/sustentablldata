@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -316,11 +316,6 @@
             align-items: center;
             gap: 10px;
         }
-        .section-eyebrow::before, .section-eyebrow::after {
-            content: '';
-            width: 20px; height: 2px;
-            background: var(--olive);
-        }
         .section-title {
             font-size: 3rem;
             color: var(--navy);
@@ -617,13 +612,13 @@
         .cart-item-info span { color: var(--text-muted); font-size: 0.85rem; }
 
         .qty-controls { display: flex; align-items: center; gap: 10px; background: white; padding: 5px 12px; border-radius: 50px; border: 1px solid var(--cream-dark); margin-top: 8px; width: fit-content; }
-        .qty-btn, .remove-btn { background: transparent; border: none; color: var(--navy); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: var(--transition); }
+            .qty-btn, .remove-btn { background: transparent; border: none; color: var(--navy); cursor: pointer; font-weight: 700; font-size: 1.1rem; transition: var(--transition); }
         .qty-btn:hover { color: var(--sea); transform: scale(1.2); }
         .remove-btn { color: var(--danger); font-size: 1.3rem; }
         .remove-btn:hover { transform: scale(1.2) rotate(10deg); }
 
         .cart-summary { border-top: 1px solid var(--cream-dark); padding-top: 22px; margin-top: 18px; }
-        .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; color: var(--text-muted); font-size: 1rem; }
+            .summary-row { display: flex; justify-content: space-between; margin-bottom: 12px; color: var(--text-muted); font-size: 1rem; }
         .summary-row.total { color: var(--navy); font-size: 1.5rem; font-weight: 700; border-top: 1px solid var(--cream-dark); padding-top: 18px; margin-top: 8px; }
 
         .checkout-btn {
@@ -1429,9 +1424,9 @@
 
     <header>
         <div class="menu-container">
-            <button class="menu-btn" onclick="toggleMenu()" title="Menú">
-                <img src="images/logo2.png" alt="Abrir menú">
-                <span class="menu-text">MENÚ</span>
+            <button class="menu-btn" onclick="toggleMenu()" title="Menu">
+                <img src="images/logo2.png" alt="Open menu">
+                <span class="menu-text">MENU</span>
             </button>
             <div class="dropdown-menu" id="dropdown-menu"></div>
         </div>
@@ -1442,11 +1437,11 @@
         </div>
 
         <div class="header-actions">
-            <button class="saved-toggle" type="button" id="saved-btn" onclick="showSavedProducts()" aria-label="Ver guardados" aria-controls="guardados" aria-expanded="false" title="Guardados">
+            <button class="saved-toggle" type="button" id="saved-btn" onclick="showSavedProducts()" aria-label="View saved items" aria-controls="guardados" aria-expanded="false" title="Saved items">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4-6 4z"></path></svg>
                 <span id="saved-count" aria-live="polite">0</span>
             </button>
-        <button class="cart-toggle" onclick="toggleCart()" id="cart-btn" aria-label="Abrir carrito">
+        <button class="cart-toggle" onclick="toggleCart()" id="cart-btn" aria-label="Open cart">
             <svg viewBox="0 0 24 24" stroke="currentColor" fill="none">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l1.5 7.5m0 0L8 18h10l2.5-10.5H6.5z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9.5 10v-3a1.5 1.5 0 011.5-1.5h2a1.5 1.5 0 011.5 1.5v3" />
@@ -1462,12 +1457,12 @@
     <div class="main-carousel-container">
         <div class="main-carousel" id="main-carousel">
             <div class="main-carousel-track">
-                <div class="main-carousel-item"><img src="images/1.png" alt="Imagen 1"></div>
-                <div class="main-carousel-item"><img src="images/2.png" alt="Imagen 2"></div>
-                <div class="main-carousel-item"><img src="images/3.png" alt="Imagen 3"></div>
-                <div class="main-carousel-item"><img src="images/4.png" alt="Imagen 4"></div>
-                <div class="main-carousel-item"><img src="images/5.png" alt="Imagen 5"></div>
-                <div class="main-carousel-item"><img src="images/6.png" alt="Imagen 6"></div>
+                <div class="main-carousel-item"><img src="images/1.png" alt="Collection image 1"></div>
+                <div class="main-carousel-item"><img src="images/2.png" alt="Collection image 2"></div>
+                <div class="main-carousel-item"><img src="images/3.png" alt="Collection image 3"></div>
+                <div class="main-carousel-item"><img src="images/4.png" alt="Collection image 4"></div>
+                <div class="main-carousel-item"><img src="images/5.png" alt="Collection image 5"></div>
+                <div class="main-carousel-item"><img src="images/6.png" alt="Collection image 6"></div>
                 <div class="main-carousel-item"><img src="images/1.png" alt="" aria-hidden="true"></div>
                 <div class="main-carousel-item"><img src="images/2.png" alt="" aria-hidden="true"></div>
                 <div class="main-carousel-item"><img src="images/3.png" alt="" aria-hidden="true"></div>
@@ -1479,81 +1474,79 @@
     </div>
 
     <div class="search-wrap">
-        <input type="text" class="search-input" id="search-input" placeholder="Buscar productos... (ej. hoodie, playera, polo)" oninput="filterProducts(this.value)">
+        <input type="text" class="search-input" id="search-input" placeholder="Search products... (e.g. hoodie, T-shirt, polo)" oninput="filterProducts(this.value)">
     </div>
 
     <section class="saved-section" id="guardados" aria-labelledby="saved-title" hidden>
         <div class="saved-section-heading">
             <div>
-                <h2 id="saved-title" tabindex="-1">Tus guardados</h2>
-                <p id="saved-summary" aria-live="polite">0 productos guardados</p>
+                <h2 id="saved-title" tabindex="-1">Your saved items</h2>
+                <p id="saved-summary" aria-live="polite">0 saved items</p>
             </div>
-            <button class="saved-close" type="button" onclick="closeSavedProducts()">Volver a la tienda <span aria-hidden="true">↗</span></button>
+            <button class="saved-close" type="button" onclick="closeSavedProducts()">Back to store <span aria-hidden="true">↗</span></button>
         </div>
         <div class="saved-empty" id="saved-empty">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4-6 4z"></path></svg>
-            <h3>Aún no tienes productos guardados.</h3>
-            <p>Marca el icono de guardar de una prenda para encontrarla aquí.</p>
-            <button type="button" onclick="closeSavedProducts()">Explorar productos</button>
+            <h3>You have no saved items yet.</h3>
+            <p>Save a garment to find it here later.</p>
+            <button type="button" onclick="closeSavedProducts()">Browse products</button>
         </div>
         <div class="saved-grid" id="saved-grid"></div>
     </section>
 
     <main id="store-sections"></main>
 
-    <section class="collaboration-section" id="colaboraciones" aria-label="Colaboraciones">
+    <section class="collaboration-section" id="colaboraciones" aria-label="Collaborations">
         <div class="collaboration-inner">
-            <span class="collaboration-label">Han colaborado con nosotros</span>
+            <span class="collaboration-label">Our collaborators</span>
             <div class="collaboration-grid">
                 <div class="collaboration-track">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="Logo de Ibero" loading="lazy">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="Logo de Ibero" loading="lazy">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="Logo de Ibero" loading="lazy">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="Logo de Ibero" loading="lazy">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="" aria-hidden="true" loading="lazy">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="" aria-hidden="true" loading="lazy">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="" aria-hidden="true" loading="lazy">
-                    <img class="collaboration-logo" src="images/ibero.jpg" alt="" aria-hidden="true" loading="lazy">
+                    <img class="collaboration-logo" src="images/ibero.jpg" alt="Logo de Ibero" decoding="async">
+                    <img class="collaboration-logo" src="images/2sis.png" alt="Logo de 2SIS" decoding="async">
+                    <img class="collaboration-logo" src="images/tulum.jpeg" alt="Logo de Tulum" decoding="async">
+                    <img class="collaboration-logo" src="images/ibero.jpg" alt="" aria-hidden="true" decoding="async">
+                    <img class="collaboration-logo" src="images/2sis.png" alt="" aria-hidden="true" decoding="async">
+                    <img class="collaboration-logo" src="images/tulum.jpeg" alt="" aria-hidden="true" decoding="async">
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="contact-section" id="contacto">
+    <section class="contact-section" id="contacto" aria-label="Contact">
         <div class="contact-inner">
             <div>
-                <span class="contact-kicker">Contáctanos</span>
+                <span class="contact-kicker">Contact us</span>
                 <div class="contact-heading-row">
                     <div>
-                        <h2 class="contact-title">Hablemos de lo<br>que estás buscando.</h2>
-                        <p class="contact-copy">¿Tienes una pregunta sobre una pieza, una talla o un pedido personalizado? Escríbenos y recibe atención directa.</p>
+                        <h2 class="contact-title">Let's talk about<br>what you're looking for.</h2>
+                        <p class="contact-copy">Have a question about a piece, a size, or a custom order? Message us for personal assistance.</p>
                     </div>
                 </div>
             </div>
             <div class="contact-action">
-                <strong>Déjanos tus datos</strong>
+                <strong>Leave your details</strong>
                 <form class="contact-form" id="contact-form" onsubmit="submitContactForm(event)">
                     <div class="contact-field">
-                        <label for="contact-name">Nombre completo</label>
+                        <label for="contact-name">Full name</label>
                         <input type="text" id="contact-name" name="name" autocomplete="name" required>
                     </div>
                     <div class="contact-field">
-                        <label for="contact-phone">Número de teléfono</label>
+                        <label for="contact-phone">Phone number</label>
                         <input type="tel" id="contact-phone" name="phone" autocomplete="tel" required>
                     </div>
                     <div class="contact-field">
-                        <label for="contact-city">Ciudad</label>
+                        <label for="contact-city">City</label>
                         <input type="text" id="contact-city" name="city" autocomplete="address-level2" required>
                     </div>
                     <div class="contact-field">
-                        <label for="contact-postal-code">Código postal</label>
+                        <label for="contact-postal-code">Postal code</label>
                         <input type="text" id="contact-postal-code" name="postalCode" inputmode="numeric" autocomplete="postal-code" required>
                     </div>
                     <div class="contact-field full">
-                        <label for="contact-email">Correo para contacto</label>
+                        <label for="contact-email">Contact email</label>
                         <input type="email" id="contact-email" name="email" autocomplete="email" required>
                     </div>
-                    <button type="submit">Enviar mis datos</button>
+                    <button type="submit">Send my details</button>
                 </form>
             </div>
         </div>
@@ -1565,54 +1558,54 @@
 
     <div class="cart-sidebar" id="cart-sidebar">
         <div class="cart-header">
-            <h2>Mi Compra</h2>
+            <h2>My Cart</h2>
             <button class="close-cart" onclick="toggleCart()">✖</button>
         </div>
         <div class="cart-items" id="cart-items"></div>
         <div class="cart-summary">
             <div class="summary-row">
-                <span>Subtotal (<span id="total-qty">0</span> piezas):</span>
-                <span id="subtotal-price">$0.00</span>
+                <span>Subtotal (<span id="total-qty">0</span> items):</span>
+                <span id="subtotal-price">$0 USD</span>
             </div>
             <div class="summary-row total">
                 <span>TOTAL:</span>
-                <span id="total-price">$0.00</span>
+                <span id="total-price">$0 USD</span>
             </div>
-            <button class="checkout-btn" id="checkout-btn" onclick="checkout()">Procesar Pedido por WhatsApp</button>
-            <div class="clear-cart-link"><button onclick="clearCart()">Vaciar carrito</button></div>
+            <button class="checkout-btn" id="checkout-btn" onclick="checkout()">Checkout via WhatsApp</button>
+            <div class="clear-cart-link"><button onclick="clearCart()">Empty cart</button></div>
         </div>
     </div>
 
     <div class="product-modal" id="product-modal" onclick="closeProductDetails(event)">
         <div class="product-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-product-name" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeProductDetails()" aria-label="Cerrar detalles">✖</button>
+            <button class="modal-close" onclick="closeProductDetails()" aria-label="Close details">✖</button>
             <div class="product-modal-gallery">
                 <div class="product-main-view">
-                    <button class="product-main-view-btn prev" onclick="changeProductImageByOffset(event, -1)" aria-label="Vista anterior">❮</button>
+                    <button class="product-main-view-btn prev" onclick="changeProductImageByOffset(event, -1)" aria-label="Previous image">❮</button>
                     <img class="product-modal-image" id="modal-product-image" src="" alt="">
-                    <button class="product-main-view-btn next" onclick="changeProductImageByOffset(event, 1)" aria-label="Vista siguiente">❯</button>
+                    <button class="product-main-view-btn next" onclick="changeProductImageByOffset(event, 1)" aria-label="Next image">❯</button>
                 </div>
-                <div class="product-modal-thumbnails" id="modal-product-thumbnails" aria-label="Vistas del producto"></div>
+                <div class="product-modal-thumbnails" id="modal-product-thumbnails" aria-label="Product views"></div>
             </div>
             <div class="product-modal-content">
                 <span class="product-modal-kicker" id="modal-product-category"></span>
                 <h2 id="modal-product-name"></h2>
-                <div class="technical-header"><strong>Ficha técnica</strong></div>
+                <div class="technical-header"><strong>Product details</strong></div>
                 <div class="product-details-list">
                     <div class="product-detail">
                         <div class="product-detail-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 21s7-4.35 7-10.2A4.8 4.8 0 0 0 12 7a4.8 4.8 0 0 0-7 3.8C5 16.65 12 21 12 21Z"></path><path d="M8.5 4.5c1-1 2.3-1.5 3.5-1.5s2.5.5 3.5 1.5"></path></svg></div>
-                        <div><strong>Materiales</strong><span id="modal-product-material"></span></div>
+                        <div><strong>Materials</strong><span id="modal-product-material"></span></div>
                     </div>
                     <div class="product-detail">
                         <div class="product-detail-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3 4.5 7v10L12 21l7.5-4V7L12 3Z"></path><path d="m4.5 7 7.5 4 7.5-4M12 11v10"></path></svg></div>
-                        <div><strong>Diseño con propósito</strong><span id="modal-product-design"></span></div>
+                        <div><strong>Purposeful design</strong><span id="modal-product-design"></span></div>
                     </div>
                     <div class="product-detail water-saving">
                         <div class="product-detail-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3S5.5 10.1 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 10.1 12 3 12 3Z"></path><path d="M9 15.5c.3 1.4 1.3 2.2 2.8 2.6"></path></svg></div>
-                        <div><strong>Riego de referencia*</strong><div class="water-reading" id="modal-product-water-value"></div><span class="water-copy" id="modal-product-water"></span></div>
+                        <div><strong>Reference irrigation*</strong><div class="water-reading" id="modal-product-water-value"></div><span class="water-copy" id="modal-product-water"></span></div>
                     </div>
                 </div>
-                <p class="product-detail-note">*Estimación de referencia. No representa huella hídrica total ni ahorro de agua certificado.</p>
+                <p class="product-detail-note">*Reference estimate. It does not represent total water footprint or certified water savings.</p>
                 <div id="modal-product-size"></div>
                 <div class="modal-action" id="modal-product-action"></div>
             </div>
@@ -1636,9 +1629,9 @@
         </svg>
     </a>
 
-    <a href="https://wa.me/522211841803?text=Hola,%20me%20interesa%20hacer%20un%20pedido%20personalizado." class="whatsapp-contact" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <a href="https://wa.me/522211841803?text=Hello,%20I%20am%20interested%20in%20placing%20a%20custom%20order." class="whatsapp-contact" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        <span class="wa-text">Atención Personalizada</span>
+        <span class="wa-text">Personalized support</span>
     </a>
 
     <div class="toast" id="toast"></div>
@@ -1655,7 +1648,7 @@
         const sizesMap = {
             shoes: ["22 MX", "23 MX", "24 MX", "25 MX", "26 MX", "27 MX", "28 MX", "29 MX"],
             clothes: ["XS", "S", "M", "L", "XL"],
-            socks: ["Única (24-27cm)", "Única (28-31cm)"]
+            socks: ["One size (24-27 cm)", "One size (28-31 cm)"]
         };
 
         const categoryDefs = {
@@ -1818,6 +1811,8 @@
         };
 
         const categoriesOrder = ["Ropa", "Playera", "Polo", "Hoodie"];
+        const categoryLabels = { Ropa: "SUSTENTABLL Apparel", Playera: "T-Shirts", Polo: "Polo Shirts", Hoodie: "Hoodies" };
+        const displayCategoryName = category => categoryLabels[category] || category;
 
         // Construir el arreglo plano de productos a partir de categoryDefs
         function normalizeCatalogText(text) {
@@ -1831,30 +1826,30 @@
         const catalogPresentation = {
             Ropa: {
                 names: [
-                    "Sudadera Navy Sustentabll", "Playera Essential Cotton", "Playera Polo Classic",
-                    "Sudadera Beige Sustentabll", "Playera Graphic Studio", "Playera Polo Essential",
-                    "Sudadera Essential Green", "Playera Premium Daily", "Playera Polo Signature",
-                    "Sudadera Classic Black", "Playera Sustentabll Classic", "Playera Polo Premium",
-                    "Sudadera Grey Essential", "Playera Soft Essential", "Playera Polo Sustentabll"
+                    "SUSTENTABLL Navy Hoodie", "Essential Cotton T-Shirt", "Classic Polo Shirt",
+                    "SUSTENTABLL Beige Hoodie", "Graphic Studio T-Shirt", "Essential Polo Shirt",
+                    "Essential Green Hoodie", "Daily Premium T-Shirt", "Signature Polo Shirt",
+                    "Classic Black Hoodie", "SUSTENTABLL Classic T-Shirt", "Premium Polo Shirt",
+                    "Essential Grey Hoodie", "Soft Essential T-Shirt", "SUSTENTABLL Polo Shirt"
                 ],
                 descriptions: [
-                    "Sudadera azul navy con capucha amplia, bolsillo frontal y logo Sustentabll.",
-                    "Playera básica de algodón suave con corte cómodo y acabado limpio.",
-                    "Playera polo de algodón piqué con cuello firme y acabado premium.",
-                    "Sudadera beige de corte relajado con textura suave y acabado limpio.",
-                    "Playera de algodón con gráfico contemporáneo y ajuste relajado.",
-                    "Playera polo ligera de corte regular, cómoda para todos los días.",
-                    "Sudadera verde de diario con puños acanalados y construcción resistente.",
-                    "Playera premium de tejido ligero, fresca y fácil de combinar.",
-                    "Playera polo de textura suave con detalles discretos y silueta elegante.",
-                    "Sudadera negra esencial con diseño minimalista y ajuste confortable.",
-                    "Playera Sustentabll de corte regular, fresca y fácil de combinar.",
-                    "Playera polo de algodón peinado con caída impecable y gran durabilidad.",
-                    "Sudadera gris de corte clásico, suave, versátil y pensada para uso diario.",
-                    "Playera suave de uso diario con acabado limpio y construcción duradera.",
-                    "Playera polo Sustentabll de corte limpio, suave y versátil para cualquier ocasión."
+                    "Navy hoodie with a spacious hood, front pocket, and SUSTENTABLL logo.",
+                    "Soft cotton T-shirt with a comfortable fit and clean finish.",
+                    "Piqué cotton polo shirt with a structured collar and premium finish.",
+                    "Relaxed-fit beige hoodie with a soft texture and clean finish.",
+                    "Cotton T-shirt with a contemporary graphic and relaxed fit.",
+                    "Lightweight regular-fit polo shirt, comfortable for everyday wear.",
+                    "Everyday green hoodie with ribbed cuffs and durable construction.",
+                    "Lightweight premium T-shirt, breathable and easy to style.",
+                    "Soft polo shirt with subtle details and an elegant silhouette.",
+                    "Essential black hoodie with a minimalist design and comfortable fit.",
+                    "Regular-fit SUSTENTABLL T-shirt, breathable and easy to style.",
+                    "Combed cotton polo shirt with an excellent drape and lasting durability.",
+                    "Classic grey hoodie, soft and versatile for everyday wear.",
+                    "Soft everyday T-shirt with a clean finish and durable construction.",
+                    "Clean, soft, versatile SUSTENTABLL polo shirt for any occasion."
                 ],
-                prices: [600, 350, 450, 600, 350, 450, 600, 350, 450, 600, 350, 450, 600, 350, 450],
+                prices: [50, 11, 17, 50, 11, 17, 50, 11, 17, 50, 11, 17, 50, 11, 17],
                 images: [
                     "images/sudadera1.png", "images/playera1.png", "images/polo1.png",
                     "images/sudadera2.png", "images/playera2.png", "images/polo2.png",
@@ -1864,15 +1859,15 @@
                 ]
             },
             Polo: {
-                names: ["Playera Polo Classic", "Playera Polo Essential", "Playera Polo Signature", "Playera Polo Premium", "Playera Polo Sustentabll"],
+                names: ["Classic Polo Shirt", "Essential Polo Shirt", "Signature Polo Shirt", "Premium Polo Shirt", "SUSTENTABLL Polo Shirt"],
                 descriptions: [
-                    "Playera polo de algodón piqué con cuello firme y acabado premium.",
-                    "Playera polo ligera de corte regular, cómoda para todos los días.",
-                    "Playera polo de textura suave con detalles discretos y silueta elegante.",
-                    "Playera polo de algodón peinado con caída impecable y gran durabilidad.",
-                    "Playera polo Sustentabll de corte limpio, suave y versátil para cualquier ocasión."
+                    "Piqué cotton polo shirt with a structured collar and premium finish.",
+                    "Lightweight regular-fit polo shirt, comfortable for everyday wear.",
+                    "Soft polo shirt with subtle details and an elegant silhouette.",
+                    "Combed cotton polo shirt with an excellent drape and lasting durability.",
+                    "Clean, soft, versatile SUSTENTABLL polo shirt for any occasion."
                 ],
-                prices: [450, 450, 450, 450, 450],
+                prices: [17, 17, 17, 17, 17],
                 images: [
                     "images/polo1.png",
                     "images/polo2.png",
@@ -1882,15 +1877,15 @@
                 ]
             },
             Playera: {
-                names: ["Playera Essential Cotton", "Playera Graphic Studio", "Playera Premium Daily", "Playera Sustentabll Classic", "Playera Soft Essential"],
+                names: ["Essential Cotton T-Shirt", "Graphic Studio T-Shirt", "Daily Premium T-Shirt", "SUSTENTABLL Classic T-Shirt", "Soft Essential T-Shirt"],
                 descriptions: [
-                    "Playera básica de algodón suave con corte cómodo y acabado limpio.",
-                    "Playera de algodón con gráfico contemporáneo y ajuste relajado.",
-                    "Playera premium de tejido ligero, fresca y fácil de combinar.",
-                    "Playera Sustentabll de corte regular, fresca y fácil de combinar.",
-                    "Playera suave de uso diario con acabado limpio y construcción duradera."
+                    "Soft cotton T-shirt with a comfortable fit and clean finish.",
+                    "Cotton T-shirt with a contemporary graphic and relaxed fit.",
+                    "Lightweight premium T-shirt, breathable and easy to style.",
+                    "Regular-fit SUSTENTABLL T-shirt, breathable and easy to style.",
+                    "Soft everyday T-shirt with a clean finish and durable construction."
                 ],
-                prices: [350, 350, 350, 350, 350],
+                prices: [11, 11, 11, 11, 11],
                 images: [
                     "images/playera1.png",
                     "images/playera2.png",
@@ -1900,15 +1895,15 @@
                 ]
             },
             Hoodie: {
-                names: ["Sudadera Navy Sustentabll", "Sudadera Beige Sustentabll", "Sudadera Essential Green", "Sudadera Classic Black", "Sudadera Grey Essential"],
+                names: ["SUSTENTABLL Navy Hoodie", "SUSTENTABLL Beige Hoodie", "Essential Green Hoodie", "Classic Black Hoodie", "Essential Grey Hoodie"],
                 descriptions: [
-                    "Sudadera azul navy con capucha amplia, bolsillo frontal y logo Sustentabll.",
-                    "Sudadera beige de corte relajado con textura suave y acabado limpio.",
-                    "Sudadera verde de diario con puños acanalados y construcción resistente.",
-                    "Sudadera negra esencial con diseño minimalista y ajuste confortable.",
-                    "Sudadera gris de corte clásico, suave, versátil y pensada para uso diario."
+                    "Navy hoodie with a spacious hood, front pocket, and SUSTENTABLL logo.",
+                    "Relaxed-fit beige hoodie with a soft texture and clean finish.",
+                    "Everyday green hoodie with ribbed cuffs and durable construction.",
+                    "Essential black hoodie with a minimalist design and comfortable fit.",
+                    "Classic grey hoodie, soft and versatile for everyday wear."
                 ],
-                prices: [600, 600, 600, 600, 600],
+                prices: [50, 50, 50, 50, 50],
                 images: [
                     "images/sudadera1.png",
                     "images/sudadera2.png",
@@ -1920,10 +1915,10 @@
         };
 
         const sustainabilityByCategory = {
-            Ropa: { material: "Material específico de esta prenda en validación.", design: "Diseño específico de esta prenda en validación.", water: null },
-            Polo: { material: "Material específico de esta prenda en validación.", design: "Diseño específico de esta prenda en validación.", water: null },
-            Playera: { material: "Material específico de esta prenda en validación.", design: "Diseño específico de esta prenda en validación.", water: null },
-            Hoodie: { material: "Integra algodón reciclado preconsumo, recuperado antes de llegar al consumidor.", design: "Una prenda versátil, atemporal y pensada para acompañarte más allá de una sola temporada.", water: 284 }
+            Ropa: { material: "Garment-specific material details are under review.", design: "Garment-specific design details are under review.", water: null },
+            Polo: { material: "Garment-specific material details are under review.", design: "Garment-specific design details are under review.", water: null },
+            Playera: { material: "Garment-specific material details are under review.", design: "Garment-specific design details are under review.", water: null },
+            Hoodie: { material: "Made with recycled pre-consumer cotton recovered before reaching consumers.", design: "A versatile, timeless garment made to last beyond a single season.", water: 284 }
         };
 
         let products = [];
@@ -1938,7 +1933,7 @@
                     : def.items;
             catalogItems.forEach((item, i) => {
                 const productName = presentation.names[i % presentation.names.length];
-                const productSustainability = /^Sudadera/i.test(productName)
+                const productSustainability = /Hoodie/i.test(productName)
                     ? sustainabilityByCategory.Hoodie
                     : sustainabilityByCategory[cat];
                 products.push({
@@ -1979,15 +1974,15 @@
             const savedProducts = products.filter(product => savedProductIds.has(product.id));
             const count = savedProducts.length;
             document.getElementById('saved-count').textContent = count;
-            document.getElementById('saved-summary').textContent = count === 1 ? '1 producto guardado' : `${count} productos guardados`;
-            document.getElementById('saved-btn').setAttribute('aria-label', `Ver guardados: ${count} ${count === 1 ? 'producto' : 'productos'}`);
+            document.getElementById('saved-summary').textContent = count === 1 ? '1 saved item' : `${count} saved items`;
+            document.getElementById('saved-btn').setAttribute('aria-label', `View saved items: ${count}`);
             document.getElementById('saved-empty').hidden = count !== 0;
             document.getElementById('saved-grid').innerHTML = savedProducts.map(renderProductCard).join('');
             document.querySelectorAll('.product-save[data-product-id]').forEach(button => {
                 const isSaved = savedProductIds.has(Number(button.dataset.productId));
                 button.classList.toggle('is-saved', isSaved);
                 button.setAttribute('aria-pressed', String(isSaved));
-                button.setAttribute('aria-label', isSaved ? 'Quitar de guardados' : 'Guardar producto');
+                button.setAttribute('aria-label', isSaved ? 'Remove from saved items' : 'Save item');
             });
         }
 
@@ -1999,7 +1994,7 @@
             else savedProductIds.add(productId);
             persistSavedProducts();
             updateSavedUI();
-            showToast(wasSaved ? 'Producto eliminado de guardados.' : 'Producto guardado.');
+            showToast(wasSaved ? 'Removed from saved items.' : 'Saved for later.');
             if (wasInSaved) {
                 const nextButton = document.querySelector('#saved-grid .product-save');
                 (nextButton || document.getElementById('saved-title')).focus({ preventScroll: true });
@@ -2081,7 +2076,7 @@
                 window.scrollTo({ top: offsetPosition, behavior: "smooth" });
             }
             document.querySelectorAll('#dropdown-menu button').forEach(btn => {
-                btn.classList.toggle('active', btn.innerText === cat);
+                btn.classList.toggle('active', btn.dataset.category === cat);
             });
             if (!keepMenuOpen) {
                 document.getElementById('dropdown-menu').classList.remove('open');
@@ -2096,7 +2091,7 @@
             const cat = p.category;
                     let sizeHTML = '';
                     if (p.fixedSize) {
-                        sizeHTML = `<div class="fixed-size-tag">Talla disponible: <strong>${p.fixedSize}</strong></div>`;
+                        sizeHTML = `<div class="fixed-size-tag">Available size: <strong>${p.fixedSize}</strong></div>`;
                     } else if (p.type !== 'none') {
                         sizeHTML = `<div class="sizes-container" data-required="true">
                             ${sizesMap[p.type].map(s => `<button type="button" class="size-box" aria-pressed="false" onclick="event.stopPropagation(); selectSize(this, '${s}')">${s}</button>`).join('')}
@@ -2105,20 +2100,20 @@
                     const lowStock = cat === "Ropa" && p.stock <= 4;
                     const hasPrice = p.price > 0;
                     const priceHTML = hasPrice
-                        ? `$${p.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`
-                        : `<span class="price-consult">Precio a consultar</span>`;
+                        ? `$${p.price.toLocaleString('en-US')} USD`
+                        : `<span class="price-consult">Price on request</span>`;
                     const actionBtn = hasPrice
-                        ? `<button class="add-to-cart" onclick="event.stopPropagation(); addToCart(event, ${p.id}, this)">Añadir a la cesta</button>`
-                        : `<a class="add-to-cart ask-price" href="https://wa.me/${phone}?text=${encodeURIComponent('Hola, me interesa el precio de: ' + p.name)}" target="_blank">Preguntar precio</a>`;
+                        ? `<button class="add-to-cart" onclick="event.stopPropagation(); addToCart(event, ${p.id}, this)">Add to cart</button>`
+                        : `<a class="add-to-cart ask-price" href="https://wa.me/${phone}?text=${encodeURIComponent('Hello, I would like to know the price of: ' + p.name)}" target="_blank">Ask about price</a>`;
                     return `
-                        <div class="product-card" onclick="openProductDetails(${p.id})" tabindex="0" onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openProductDetails(${p.id}); }" aria-label="Ver detalles de ${p.name}">
+                        <div class="product-card" onclick="openProductDetails(${p.id})" tabindex="0" onkeydown="if (event.target === this && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openProductDetails(${p.id}); }" aria-label="View details for ${p.name}">
                             <div class="product-img-wrapper">
                                 <img src="${p.image}" class="product-img" alt="${p.name}" loading="lazy">
                             </div>
                             <div class="product-info">
                                 <div class="product-card-toolbar">
-                                    <span class="stock-badge ${lowStock ? 'low' : ''}">${lowStock ? (p.stock === 1 ? '¡Última pieza!' : '¡Últimas piezas!') : 'Disponible'}</span>
-                                    <button type="button" class="product-save ${savedProductIds.has(p.id) ? 'is-saved' : ''}" data-product-id="${p.id}" onclick="toggleSavedProduct(event, ${p.id}, this)" aria-pressed="${savedProductIds.has(p.id)}" aria-label="${savedProductIds.has(p.id) ? 'Quitar de guardados' : 'Guardar producto'}">
+                                    <span class="stock-badge ${lowStock ? 'low' : ''}">${lowStock ? (p.stock === 1 ? 'Last item!' : 'Last items!') : 'In stock'}</span>
+                                    <button type="button" class="product-save ${savedProductIds.has(p.id) ? 'is-saved' : ''}" data-product-id="${p.id}" onclick="toggleSavedProduct(event, ${p.id}, this)" aria-pressed="${savedProductIds.has(p.id)}" aria-label="${savedProductIds.has(p.id) ? 'Remove from saved items' : 'Save item'}">
                                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5h12v17l-6-4-6 4z"></path></svg>
                                     </button>
                                 </div>
@@ -2128,8 +2123,8 @@
                                 </div>
                                 <div class="product-size-section">
                                     <div class="product-size-heading">
-                                        <span>${p.fixedSize ? 'TALLA DISPONIBLE' : 'TALLAS'}</span>
-                                        <button type="button" class="product-details-link" onclick="event.stopPropagation(); openProductDetails(${p.id})">VER DETALLES</button>
+                                        <span>${p.fixedSize ? 'AVAILABLE SIZE' : 'SIZES'}</span>
+                                        <button type="button" class="product-details-link" onclick="event.stopPropagation(); openProductDetails(${p.id})">VIEW DETAILS</button>
                                     </div>
                                     ${sizeHTML}
                                 </div>
@@ -2150,13 +2145,13 @@
             let totalMatches = 0;
 
             menuContainer.innerHTML = `
-                <button id="clothing-menu-button" class="menu-parent" onclick="toggleClothingMenu(event)">
-                    ROPA <span aria-hidden="true">⌄</span>
+                <button id="clothing-menu-button" class="menu-parent" data-category="Ropa" onclick="toggleClothingMenu(event)">
+                    APPAREL <span aria-hidden="true">⌄</span>
                 </button>
                 <div id="clothing-submenu" class="clothing-submenu">
-                    <button onclick="selectClothingCategory(event, 'Playera')">Playera</button>
-                    <button onclick="selectClothingCategory(event, 'Polo')">Polo</button>
-                    <button onclick="selectClothingCategory(event, 'Hoodie')">Hoodie</button>
+                    <button data-category="Playera" onclick="selectClothingCategory(event, 'Playera')">T-Shirts</button>
+                    <button data-category="Polo" onclick="selectClothingCategory(event, 'Polo')">Polo Shirts</button>
+                    <button data-category="Hoodie" onclick="selectClothingCategory(event, 'Hoodie')">Hoodies</button>
                 </div>
             `;
 
@@ -2166,7 +2161,7 @@
                     catProducts = catProducts.filter(p =>
                         p.name.toLowerCase().includes(term) ||
                         p.desc.toLowerCase().includes(term) ||
-                        p.category.toLowerCase().includes(term)
+                        displayCategoryName(p.category).toLowerCase().includes(term)
                     );
                 }
                 if (catProducts.length === 0) return;
@@ -2178,13 +2173,13 @@
                     <section class="category-section" id="section-${slug(cat)}">
                         <div class="section-header">
                             <div class="section-titles">
-                                <h2 class="section-title">${cat === 'Ropa' ? 'Institucionales' : cat}</h2>
+                                <h2 class="section-title">${displayCategoryName(cat)}</h2>
                             </div>
-                            <span class="section-count">${catProducts.length} piezas</span>
+                            <span class="section-count">${catProducts.length} items</span>
                         </div>
                         <div class="carousel-wrapper">
-                            <button class="mini-carousel-btn mini-prev" onclick="scrollProductCarousel('${carouselId}', -1)" aria-label="Anterior">❮</button>
-                            <button class="mini-carousel-btn mini-next" onclick="scrollProductCarousel('${carouselId}', 1)" aria-label="Siguiente">❯</button>
+                            <button class="mini-carousel-btn mini-prev" onclick="scrollProductCarousel('${carouselId}', -1)" aria-label="Previous">❮</button>
+                            <button class="mini-carousel-btn mini-next" onclick="scrollProductCarousel('${carouselId}', 1)" aria-label="Next">❯</button>
                             <div class="products-carousel" id="${carouselId}">
                 `;
 
@@ -2197,7 +2192,7 @@
             });
 
             if (term && totalMatches === 0) {
-                storeContainer.innerHTML = `<div class="no-results">No encontramos productos para "${filter}". Prueba con otra palabra.</div>`;
+                storeContainer.innerHTML = `<div class="no-results">No products found for "${filter}". Try another search.</div>`;
             }
 
             initScrollReveal();
@@ -2241,24 +2236,24 @@
             document.getElementById('modal-product-image').src = product.image;
             document.getElementById('modal-product-image').alt = product.name;
             document.getElementById('modal-product-thumbnails').innerHTML = product.gallery.map((image, index) => `
-                <button class="product-modal-thumbnail ${image === product.image ? 'active' : ''}" onclick="changeProductImage(event, '${image.replace(/'/g, "\\'")}')" aria-label="Ver vista ${index + 1}">
-                    <img src="${image}" alt="Vista ${index + 1} de ${product.name}">
+                <button class="product-modal-thumbnail ${image === product.image ? 'active' : ''}" onclick="changeProductImage(event, '${image.replace(/'/g, "\\'")}')" aria-label="View image ${index + 1}">
+                    <img src="${image}" alt="Image ${index + 1} of ${product.name}">
                 </button>
             `).join('');
-            document.getElementById('modal-product-category').innerText = product.category;
+            document.getElementById('modal-product-category').innerText = displayCategoryName(product.category);
             document.getElementById('modal-product-name').innerText = product.name;
             document.getElementById('modal-product-design').innerText = product.design;
             document.getElementById('modal-product-material').innerText = product.material;
             document.getElementById('modal-product-water-value').innerText = product.waterSaving
-                ? `≈${product.waterSaving.toLocaleString('es-MX')} L`
-                : 'En validación';
+                ? `≈${product.waterSaving.toLocaleString('en-US')} L`
+                : 'Under review';
             document.getElementById('modal-product-water').innerText = product.waterSaving
-                ? 'Asociados al algodón virgen equivalente sustituido en esta prenda.'
-                : 'La cifra específica de esta prenda aún no está confirmada.';
+                ? 'Associated with the equivalent virgin cotton displaced by this garment.'
+                : 'A specific figure for this garment has not yet been confirmed.';
 
             const sizeContainer = document.getElementById('modal-product-size');
             if (product.fixedSize) {
-                sizeContainer.innerHTML = `<div class="fixed-size-tag">Talla disponible: <strong>${product.fixedSize}</strong></div>`;
+                sizeContainer.innerHTML = `<div class="fixed-size-tag">Available size: <strong>${product.fixedSize}</strong></div>`;
             } else {
                 sizeContainer.innerHTML = `<div class="sizes-container" id="modal-size-options" data-required="true">
                     ${sizesMap.clothes.map(size => `<button type="button" class="size-box" aria-pressed="false" onclick="selectModalSize(this, '${size}')">${size}</button>`).join('')}
@@ -2266,8 +2261,8 @@
             }
 
             document.getElementById('modal-product-action').innerHTML = product.price > 0
-                ? `<button class="add-to-cart" onclick="addFromModal(event, ${product.id})">Añadir al carrito · $${product.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</button>`
-                : `<a class="add-to-cart ask-price" href="https://wa.me/${phone}?text=${encodeURIComponent('Hola, me interesa el precio de: ' + product.name)}" target="_blank">Preguntar precio</a>`;
+                ? `<button class="add-to-cart" onclick="addFromModal(event, ${product.id})">Add to cart · $${product.price.toLocaleString('en-US')} USD</button>`
+                : `<a class="add-to-cart ask-price" href="https://wa.me/${phone}?text=${encodeURIComponent('Hello, I would like to know the price of: ' + product.name)}" target="_blank">Ask about price</a>`;
             modal.dataset.productId = product.id;
             modal.dataset.galleryIndex = Math.max(0, product.gallery.indexOf(product.image));
             modal.classList.add('open');
@@ -2304,20 +2299,20 @@
         function updateModalProductContent(product, image) {
             const modal = document.getElementById('product-modal');
             document.getElementById('modal-product-image').alt = product.name;
-            document.getElementById('modal-product-category').innerText = product.category;
+            document.getElementById('modal-product-category').innerText = displayCategoryName(product.category);
             document.getElementById('modal-product-name').innerText = product.name;
             document.getElementById('modal-product-design').innerText = product.design;
             document.getElementById('modal-product-material').innerText = product.material;
             document.getElementById('modal-product-water-value').innerText = product.waterSaving
-                ? `≈${product.waterSaving.toLocaleString('es-MX')} L`
-                : 'En validación';
+                ? `≈${product.waterSaving.toLocaleString('en-US')} L`
+                : 'Under review';
             document.getElementById('modal-product-water').innerText = product.waterSaving
-                ? 'Asociados al algodón virgen equivalente sustituido en esta prenda.'
-                : 'La cifra específica de esta prenda aún no está confirmada.';
+                ? 'Associated with the equivalent virgin cotton displaced by this garment.'
+                : 'A specific figure for this garment has not yet been confirmed.';
 
             const sizeContainer = document.getElementById('modal-product-size');
             if (product.fixedSize) {
-                sizeContainer.innerHTML = `<div class="fixed-size-tag">Talla disponible: <strong>${product.fixedSize}</strong></div>`;
+                sizeContainer.innerHTML = `<div class="fixed-size-tag">Available size: <strong>${product.fixedSize}</strong></div>`;
             } else {
                 sizeContainer.innerHTML = `<div class="sizes-container" id="modal-size-options" data-required="true">
                     ${sizesMap.clothes.map(size => `<button type="button" class="size-box" aria-pressed="false" onclick="selectModalSize(this, '${size}')">${size}</button>`).join('')}
@@ -2325,8 +2320,8 @@
             }
 
             document.getElementById('modal-product-action').innerHTML = product.price > 0
-                ? `<button class="add-to-cart" onclick="addFromModal(event, ${product.id})">Añadir al carrito · $${product.price.toLocaleString('es-MX', { minimumFractionDigits: 2 })}</button>`
-                : `<a class="add-to-cart ask-price" href="https://wa.me/${phone}?text=${encodeURIComponent('Hola, me interesa el precio de: ' + product.name)}" target="_blank">Preguntar precio</a>`;
+                ? `<button class="add-to-cart" onclick="addFromModal(event, ${product.id})">Add to cart · $${product.price.toLocaleString('en-US')} USD</button>`
+                : `<a class="add-to-cart ask-price" href="https://wa.me/${phone}?text=${encodeURIComponent('Hello, I would like to know the price of: ' + product.name)}" target="_blank">Ask about price</a>`;
             modal.dataset.productId = product.id;
             modal.dataset.galleryIndex = Math.max(0, product.gallery.indexOf(image));
         }
@@ -2362,14 +2357,14 @@
             const selectedSize = product.fixedSize || (sizeOptions && sizeOptions.dataset.selectedSize);
 
             if (!selectedSize) {
-                showToast("Por favor, selecciona una talla antes de continuar.");
+                showToast("Please select a size before continuing.");
                 return;
             }
 
             const cartItem = cart.find(item => item.id === productId && item.size === selectedSize);
             if (cartItem) {
                 if (cartItem.qty >= product.stock) {
-                    showToast(`Solo quedan ${product.stock} piezas disponibles de ${product.name}.`);
+                    showToast(`Only ${product.stock} ${product.stock === 1 ? 'item is' : 'items are'} available for ${product.name}.`);
                     return;
                 }
                 cartItem.qty++;
@@ -2379,7 +2374,7 @@
 
             updateCartUI();
             createFireworks(event.clientX, event.clientY);
-            showToast(`${product.name} añadido a tu compra.`);
+            showToast(`${product.name} added to your cart.`);
             closeProductDetails();
             document.getElementById('cart-btn').classList.add('pop-anim');
             setTimeout(() => document.getElementById('cart-btn').classList.remove('pop-anim'), 500);
@@ -2406,11 +2401,11 @@
             const card = btnElement.closest('.product-card');
             const sizeContainer = card.querySelector('.sizes-container');
 
-            let selectedSize = product.fixedSize || "Única";
+            let selectedSize = product.fixedSize || "One size";
             if (!product.fixedSize && sizeContainer) {
                 selectedSize = sizeContainer.dataset.selectedSize;
                 if (!selectedSize) {
-                    showToast("Por favor, selecciona una talla antes de continuar.");
+                    showToast("Please select a size before continuing.");
                     sizeContainer.style.animation = 'none';
                     void sizeContainer.offsetWidth;
                     sizeContainer.style.animation = 'popDopamine 0.4s ease';
@@ -2421,7 +2416,7 @@
             const cartItem = cart.find(i => i.id === productId && i.size === selectedSize);
             if (cartItem) {
                 if (cartItem.qty >= product.stock) {
-                    showToast(`Solo quedan ${product.stock} piezas disponibles de ${product.name}.`);
+                    showToast(`Only ${product.stock} ${product.stock === 1 ? 'item is' : 'items are'} available for ${product.name}.`);
                     return;
                 }
                 cartItem.qty++;
@@ -2431,7 +2426,7 @@
 
             updateCartUI();
             createFireworks(event.clientX, event.clientY);
-            showToast(`${product.name} añadido a tu compra.`);
+            showToast(`${product.name} added to your cart.`);
 
             const cartBtn = document.getElementById('cart-btn');
             cartBtn.classList.remove('pop-anim');
@@ -2451,7 +2446,7 @@
                         <svg viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l1.5 7.5m0 0L8 18h10l2.5-10.5H6.5z"/>
                         </svg>
-                        <p>Tu carrito está vacío.<br>Explora la tienda y añade tus piezas favoritas.</p>
+                        <p>Your cart is empty.<br>Browse the store and add your favorite pieces.</p>
                     </div>`;
             } else {
                 itemsContainer.innerHTML = '';
@@ -2465,9 +2460,9 @@
                                 <div class="cart-item-info">
                                     <div>
                                         <h4>${item.name}</h4>
-                                        <span>Talla: ${item.size} · $${item.price.toLocaleString('es-MX')} c/u</span>
+                                        <span>Size: ${item.size} · $${item.price.toLocaleString('en-US')} USD each</span>
                                     </div>
-                                    <button class="remove-btn" onclick="removeItem(${index})" aria-label="Eliminar">✖</button>
+                                    <button class="remove-btn" onclick="removeItem(${index})" aria-label="Remove item">✖</button>
                                 </div>
                                 <div class="qty-controls">
                                     <button class="qty-btn" onclick="changeQty(${index}, -1)">−</button>
@@ -2484,8 +2479,8 @@
 
             document.getElementById('cart-count').innerText = totalQty;
             document.getElementById('total-qty').innerText = totalQty;
-            document.getElementById('subtotal-price').innerText = `$${subtotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`;
-            document.getElementById('total-price').innerText = `$${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })}`;
+            document.getElementById('subtotal-price').innerText = `$${subtotal.toLocaleString('en-US')} USD`;
+            document.getElementById('total-price').innerText = `$${total.toLocaleString('en-US')} USD`;
             checkoutBtn.disabled = cart.length === 0;
         }
 
@@ -2493,7 +2488,7 @@
             const item = cart[index];
             const product = products.find(p => p.id === item.id);
             if (delta > 0 && item.qty >= product.stock) {
-                showToast(`Solo quedan ${product.stock} piezas disponibles.`);
+                showToast(`Only ${product.stock} ${product.stock === 1 ? 'item is' : 'items are'} available.`);
                 return;
             }
             item.qty += delta;
@@ -2508,7 +2503,7 @@
 
         function clearCart() {
             if (cart.length === 0) return;
-            if (confirm("¿Deseas vaciar todo tu carrito?")) {
+            if (confirm("Would you like to empty your entire cart?")) {
                 cart = [];
                 updateCartUI();
             }
@@ -2521,27 +2516,27 @@
 
         function checkout() {
             if (cart.length === 0) {
-                showToast("Tu carrito está vacío.");
+                showToast("Your cart is empty.");
                 return;
             }
 
-            let msg = `*Hola Sustentabll, deseo procesar la siguiente orden:*%0A%0A`;
+            let msg = `*Hello Sustentabll, I would like to place the following order:*%0A%0A`;
             let subtotal = 0;
             let totalQty = 0;
 
             cart.forEach(item => {
-                msg += `- ${item.qty}x ${item.name} (Talla: ${item.size}) - $${(item.price * item.qty).toLocaleString('es-MX')}%0A`;
+                msg += `- ${item.qty}x ${item.name} (Size: ${item.size}) - $${(item.price * item.qty).toLocaleString('en-US')} USD%0A`;
                 subtotal += item.price * item.qty;
                 totalQty += item.qty;
             });
 
             const total = subtotal;
 
-            msg += `%0A*Resumen de Compra:*%0A`;
-            msg += `Piezas totales: ${totalQty}%0A`;
-            msg += `Subtotal: $${subtotal.toLocaleString('es-MX', { minimumFractionDigits: 2 })}%0A`;
-            msg += `*TOTAL: $${total.toLocaleString('es-MX', { minimumFractionDigits: 2 })} MXN*%0A%0A`;
-            msg += `Quedo a la espera de sus indicaciones para el pago.`;
+            msg += `%0A*Order summary:*%0A`;
+            msg += `Total items: ${totalQty}%0A`;
+            msg += `Subtotal: $${subtotal.toLocaleString('en-US')} USD%0A`;
+            msg += `*TOTAL: $${total.toLocaleString('en-US')} USD*%0A%0A`;
+            msg += `I look forward to receiving your payment instructions.`;
 
             window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
         }
@@ -2550,18 +2545,18 @@
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
             const contactMessage = [
-                'Hola Sustentabll, quiero ponerme en contacto.',
+                'Hello Sustentabll, I would like to get in touch.',
                 '',
-                `Nombre completo: ${formData.get('name')}`,
-                `Teléfono: ${formData.get('phone')}`,
-                `Ciudad: ${formData.get('city')}`,
-                `Código postal: ${formData.get('postalCode')}`,
-                `Correo: ${formData.get('email')}`
+                `Full name: ${formData.get('name')}`,
+                `Phone: ${formData.get('phone')}`,
+                `City: ${formData.get('city')}`,
+                `Postal code: ${formData.get('postalCode')}`,
+                `Email: ${formData.get('email')}`
             ].join('\n');
 
             window.open(`https://wa.me/${phone}?text=${encodeURIComponent(contactMessage)}`, '_blank');
             event.currentTarget.reset();
-            showToast('Tus datos están listos para enviarse por WhatsApp.');
+            showToast('Your details are ready to send via WhatsApp.');
         }
 
         /* ============ TOAST + FUEGOS ARTIFICIALES ============ */
