@@ -1,0 +1,38 @@
+INVENTARIO DE FOTOS · SUSTENTABLL
+Orden de colores: Negro, Azul marino, Gris Oxford, Gris jaspe | alternos: Avena, Azul claro, Militar, Petróleo
+
+HOODIE
+  Negro ............ frente y espalda (sudadera1, sudadera1b del proyecto)
+  Azul marino ...... frente y espalda (sudadera3, sudadera3b del proyecto)
+  Gris Oxford ...... frente (sudadera2) · FALTA espalda
+  Gris jaspe ....... frente y espalda (espalda con fondo negro limpiado a blanco; original incluido)
+  Avena ............ frente (sudadera5) · FALTA espalda · confirmar color
+  Azul claro ....... frente · FALTA espalda
+  Militar .......... frente · FALTA espalda
+  Petróleo ......... frente · FALTA espalda
+
+POLO (caballero + dama)
+  Negro ............ caballero y dama
+  Azul marino ...... caballero y dama
+  Gris Oxford ...... FALTA
+  Gris jaspe ....... caballero y dama
+  Avena ............ caballero y dama
+  Azul claro ....... FALTA
+  Militar .......... caballero y dama
+  Petróleo ......... caballero y dama
+
+PLAYERA
+  Negro ............ FALTA
+  Azul marino ...... frente
+  Gris Oxford ...... frente
+  Gris jaspe ....... frente
+  Avena ............ frente
+  Azul claro ....... frente
+  Militar .......... frente
+  Petróleo ......... frente
+
+EN SHOPIFY: sube cada foto a su producto, usa como texto alternativo el nombre exacto del color
+(ej. "Militar"; para la segunda vista "Militar · espalda" o "Militar · dama") y asígnala a las variantes de ese color.
+
+POLO: en la vista previa hay dos tarjetas (Polo Caballero y Polo Dama) y un filtro Hombre / Mujer. En Shopify conviene una opción "Corte" en las variantes
+(Color × Corte × Talla) o dos productos separados; confirmar antes de cargar el catálogo.

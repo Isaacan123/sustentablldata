@@ -1,0 +1,149 @@
+{%- comment -%}
+  SUSTENTABLL · Lo esencial: calculadora de agua, datos clave, ruta SUSTENTABLL y panel de resultado.
+  Archivo: sections/sus-story-water.liquid · NUEVO (plantilla page.historia).
+  Las cifras se editan en los bloques "Prenda". Valores por defecto tomados de la ficha técnica
+  (ICAC 2025; Uddin et al. 2023). Son estimaciones, no huella hídrica certificada.
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+{%- liquid
+  assign garments = section.blocks | where: 'type', 'garment'
+  assign boxes = section.blocks | where: 'type', 'fact'
+  assign route = section.blocks | where: 'type', 'route'
+  assign g0 = garments | first
+-%}
+<sus2-water class="sus2 nums" id="{{ section.settings.anchor | default: 'agua' | handleize }}" aria-labelledby="WaT-{{ section.id }}">
+  <div class="wrap">
+    <h2 id="WaT-{{ section.id }}" data-sus2-split>{{ section.settings.heading }}</h2>
+    {%- if garments.size > 0 -%}
+    <div class="wc" data-sus2-reveal>
+      <div class="wc-l">
+        <div class="wc-head"><span class="wc-k">{{ section.settings.calc_kicker }}</span><h3>{{ section.settings.calc_title }}</h3>{%- if section.settings.calc_text != blank -%}<p>{{ section.settings.calc_text }}</p>{%- endif -%}</div>
+        <div class="wc-ctl">
+          <div class="wc-g" role="group" aria-label="Prenda">
+            {%- for g in garments -%}<button type="button" data-garment aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" {{ g.shopify_attributes }}>{{ g.settings.name }}</button>{%- endfor -%}
+          </div>
+          <div class="wc-q">
+            <button type="button" class="wc-st" data-step-qty="-1" aria-label="Una prenda menos">{% render 'sus-icon', icon: 'minus' %}</button>
+            <label><span class="sus2-sr">Cantidad de prendas</span><input type="number" min="1" max="100000" value="1" inputmode="numeric" data-qty></label>
+            <button type="button" class="wc-st" data-step-qty="1" aria-label="Una prenda más">{% render 'sus-icon', icon: 'plus' %}</button>
+            <span data-unit>{{ g0.settings.singular }}</span>
+          </div>
+        </div>
+        <label class="sus2-sr" for="WaR-{{ section.id }}">Cantidad de prendas</label>
+        <input id="WaR-{{ section.id }}" class="wc-r" type="range" min="1" max="{{ section.settings.range_max }}" value="1" data-range>
+        <p class="wc-hint">{% render 'sus-icon', icon: 'swap' %}{{ section.settings.hint }}</p>
+        <div class="wc-eq"><div><span>Agua evitada</span><strong class="aq" data-liters>≈{{ g0.settings.riego }} Lt</strong></div><i aria-hidden="true">=</i><div><span>Equivale a</span><strong data-jugs></strong><span>garrafones de 20 Lt</span></div></div>
+        <div class="wc-jugs" data-jug-grid aria-hidden="true"></div>
+        <p class="fine" data-gnote></p>
+        {%- if section.settings.sources != blank -%}<p class="fine">{{ section.settings.sources }}</p>{%- endif -%}
+      </div>
+      {%- if boxes.size > 0 -%}
+        <div class="wc-b">
+          {%- assign half = boxes.size | plus: 1 | divided_by: 2 -%}
+          <div class="bx" data-count-box data-sus2-reveal>
+            {%- for b in boxes limit: half -%}<div {{ b.shopify_attributes }}><strong>{{ b.settings.value }}{% if b.settings.unit != blank %}<small> {{ b.settings.unit }}</small>{% endif %}</strong><span>{{ b.settings.text }}</span></div>{%- endfor -%}
+          </div>
+          <div class="bx" data-count-box data-sus2-reveal>
+            {%- for b in boxes offset: half -%}<div {{ b.shopify_attributes }}><strong>{{ b.settings.value }}{% if b.settings.unit != blank %}<small> {{ b.settings.unit }}</small>{% endif %}</strong><span>{{ b.settings.text }}</span></div>{%- endfor -%}
+            {%- if section.settings.button_label != blank -%}<a class="go" href="{{ section.settings.button_link | default: routes.root_url }}">{{ section.settings.button_label }} {% render 'sus-icon', icon: 'arrow' %}</a>{%- endif -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+
+    {%- if route.size > 0 -%}
+      <div class="rt" data-route>
+        <div class="rt-h"><h3>{{ section.settings.route_title }}</h3>{%- if section.settings.route_text != blank -%}<p>{{ section.settings.route_text }}</p>{%- endif -%}</div>
+        <ol class="rs" role="list">
+          <span class="rs-line" aria-hidden="true"><i></i><b class="rs-drop">{% render 'sus-icon', icon: 'drop' %}</b></span>
+          {%- for r in route -%}
+            <li class="rs-i" style="--i:{{ forloop.index0 }}" {{ r.shopify_attributes }}>
+              <span class="rs-ic">{% render 'sus-icon', icon: r.settings.icon %}<em aria-hidden="true">{% render 'sus-icon', icon: 'check' %}</em></span>
+              <b>{{ forloop.index | prepend: '0' | slice: -2, 2 }}</b><h4>{{ r.settings.title }}</h4>{%- if r.settings.text != blank -%}<p>{{ r.settings.text }}</p>{%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ol>
+        {%- if garments.size > 0 -%}
+          <div class="rp">
+            <div class="rp-main"><span class="rp-k">Resultado · <b data-res-n>1 {{ g0.settings.singular }}</b></span><strong data-res-total>≈{{ g0.settings.riego }} Lt</strong><p data-res-sub>de agua de riego evitada</p>
+              <div class="rp-bar"><i class="a" data-bar-a></i><i class="w" data-bar-w></i></div>
+              <div class="rp-leg"><span><i class="a"></i>Riego <b data-leg-r></b></span><span data-leg-w-row><i class="w"></i>Proceso húmedo <b data-leg-w></b></span></div>
+            </div>
+            <ul class="rp-eq" role="list">
+              <li><i>{% render 'sus-icon', icon: 'jug' %}</i><strong data-eq-jugs>0</strong><span>garrafones de 20 Lt</span></li>
+              <li><i>{% render 'sus-icon', icon: 'tank' %}</i><strong data-eq-tanks>0</strong><span>tinacos de 1,100 Lt</span></li>
+              <li><i>{% render 'sus-icon', icon: 'pool' %}</i><strong data-eq-pool>0%</strong><span>de una alberca olímpica (2.5 millones de Lt)</span></li>
+            </ul>
+            <p class="rp-note" data-res-note></p>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+  <script type="application/json" data-water-data>
+    [{%- for g in garments -%}{"name":{{ g.settings.name | json }},"singular":{{ g.settings.singular | json }},"plural":{{ g.settings.plural | json }},"riego":{{ g.settings.riego | default: 0 }},"humedo":{{ g.settings.humedo | default: 0 }},"sumar":{{ g.settings.sumar | json }},"nota":{{ g.settings.nota | json }}}{%- unless forloop.last -%},{%- endunless -%}{%- endfor -%}]
+  </script>
+</sus2-water>
+
+{% schema %}
+{
+  "name": "SUS · Historia: agua",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "agua" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Lo <em>esencial.</em>" },
+    { "type": "text", "id": "calc_kicker", "label": "Etiqueta de la calculadora", "default": "Calculadora de agua" },
+    { "type": "inline_richtext", "id": "calc_title", "label": "Título de la calculadora", "default": "¿Cuánta agua <em>se evita?</em>" },
+    { "type": "textarea", "id": "calc_text", "label": "Explicación", "default": "Elige prenda y cantidad. Te mostramos el agua de riego que ya no se usó porque la prenda lleva algodón reciclado en vez de algodón nuevo." },
+    { "type": "text", "id": "hint", "label": "Indicación", "default": "Desliza la barra o escribe la cantidad" },
+    { "type": "range", "id": "range_max", "label": "Máximo de la barra", "min": 10, "max": 200, "step": 10, "default": 50, "info": "En el campo numérico se puede escribir cualquier cantidad." },
+    { "type": "textarea", "id": "sources", "label": "Fuentes", "default": "Cifras estimadas a partir de estudios publicados: ICAC (2025) para el riego del algodón y Uddin et al. (2023, PLOS Sustainability and Transformation) para el proceso húmedo. No son huella hídrica total ni sustituyen una certificación ISO 14046. RCS respalda el origen del algodón reciclado, no estas cifras." },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Comprar" },
+    { "type": "url", "id": "button_link", "label": "Enlace del botón", "info": "Vacío = inicio de la tienda." },
+    { "type": "header", "content": "Ruta" },
+    { "type": "inline_richtext", "id": "route_title", "label": "Título de la ruta", "default": "La ruta <em>SUSTENTABLL</em>" },
+    { "type": "text", "id": "route_text", "label": "Texto de la ruta", "default": "Cuatro etapas de agua que nuestra forma de hacer prendas deja fuera." }
+  ],
+  "blocks": [
+    { "type": "garment", "name": "Prenda (cálculo)", "limit": 6, "settings": [
+      { "type": "text", "id": "name", "label": "Nombre en el botón", "default": "Hoodie" },
+      { "type": "text", "id": "singular", "label": "Singular", "default": "hoodie" },
+      { "type": "text", "id": "plural", "label": "Plural", "default": "hoodies" },
+      { "type": "number", "id": "riego", "label": "Litros de riego por prenda", "default": 284 },
+      { "type": "number", "id": "humedo", "label": "Litros de proceso húmedo por prenda", "default": 72 },
+      { "type": "checkbox", "id": "sumar", "label": "Sumar proceso húmedo al total", "default": false, "info": "Desactivado: el proceso húmedo se reporta aparte (caso hoodie)." },
+      { "type": "textarea", "id": "nota", "label": "Nota de cálculo" }
+    ] },
+    { "type": "fact", "name": "Dato clave", "settings": [
+      { "type": "text", "id": "value", "label": "Valor", "default": "≈132" },
+      { "type": "text", "id": "unit", "label": "Unidad (pequeña)", "default": "g" },
+      { "type": "text", "id": "text", "label": "Texto", "default": "de algodón reciclado preconsumo en cada hoodie talla M" }
+    ] },
+    { "type": "route", "name": "Etapa de la ruta", "limit": 6, "settings": [
+      { "type": "select", "id": "icon", "label": "Ícono", "options": [{ "value": "sprout", "label": "Brote" }, { "value": "bucket", "label": "Fibra" }, { "value": "drop", "label": "Gota" }, { "value": "waves", "label": "Agua" }], "default": "sprout" },
+      { "type": "text", "id": "title", "label": "Título", "default": "Sin nuevo riego" },
+      { "type": "text", "id": "text", "label": "Texto", "default": "Algodón reciclado preconsumo" }
+    ] }
+  ],
+  "presets": [{
+    "name": "SUS · Historia: agua",
+    "blocks": [
+      { "type": "garment", "settings": { "name": "Hoodie", "singular": "hoodie", "plural": "hoodies", "riego": 284, "humedo": 72, "sumar": false, "nota": "Hoodie: se cuenta solo el riego (≈284 Lt por prenda; ≈132 g de algodón reciclado, talla M). El proceso húmedo convencional (≈72 Lt) es una referencia externa y no se suma." } },
+      { "type": "garment", "settings": { "name": "Polo", "singular": "polo", "plural": "polos", "riego": 454, "humedo": 52, "sumar": true, "nota": "Polo: ≈454 Lt de riego + ≈52 Lt de proceso húmedo = ≈506 Lt por prenda (estimado)." } },
+      { "type": "garment", "settings": { "name": "Playera", "singular": "playera", "plural": "playeras", "riego": 341, "humedo": 39, "sumar": true, "nota": "Playera: ≈341 Lt de riego + ≈39 Lt de proceso húmedo = ≈380 Lt por prenda (estimado)." } },
+      { "type": "fact", "settings": { "value": "≈132", "unit": "g", "text": "de algodón reciclado preconsumo en cada hoodie talla M" } },
+      { "type": "fact", "settings": { "value": "25% · 50%", "unit": "", "text": "algodón reciclado: hoodie · polo y playera" } },
+      { "type": "fact", "settings": { "value": "RCS", "unit": "", "text": "Certificado de Transacción (Control Union) que respalda el origen del material" } },
+      { "type": "fact", "settings": { "value": "2", "unit": "", "text": "estados donde hacemos todo: hilatura y tejido en Puebla, confección en Puebla y Tlaxcala" } },
+      { "type": "fact", "settings": { "value": "8", "unit": "", "text": "colores · tallas XS a XL" } },
+      { "type": "route", "settings": { "icon": "sprout", "title": "Sin nuevo riego", "text": "Algodón reciclado preconsumo" } },
+      { "type": "route", "settings": { "icon": "bucket", "title": "Sin fibra virgen", "text": "Material recuperado de la industria" } },
+      { "type": "route", "settings": { "icon": "drop", "title": "Sin teñido húmedo", "text": "La fibra ya llega coloreada" } },
+      { "type": "route", "settings": { "icon": "waves", "title": "Sin lavado posterior", "text": "Sin descarga de agua de lavado" } }
+    ]
+  }]
+}
+{% endschema %}

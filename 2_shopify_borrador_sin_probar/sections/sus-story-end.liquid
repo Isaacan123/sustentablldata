@@ -1,0 +1,32 @@
+{%- comment -%}
+  SUSTENTABLL · Cierre de la Historia: "Elige la tuya", colores y botón a la tienda.
+  Archivo: sections/sus-story-end.liquid · NUEVO
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+<sus2-reveal class="sus2 end">
+  <h2 data-sus2-split>{{ section.settings.heading }}</h2>
+  {%- if section.settings.text != blank -%}<p class="end-s" data-sus2-reveal>{{ section.settings.text }}</p>{%- endif -%}
+  {%- assign lines = section.settings.swatches | newline_to_br | split: '<br />' -%}
+  {%- if section.settings.swatches != blank -%}
+    <div class="end-sw" data-sus2-reveal aria-hidden="true">
+      {%- for l in lines -%}{%- assign parts = l | strip | split: '|' -%}{%- if parts[1] != blank -%}<i style="--c:{{ parts[1] | strip }};--i:{{ forloop.index0 }}" title="{{ parts[0] | strip | escape }}"></i>{%- endif -%}{%- endfor -%}
+    </div>
+  {%- endif -%}
+  {%- if section.settings.button_label != blank -%}<a class="btn solid" href="{{ section.settings.button_link | default: routes.root_url }}" data-sus2-reveal>{{ section.settings.button_label }} {% render 'sus-icon', icon: 'arrow' %}</a>{%- endif -%}
+</sus2-reveal>
+{% schema %}
+{
+  "name": "SUS · Historia: cierre",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Elige <em>la tuya.</em>" },
+    { "type": "text", "id": "text", "label": "Texto", "default": "Hoodies, polos y playeras · 8 colores · XS a XL" },
+    { "type": "textarea", "id": "swatches", "label": "Muestras de color", "default": "Negro|#1c1c1c\nAzul marino|#1b2540\nGris Oxford|#4f5052\nGris jaspe|#b9b8b4\nAvena|#d9ccb4\nAzul claro|#a9c4dc\nMilitar|#4b5320\nPetróleo|#1f4e5a", "info": "Una por línea: Nombre|#hex. Deben coincidir con los colores reales del catálogo." },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Comprar ahora" },
+    { "type": "url", "id": "button_link", "label": "Enlace", "info": "Vacío = inicio de la tienda." }
+  ],
+  "presets": [{ "name": "SUS · Historia: cierre" }]
+}
+{% endschema %}

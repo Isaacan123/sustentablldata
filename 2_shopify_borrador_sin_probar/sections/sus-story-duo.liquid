@@ -1,0 +1,46 @@
+{%- comment -%}
+  SUSTENTABLL · Origen (Hecho en Puebla) + Uniformes para tu equipo.
+  Archivo: sections/sus-story-duo.liquid · NUEVO. Reutiliza snippets/sus-volcano.liquid.
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+{%- assign wa = section.settings.whatsapp_number | remove: ' ' | remove: '+' | remove: '-' -%}
+<sus2-reveal class="sus2 duo">
+  <div class="duo-a" data-sus2-reveal>
+    <div class="duo-in">
+      {%- if section.settings.kicker != blank -%}<small>{{ section.settings.kicker }}</small>{%- endif -%}
+      <h3 data-sus2-split>{{ section.settings.heading_a }}</h3>
+      {%- if section.settings.text_a != blank -%}<p>{{ section.settings.text_a }}</p>{%- endif -%}
+      {%- if section.settings.button_a != blank -%}<a class="btn" href="{{ section.settings.link_a | default: routes.root_url }}">{{ section.settings.button_a }} {% render 'sus-icon', icon: 'arrow' %}</a>{%- endif -%}
+    </div>
+    {%- if section.settings.show_volcano -%}{% render 'sus-volcano', variant: 'light' %}{%- endif -%}
+  </div>
+  <div class="g duo-g" data-sus2-reveal>
+    <h3 data-sus2-split>{{ section.settings.heading_b }}</h3>
+    {%- if section.settings.text_b != blank -%}<p>{{ section.settings.text_b }}</p>{%- endif -%}
+    {%- if wa != blank and section.settings.button_b != blank -%}
+      <a class="btn" href="https://wa.me/{{ wa }}?text={{ section.settings.wa_message | url_encode }}" target="_blank" rel="noopener noreferrer" data-ev="request_quote">{% render 'sus-icon', icon: 'whatsapp' %} {{ section.settings.button_b }}</a>
+    {%- endif -%}
+  </div>
+</sus2-reveal>
+{% schema %}
+{
+  "name": "SUS · Historia: origen y uniformes",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Etiqueta", "default": "Origen" },
+    { "type": "inline_richtext", "id": "heading_a", "label": "Título izquierdo", "default": "Hecho en <em>Puebla.</em>" },
+    { "type": "textarea", "id": "text_a", "label": "Texto izquierdo", "default": "Tejemos la tela en Puebla y confeccionamos en Puebla y Tlaxcala. Cada etapa ocurre cerca de casa." },
+    { "type": "text", "id": "button_a", "label": "Botón izquierdo", "default": "Ver prendas" },
+    { "type": "url", "id": "link_a", "label": "Enlace izquierdo", "info": "Vacío = inicio de la tienda." },
+    { "type": "checkbox", "id": "show_volcano", "label": "Mostrar volcanes", "default": true },
+    { "type": "inline_richtext", "id": "heading_b", "label": "Título derecho", "default": "¿Uniformes para tu equipo?" },
+    { "type": "textarea", "id": "text_b", "label": "Texto derecho", "default": "Playeras, polos y hoodies con tu logo. Elige prendas, define la personalización y recibe una propuesta con composición, gramaje y tiempos." },
+    { "type": "text", "id": "button_b", "label": "Botón derecho", "default": "Cotizar por WhatsApp" },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp", "default": "522211841803" },
+    { "type": "text", "id": "wa_message", "label": "Mensaje", "default": "Hola SUSTENTABLL, quiero cotizar uniformes para mi empresa." }
+  ],
+  "presets": [{ "name": "SUS · Historia: origen y uniformes" }]
+}
+{% endschema %}

@@ -1,0 +1,101 @@
+{%- comment -%}
+  SUSTENTABLL · Inicio con video (o imagen alternativa), logo, título y dos botones.
+  Archivo: sections/sus-hero.liquid  ·  REEMPLAZA la versión anterior (conserva los IDs anchor, heading,
+  subheading, media_type, video, video_fallback, video_label, video_autoplay, secondary_label, secondary_link
+  y el tipo de bloque "garment" para no romper plantillas existentes).
+  Video: usa el selector de video de Shopify (si tu plan lo permite). Si no hay video, se muestra
+  la imagen alternativa. No se usan servicios de video externos en esta versión.
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+
+{%- liquid
+  assign use_video = false
+  if section.settings.media_type == 'video' and section.settings.video != blank
+    assign use_video = true
+  endif
+  assign poster = section.settings.video_fallback
+  if poster == blank and section.settings.video != blank
+    assign poster = section.settings.video.preview_image
+  endif
+-%}
+
+<sus2-hero class="sus2 vh{% if use_video == false and poster == blank %} vh--noimg{% endif %}" id="{{ section.settings.anchor | default: 'inicio' | handleize }}" aria-label="Presentación">
+  <div class="vh-media" aria-hidden="true">
+  {%- if use_video -%}
+    {{ section.settings.video | video_tag:
+      class: 'vh-v',
+      autoplay: section.settings.video_autoplay,
+      muted: true,
+      loop: true,
+      playsinline: true,
+      controls: false,
+      preload: 'metadata',
+      image_size: '1600x'
+    }}
+  {%- elsif poster != blank -%}
+    {{ poster | image_url: width: 2000 | image_tag: class: 'vh-v', loading: 'eager', fetchpriority: 'high', widths: '750, 1100, 1500, 2000', sizes: '100vw', alt: '' }}
+  {%- endif -%}
+  </div>
+  {%- if section.settings.video_label != blank -%}<span class="sus2-sr">{{ section.settings.video_label }}</span>{%- endif -%}
+  <div class="vh-in">
+    {%- if section.settings.logo != blank -%}
+      <div class="vh-logo-w" data-sus2-hero-in>{{ section.settings.logo | image_url: width: 720 | image_tag: class: 'vh-logo', alt: shop.name, loading: 'eager' }}</div>
+    {%- elsif section.settings.chip != blank -%}
+      <span class="vh-chip" data-sus2-hero-in>{{ section.settings.chip }}</span>
+    {%- endif -%}
+    <h1 class="vh-t" data-sus2-hero-title>{{ section.settings.heading }}</h1>
+    {%- if section.settings.subheading != blank -%}<p class="vh-s" data-sus2-hero-in>{{ section.settings.subheading }}</p>{%- endif -%}
+    <div class="vh-b" data-sus2-hero-in>
+      {%- if section.settings.primary_label != blank -%}
+        <a class="vh-btn solid" href="{{ section.settings.primary_link | default: '#prendas' }}">{{ section.settings.primary_label }} {% render 'sus-icon', icon: 'arrow' %}</a>
+      {%- endif -%}
+      {%- if section.settings.secondary_label != blank -%}
+        <a class="vh-btn" href="{{ section.settings.secondary_link | default: '/pages/historia' }}">{{ section.settings.secondary_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</sus2-hero>
+
+{% schema %}
+{
+  "name": "SUS · Hero",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla (ID para el menú)", "default": "inicio" },
+    { "type": "image_picker", "id": "logo", "label": "Logo (PNG transparente)", "info": "Logo SUSTENTABLL · The Last Life. Recomendado 720 px de ancho." },
+    { "type": "text", "id": "chip", "label": "Texto superior (solo si no hay logo)", "default": "THE LAST LIFE" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Ropa con <em>segunda vida.</em>", "info": "La cursiva se muestra en verde con tipografía serif." },
+    { "type": "text", "id": "subheading", "label": "Texto", "default": "Playeras, polos y hoodies. Tallas XS–XL." },
+    { "type": "text", "id": "primary_label", "label": "Botón principal", "default": "Comprar ahora" },
+    { "type": "url", "id": "primary_link", "label": "Enlace del botón principal", "info": "Vacío = baja a la tienda (#prendas)." },
+    { "type": "text", "id": "secondary_label", "label": "Segundo botón", "default": "Conoce nuestra historia" },
+    { "type": "url", "id": "secondary_link", "label": "Enlace del segundo botón", "info": "Página de historia, por ejemplo /pages/historia." },
+    { "type": "header", "content": "Medio" },
+    {
+      "type": "select", "id": "media_type", "label": "Tipo de fondo",
+      "options": [{ "value": "stage", "label": "Imagen" }, { "value": "video", "label": "Video de Shopify" }],
+      "default": "stage",
+      "info": "Si eliges video y no hay video cargado, se usa la imagen alternativa."
+    },
+    { "type": "video", "id": "video", "label": "Video alojado en Shopify", "info": "MP4 de 10–15 s, sin audio, 1920×1080, menos de 8 MB." },
+    { "type": "image_picker", "id": "video_fallback", "label": "Imagen alternativa / portada", "info": "Se muestra cuando no hay video y como portada mientras carga. 2000 px de ancho." },
+    { "type": "text", "id": "video_label", "label": "Descripción accesible", "default": "Hoodies SUSTENTABLL en distintos colores" },
+    { "type": "checkbox", "id": "video_autoplay", "label": "Reproducir automáticamente sin sonido", "default": true, "info": "Se detiene si el cliente tiene activado reducir movimiento. Tocar el video lo pausa." }
+  ],
+  "blocks": [
+    {
+      "type": "garment",
+      "name": "Prenda (versión anterior)",
+      "settings": [
+        { "type": "paragraph", "content": "Este bloque era de la versión anterior y ya no se muestra. Puedes eliminarlo." },
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "text", "id": "label", "label": "Nombre corto" },
+        { "type": "image_picker", "id": "image", "label": "Imagen" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "SUS · Hero" }]
+}
+{% endschema %}

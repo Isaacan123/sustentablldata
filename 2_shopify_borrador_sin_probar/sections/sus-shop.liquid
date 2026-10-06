@@ -1,0 +1,229 @@
+{%- comment -%}
+  SUSTENTABLL · Tienda en línea (tarjetas por prenda, colores, tallas, buscador, filtros,
+  vista rápida, guardados y carrito nativo de Horizon).
+  Archivo: sections/sus-shop.liquid  ·  NUEVO
+  Datos: productos reales de la colección elegida (o de todo el catálogo si se deja vacía).
+  Requisitos de catálogo:
+    - Opción de color con el nombre configurado (por defecto "Color").
+    - Opción de talla con el nombre configurado (por defecto "Talla").
+    - Imagen por color: imagen destacada de la variante, o texto alternativo de la imagen igual al color
+      (ej. "Negro"; para la espalda: "Negro · espalda").
+  Metacampos opcionales (Configuración › Datos personalizados › Productos):
+    custom.composicion (texto de una línea), custom.proceso (texto), custom.agua_lt (número entero),
+    custom.agua_nota (texto de una línea).
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+
+{%- liquid
+  assign src = section.settings.collection
+  if src == blank
+    assign src = collections.all
+  endif
+  assign limit = section.settings.products_limit
+  assign wa = section.settings.whatsapp_number | remove: ' ' | remove: '+' | remove: '-'
+-%}
+
+<sus2-shop class="sus2 st" id="{{ section.settings.anchor | default: 'prendas' | handleize }}" data-section-id="{{ section.id }}">
+  <div class="st-wrap">
+    <div class="st-top">
+      <div>
+        <h2 class="st-title" id="StTitle-{{ section.id }}" data-sus2-split>{{ section.settings.heading }}</h2>
+        {%- if section.settings.lead != blank -%}<p class="st-lead">{{ section.settings.lead }}</p>{%- endif -%}
+      </div>
+      <div class="st-tools">
+        {%- if section.settings.show_search -%}
+          <label class="st-search" for="StQ-{{ section.id }}">
+            {% render 'sus-icon', icon: 'search' %}
+            <span class="sus2-sr">Buscar prendas</span>
+            <input id="StQ-{{ section.id }}" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="StSug-{{ section.id }}" placeholder="{{ section.settings.search_placeholder | escape }}" autocomplete="off" spellcheck="false" data-q>
+            <button type="button" class="st-clr" aria-label="Borrar búsqueda" hidden data-clr>{% render 'sus-icon', icon: 'close' %}</button>
+            <kbd class="st-kbd" aria-hidden="true">/</kbd>
+            <div class="st-sug" id="StSug-{{ section.id }}" role="listbox" aria-label="Sugerencias" hidden data-sug></div>
+          </label>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="st-fbar">
+      <div class="st-tabs" role="group" aria-label="Filtrar por prenda" data-tabs>
+        <button type="button" data-tab="todo" aria-pressed="true">Todo</button>
+        {%- comment -%} Las pestañas por tipo de producto se crean con los tipos reales del catálogo. {%- endcomment -%}
+      </div>
+      <div class="st-fbar-r">
+        <p class="st-meta2" aria-live="polite" data-meta></p>
+        {%- if section.settings.show_saved -%}
+          <button type="button" class="st-svbtn" data-sus2-saved-open aria-haspopup="dialog" aria-controls="StSaved-{{ section.id }}">
+            <span class="pv-ic">{% render 'sus-icon', icon: 'bookmark' %}<span class="pv-badge" data-sv-count>0</span></span><b>Guardados</b>
+          </button>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- if src.products_count == 0 or src.products.size == 0 -%}
+      <p class="st-empty">Esta colección todavía no tiene productos activos.{% if request.design_mode %} Elige una colección con productos publicados en la tienda en línea.{% endif %}</p>
+    {%- else -%}
+      <ul class="st-grid st-main3" role="list" data-grid aria-labelledby="StTitle-{{ section.id }}">
+        {%- for product in src.products limit: limit -%}
+          <li class="st-ssr">
+            <article class="st-card">
+              <a class="st-media" href="{{ product.url }}">
+                {%- if product.featured_media -%}
+                  {{ product.featured_media | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 33vw, (min-width: 600px) 50vw, 100vw', alt: product.featured_media.alt | default: product.title }}
+                {%- else -%}
+                  <span class="st-noimg">Imagen no disponible</span>
+                {%- endif -%}
+              </a>
+              <div class="st-body">
+                <div class="st-head"><h3>{{ product.title }}</h3><b>{{ product.price_min | money }}</b></div>
+                <a class="st-link" href="{{ product.url }}">Ver producto</a>
+              </div>
+            </article>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <p class="st-none" hidden data-none>No encontramos prendas con esa búsqueda. <a href="{{ routes.search_url }}" data-search-all>Buscar en toda la tienda</a></p>
+    {%- endif -%}
+  </div>
+
+  {%- comment -%} Vista rápida {%- endcomment -%}
+  <dialog class="st-modal" aria-labelledby="StMT-{{ section.id }}" data-modal>
+    <div class="st-mgrid">
+      <button type="button" class="st-x" aria-label="Cerrar" data-close>{% render 'sus-icon', icon: 'close' %}</button>
+      <div class="st-mgal">
+        <div class="st-main" data-m-main></div>
+        <button type="button" class="st-nav p" aria-label="Imagen anterior" data-m-prev>{% render 'sus-icon', icon: 'chevron-left' %}</button>
+        <button type="button" class="st-nav n" aria-label="Imagen siguiente" data-m-next>{% render 'sus-icon', icon: 'chevron-right' %}</button>
+        <div class="st-thumbs" data-m-thumbs></div>
+      </div>
+      <div class="st-minfo">
+        <span class="st-kicker" data-m-kick></span>
+        <h2 class="st-mtitle" id="StMT-{{ section.id }}" data-m-title></h2>
+        <div class="st-mprice" data-m-price></div>
+        <span class="st-lbl">Color: <span class="st-lblv" data-m-color></span></span>
+        <div class="st-sw" data-m-sw></div>
+        <span class="st-lbl" data-m-size-lbl>Talla</span>
+        <div class="st-sizes" data-m-sizes></div>
+        <p class="st-mdesc" data-m-desc></p>
+        <dl class="st-dl" data-m-dl hidden></dl>
+        <p class="st-note" data-m-note hidden>{{ section.settings.water_note }}</p>
+        <div class="st-mact">
+          <button type="button" class="st-add" data-m-add>Agregar al carrito</button>
+          {%- if wa != blank -%}
+            <a class="st-wa" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener noreferrer" data-m-wa>{% render 'sus-icon', icon: 'whatsapp' %}<span>Pedir por WhatsApp</span></a>
+          {%- endif -%}
+          <a class="st-link st-plink" href="#" data-m-link>Ver página del producto</a>
+          <p class="st-small">El botón "Agregar al carrito" usa el checkout de Shopify. El pedido por WhatsApp es un canal aparte y no pasa por el checkout.</p>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  {%- comment -%} Guardados {%- endcomment -%}
+  {%- if section.settings.show_saved -%}
+    <dialog class="st-cartd sv-d" id="StSaved-{{ section.id }}" aria-labelledby="StSvT-{{ section.id }}" data-saved>
+      <div class="st-cin">
+        <div class="st-ch st-ch2">
+          {%- if section.settings.drawer_logo != blank -%}
+            {{ section.settings.drawer_logo | image_url: width: 400 | image_tag: class: 'st-clogo', alt: shop.name, loading: 'lazy' }}
+          {%- endif -%}
+          <div class="st-chrow">
+            <div><h2 id="StSvT-{{ section.id }}">Guardados</h2><p class="sv-n" aria-live="polite" data-sv-n></p></div>
+            <button type="button" class="st-x" aria-label="Cerrar guardados" data-close>{% render 'sus-icon', icon: 'close' %}</button>
+          </div>
+        </div>
+        <div class="sv-empty" data-sv-empty>
+          {% render 'sus-icon', icon: 'bookmark' %}
+          <h3>Aún no guardas prendas</h3>
+          <p>Toca el marcador de cualquier prenda para tenerla aquí y decidir después.</p>
+          <button type="button" class="st-pay" data-sv-go>Explorar prendas</button>
+        </div>
+        <ul class="sv-list" role="list" data-sv-list></ul>
+        <div class="sv-foot" hidden data-sv-foot>
+          <div class="r"><span>Valor de tu lista</span><b data-sv-tot></b></div>
+          {%- if wa != blank -%}
+            <a class="st-ghost sv-wa" href="https://wa.me/{{ wa }}" target="_blank" rel="noopener noreferrer" data-sv-wa>{% render 'sus-icon', icon: 'whatsapp' %}Compartir lista por WhatsApp</a>
+          {%- endif -%}
+        </div>
+      </div>
+    </dialog>
+  {%- endif -%}
+
+  <div class="st-toast" role="status" aria-live="polite" data-toast></div>
+
+  <script type="application/json" data-sus2-config>
+    {
+      "money": {{ shop.money_format | json }},
+      "currency": {{ cart.currency.iso_code | json }},
+      "root": {{ routes.root_url | json }},
+      "searchUrl": {{ routes.search_url | json }},
+      "colorOption": {{ section.settings.color_option | json }},
+      "sizeOption": {{ section.settings.size_option | json }},
+      "colorMap": {{ section.settings.color_map | json }},
+      "garmentSynonyms": {{ section.settings.garment_synonyms | json }},
+      "popular": {{ section.settings.popular_searches | json }},
+      "b2bWords": {{ section.settings.b2b_words | json }},
+      "whatsapp": {{ wa | json }},
+      "waTemplate": {{ section.settings.wa_template | json }},
+      "waQuote": {{ section.settings.wa_quote | json }},
+      "showTabs": {{ section.settings.show_tabs | json }},
+      "showComp": {{ section.settings.show_comp | json }},
+      "cartSelector": {{ section.settings.cart_selector | json }}
+    }
+  </script>
+  <script type="application/json" data-sus2-products>
+    [
+      {%- for product in src.products limit: limit -%}
+        {
+          "p": {{ product | json }},
+          "url": {{ product.url | json }},
+          "m": {
+            "comp": {{ product.metafields.custom.composicion.value | json }},
+            "proc": {{ product.metafields.custom.proceso.value | json }},
+            "agua": {{ product.metafields.custom.agua_lt.value | json }},
+            "aguaNota": {{ product.metafields.custom.agua_nota.value | json }}
+          },
+          "desc": {{ product.description | strip_html | strip_newlines | truncate: 420 | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  </script>
+</sus2-shop>
+
+{% schema %}
+{
+  "name": "SUS · Tienda en línea",
+  "tag": "section",
+  "class": "sus2-section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla (ID para el menú)", "default": "prendas", "info": "Úsalo en el menú como /#prendas" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Compra <em>en línea.</em>" },
+    { "type": "text", "id": "lead", "label": "Texto bajo el título", "default": "Paga en línea o pide por WhatsApp." },
+    { "type": "header", "content": "Productos" },
+    { "type": "collection", "id": "collection", "label": "Colección", "info": "Si se deja vacía se muestran los productos de todo el catálogo. Solo aparecen productos activos y publicados en la tienda en línea." },
+    { "type": "range", "id": "products_limit", "label": "Máximo de productos", "min": 1, "max": 24, "step": 1, "default": 12 },
+    { "type": "text", "id": "color_option", "label": "Nombre de la opción de color", "default": "Color" },
+    { "type": "text", "id": "size_option", "label": "Nombre de la opción de talla", "default": "Talla" },
+    { "type": "textarea", "id": "color_map", "label": "Orden y muestra de colores", "default": "Negro|#1c1c1c|principal|negra, black, oscuro\nAzul marino|#1b2540|principal|marino, navy, azul oscuro\nGris Oxford|#4f5052|principal|oxford, grafito, gris oscuro\nGris jaspe|#b9b8b4|principal|jaspe, jaspeado, gris claro\nAvena|#d9ccb4|alterno|beige, arena, crema, hueso\nAzul claro|#a9c4dc|alterno|celeste, cielo, azul cielo\nMilitar|#4b5320|alterno|verde militar, olivo, oliva, verde\nPetróleo|#1f4e5a|alterno|azul petróleo, verde petróleo, teal", "info": "Una línea por color: Nombre exacto de la variante | color hex | principal o alterno | sinónimos de búsqueda. Los alternos se muestran con el botón +. Solo se muestran colores que existan en las variantes reales." },
+    { "type": "checkbox", "id": "show_comp", "label": "Mostrar composición en tarjetas", "default": true, "info": "Usa el metacampo custom.composicion. Si el producto no lo tiene, no se muestra." },
+    { "type": "header", "content": "Buscador y filtros" },
+    { "type": "checkbox", "id": "show_search", "label": "Mostrar buscador", "default": true },
+    { "type": "text", "id": "search_placeholder", "label": "Texto del buscador", "default": "Busca prenda, color o talla…" },
+    { "type": "checkbox", "id": "show_tabs", "label": "Mostrar pestañas por tipo de producto", "default": true, "info": "Las pestañas usan el campo Tipo de producto." },
+    { "type": "textarea", "id": "garment_synonyms", "label": "Sinónimos por tipo de producto", "default": "hoodie: sudadera, sudaderas, buzo, sueter, capucha, felpa\npolo: polos, pique, tipo polo\nplayera: playeras, camiseta, camisa, t-shirt, tshirt, remera", "info": "Una línea por tipo: tipo de producto: sinónimos separados por coma." },
+    { "type": "text", "id": "popular_searches", "label": "Búsquedas populares", "default": "Hoodie negro, Polo azul marino, Gris jaspe, Menos de $500, Talla M, Uniformes" },
+    { "type": "text", "id": "b2b_words", "label": "Palabras que muestran cotización de uniformes", "default": "uniforme, uniformes, empresa, empresas, logo, personalizada, bordado, mayoreo, corporativo" },
+    { "type": "header", "content": "WhatsApp (canal aparte del checkout)" },
+    { "type": "text", "id": "whatsapp_number", "label": "Número de WhatsApp", "default": "522211841803", "info": "Formato internacional sin + ni espacios." },
+    { "type": "text", "id": "wa_template", "label": "Mensaje de pedido", "default": "Hola SUSTENTABLL, quiero pedir: {producto} · {color} · talla {talla} · {precio}", "info": "Variables: {producto}, {color}, {talla}, {precio}, {url}" },
+    { "type": "text", "id": "wa_quote", "label": "Mensaje de cotización (uniformes)", "default": "Hola SUSTENTABLL, quiero cotizar uniformes / prendas con logo." },
+    { "type": "header", "content": "Guardados" },
+    { "type": "checkbox", "id": "show_saved", "label": "Activar guardados", "default": true, "info": "Se guardan en el navegador del cliente. Un enlace del menú a /#guardados abre el panel." },
+    { "type": "image_picker", "id": "drawer_logo", "label": "Logo del panel de guardados" },
+    { "type": "header", "content": "Vista rápida" },
+    { "type": "textarea", "id": "water_note", "label": "Nota de agua", "default": "*Estimación basada en estudios publicados: ICAC (2025) y Uddin et al. (2023). No es huella hídrica total ni sustituye una certificación ISO 14046. La certificación RCS respalda el origen del algodón reciclado, no estas cifras." },
+    { "type": "text", "id": "cart_selector", "label": "Selector del ícono del carrito (avanzado)", "default": "cart-icon, [data-testid='cart-icon'], .header-actions__cart-icon, a[href$='/cart']", "info": "Destino de la animación al agregar. Si no se encuentra, la animación se omite." }
+  ],
+  "presets": [{ "name": "SUS · Tienda en línea" }]
+}
+{% endschema %}

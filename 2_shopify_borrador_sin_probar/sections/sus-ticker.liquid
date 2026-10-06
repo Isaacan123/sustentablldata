@@ -1,0 +1,83 @@
+{%- comment -%}
+  SUSTENTABLL · Franja negra recta en movimiento con el ícono de la marca entre frases.
+  Archivo: sections/sus-ticker.liquid  ·  REEMPLAZA (conserva IDs label, speed y bloques text / product).
+  Los textos en cursiva se escriben entre guiones bajos: _ropa con segunda vida_.
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign sp = section.settings.speed | default: 40
+  if section.settings.icon != blank
+    assign icon_url = section.settings.icon | image_url: width: 64
+  endif
+  capture items
+    for block in section.blocks
+      case block.type
+        when 'text'
+          assign t = block.settings.text | escape
+          assign first = t | slice: 0
+          assign last_i = t.size | minus: 1
+          assign lastc = t | slice: last_i
+          if first == '_' and lastc == '_'
+            assign inner_len = t.size | minus: 2
+            assign t = t | slice: 1, inner_len
+            assign t = '<em>' | append: t | append: '</em>'
+          endif
+          if block.settings.link != blank
+            echo '<a href="' | append: block.settings.link | append: '" ' | append: block.shopify_attributes | append: '>' | append: t | append: '</a>'
+          else
+            echo '<span ' | append: block.shopify_attributes | append: '>' | append: t | append: '</span>'
+          endif
+        when 'product'
+          assign pr = block.settings.product
+          assign lbl = block.settings.label | default: pr.type | default: pr.title | escape
+          if pr != blank
+            echo '<a href="' | append: pr.url | append: '" ' | append: block.shopify_attributes | append: '>' | append: lbl | append: '</a>'
+          endif
+      endcase
+      if section.settings.icon != blank
+        echo '<img src="' | append: icon_url | append: '" alt="" width="20" height="20" loading="lazy">'
+      else
+        echo '<i class="rb-dot" aria-hidden="true"></i>'
+      endif
+    endfor
+  endcapture
+-%}
+<div class="sus2 rb1" role="region" aria-label="{{ section.settings.label | escape }}">
+  <div class="rb1-r">
+    <div class="rb-t" style="--rb-speed: {{ sp }}s">
+      <div class="rb-s">{{ items }}</div>
+      <div class="rb-s" aria-hidden="true">{{ items }}</div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "SUS · Cinta",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Nombre accesible", "default": "Datos de SUSTENTABLL" },
+    { "type": "range", "id": "speed", "label": "Duración de una vuelta", "min": 15, "max": 90, "step": 5, "unit": "s", "default": 40 },
+    { "type": "image_picker", "id": "icon", "label": "Ícono entre frases", "info": "Ícono LL de la marca (PNG transparente). Se muestra en claro sobre la franja negra." }
+  ],
+  "blocks": [
+    { "type": "text", "name": "Texto", "settings": [
+      { "type": "text", "id": "text", "label": "Texto", "default": "THE LAST LIFE", "info": "Para cursiva escribe entre guiones bajos: _ocho colores_" },
+      { "type": "url", "id": "link", "label": "Enlace (opcional)" }
+    ] },
+    { "type": "product", "name": "Producto", "settings": [
+      { "type": "product", "id": "product", "label": "Producto" },
+      { "type": "text", "id": "label", "label": "Nombre corto", "info": "Se muestra sin precio. Si se deja vacío se usa el tipo de producto." }
+    ] }
+  ],
+  "presets": [{ "name": "SUS · Cinta", "blocks": [
+    { "type": "text", "settings": { "text": "THE LAST LIFE" } },
+    { "type": "text", "settings": { "text": "_ropa con segunda vida_" } },
+    { "type": "text", "settings": { "text": "Hoodies · Polos · Playeras" } },
+    { "type": "text", "settings": { "text": "_ocho colores_" } },
+    { "type": "text", "settings": { "text": "Tallas XS–XL" } },
+    { "type": "text", "settings": { "text": "_uniformes para tu equipo_" } }
+  ] }]
+}
+{% endschema %}

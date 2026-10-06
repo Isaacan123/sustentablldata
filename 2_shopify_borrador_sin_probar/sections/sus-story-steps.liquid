@@ -1,0 +1,110 @@
+{%- comment -%}
+  SUSTENTABLL · Historia en 5 pasos con escenario fijo animado (desplazamiento).
+  Archivo: sections/sus-story-steps.liquid · REEMPLAZA (conserva IDs anchor, heading, background y el bloque
+  "step" con scene, image, chip, number, title, text; se agregan escenas 4 y 5 y nuevos campos).
+  Escena 4: arma el patrón y muestra "image". Escena 5: alterna image, image_2, image_3, image_4 con su color.
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+{%- liquid
+  assign steps = section.blocks | where: 'type', 'step'
+  assign first = steps | first
+-%}
+<sus2-story class="sus2 sty-steps sty-bg-{{ section.settings.background }}" id="{{ section.settings.anchor | default: 'pasos' | handleize }}">
+  {%- if section.settings.heading != blank -%}<h2 class="sus2-sr">{{ section.settings.heading }}</h2>{%- endif -%}
+  <style>
+    {%- for b in steps -%}
+      {%- if b.settings.image != blank and b.settings.scene != '5' and b.settings.scene != '4' -%}
+        #{{ section.settings.anchor | default: 'pasos' | handleize }} .stage[data-s="{{ b.settings.scene }}"] .sv{opacity:0}
+      {%- endif -%}
+    {%- endfor -%}
+  </style>
+  <div class="story">
+    <div class="stage-w">
+      <div class="stage" data-stage data-s="{{ first.settings.scene | default: '1' }}">
+        {% render 'sus-story-stage' %}
+        {%- for b in steps -%}
+          {%- if b.settings.scene == '5' -%}
+            {%- for i in (1..4) -%}
+              {%- if i == 1 -%}{%- assign im = b.settings.image -%}{%- else -%}{%- assign k = 'image_' | append: i -%}{%- assign im = b.settings[k] -%}{%- endif -%}
+              {%- assign lk = 'color_' | append: i -%}{%- assign hk = 'hex_' | append: i -%}
+              {%- if im != blank -%}
+                <img class="ph" src="{{ im | image_url: width: 900 }}" width="{{ im.width }}" height="{{ im.height }}" loading="lazy" alt="{{ im.alt | default: b.settings[lk] | escape }}" data-cycle data-label="{{ b.settings[lk] | escape }}" data-hex="{{ b.settings[hk] }}">
+              {%- endif -%}
+            {%- endfor -%}
+          {%- elsif b.settings.image != blank -%}
+            <img class="ph" src="{{ b.settings.image | image_url: width: 900 }}" width="{{ b.settings.image.width }}" height="{{ b.settings.image.height }}" loading="lazy" alt="{{ b.settings.image.alt | default: b.settings.title | escape }}" data-for="{{ b.settings.scene }}">
+          {%- endif -%}
+        {%- endfor -%}
+        <span class="badge" data-badge>01 / {{ steps.size | prepend: '0' | slice: -2, 2 }}</span>
+        <span class="chip" data-chip aria-hidden="true"></span>
+        <div class="cap"><span data-cap>{{ first.settings.chip }}</span><span>{{ section.settings.cap_right }}</span></div>
+      </div>
+    </div>
+    <ol class="steps">
+      {%- for b in steps -%}
+        <li class="step" data-step="{{ forloop.index }}" data-scene="{{ b.settings.scene }}" data-cap="{{ b.settings.chip | escape }}" {{ b.shopify_attributes }}>
+          <span class="n">{{ b.settings.number | default: forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+          <h3>{{ b.settings.title }}</h3>
+          {%- if b.settings.text != blank -%}<p>{{ b.settings.text }}</p>{%- endif -%}
+          {%- if b.settings.tag != blank -%}<span class="tag">{{ b.settings.tag }}</span>{%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</sus2-story>
+
+{% schema %}
+{
+  "name": "SUS · Historia",
+  "tag": "section",
+  "class": "sus-section",
+  "max_blocks": 6,
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "pasos" },
+    { "type": "text", "id": "heading", "label": "Título (solo lectores de pantalla)", "default": "Cómo nace una prenda" },
+    { "type": "select", "id": "background", "label": "Fondo", "options": [{ "value": "transparent", "label": "Transparente" }, { "value": "paper", "label": "Papel" }, { "value": "linen", "label": "Lino" }], "default": "paper" },
+    { "type": "text", "id": "cap_right", "label": "Texto fijo en el escenario", "default": "Hecho en Puebla" }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Paso",
+      "settings": [
+        { "type": "select", "id": "scene", "label": "Escena", "options": [
+          { "value": "1", "label": "1 · Recortes" }, { "value": "2", "label": "2 · Fibra" }, { "value": "3", "label": "3 · Hilo y tejido" },
+          { "value": "4", "label": "4 · Patrón + foto" }, { "value": "5", "label": "5 · Fotos por color" }, { "value": "none", "label": "Ninguna" }
+        ], "default": "1" },
+        { "type": "image_picker", "id": "image", "label": "Imagen", "info": "Escena 4: foto final. Escena 5: primer color. Escenas 1–3: reemplaza la ilustración." },
+        { "type": "text", "id": "chip", "label": "Pie del escenario", "info": "Ej. Recortes de algodón" },
+        { "type": "text", "id": "number", "label": "Número" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Paso" },
+        { "type": "textarea", "id": "text", "label": "Texto" },
+        { "type": "text", "id": "tag", "label": "Etiqueta (opcional)" },
+        { "type": "header", "content": "Solo escena 5" },
+        { "type": "text", "id": "color_1", "label": "Color de la imagen 1", "default": "Negro" },
+        { "type": "color", "id": "hex_1", "label": "Muestra 1", "default": "#1c1c1c" },
+        { "type": "image_picker", "id": "image_2", "label": "Imagen 2" },
+        { "type": "text", "id": "color_2", "label": "Color 2", "default": "Azul marino" },
+        { "type": "color", "id": "hex_2", "label": "Muestra 2", "default": "#1b2540" },
+        { "type": "image_picker", "id": "image_3", "label": "Imagen 3" },
+        { "type": "text", "id": "color_3", "label": "Color 3", "default": "Gris Oxford" },
+        { "type": "color", "id": "hex_3", "label": "Muestra 3", "default": "#4f5052" },
+        { "type": "image_picker", "id": "image_4", "label": "Imagen 4" },
+        { "type": "text", "id": "color_4", "label": "Color 4", "default": "Avena" },
+        { "type": "color", "id": "hex_4", "label": "Muestra 4", "default": "#d9ccb4" }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "SUS · Historia",
+    "blocks": [
+      { "type": "step", "settings": { "scene": "1", "number": "01", "title": "Sobra.", "chip": "Recortes de algodón", "text": "Algodón que queda en la industria textil antes de llegar a ningún consumidor: material preconsumo." } },
+      { "type": "step", "settings": { "scene": "2", "number": "02", "title": "Vuelve.", "chip": "Fibra preteñida", "text": "Se recupera como fibra ya coloreada, con origen respaldado por un Certificado de Transacción RCS (Control Union)." } },
+      { "type": "step", "settings": { "scene": "3", "number": "03", "title": "Se hila.", "chip": "Hilo y tejido", "text": "Hilatura y tejido en Puebla: hilos Ne 20/1 a 30/1 y telas de 200 a 300 g/m²." } },
+      { "type": "step", "settings": { "scene": "4", "number": "04", "title": "Se diseña.", "chip": "Diseño y confección", "text": "Corte y confección en Puebla y Tlaxcala. Sin teñido húmedo ni lavado industrial posterior.", "tag": "Felpa 300 g · Piqué 210 g · Jersey 200 g" } },
+      { "type": "step", "settings": { "scene": "5", "number": "05", "title": "Continúa.", "chip": "Negro · Azul marino · Gris Oxford · Avena", "text": "Contigo. Esa es su última vida: la más larga posible. Una marca de ROMELL TEXTIL, desde 2024." } }
+    ]
+  }]
+}
+{% endschema %}

@@ -1,0 +1,45 @@
+{%- comment -%}
+  SUSTENTABLL · Inicio de la página Historia: logo, título y abanico de prendas.
+  Archivo: sections/sus-story-hero.liquid · NUEVO (plantilla page.historia).
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+<sus2-hero class="sus2 hero">
+  <div>
+    {%- if section.settings.logo != blank -%}<div class="vh-logo-w" data-sus2-hero-in>{{ section.settings.logo | image_url: width: 600 | image_tag: class: 'hlogo', alt: shop.name, loading: 'eager' }}</div>{%- endif -%}
+    <h1 data-sus2-hero-title>{{ section.settings.heading }}</h1>
+    {%- if section.settings.text != blank -%}<p data-sus2-hero-in>{{ section.settings.text }}</p>{%- endif -%}
+    <a class="scroll" href="#{{ section.settings.scroll_to | default: 'pasos' }}" data-sus2-hero-in><i class="mouse" aria-hidden="true"><b></b></i>{{ section.settings.scroll_label }}</a>
+  </div>
+  {%- assign fan_count = 0 -%}
+  {%- for i in (1..4) -%}{%- assign k = 'fan_' | append: i -%}{%- if section.settings[k] != blank -%}{%- assign fan_count = fan_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+  {%- if fan_count > 0 -%}
+    <div class="hfan" aria-hidden="true">
+      {%- for i in (1..4) -%}
+        {%- assign k = 'fan_' | append: i -%}
+        {%- if section.settings[k] != blank -%}{{ section.settings[k] | image_url: width: 600 | image_tag: loading: 'eager', alt: '', widths: '300, 450, 600', sizes: '(min-width: 990px) 25vw, 34vw' }}{%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</sus2-hero>
+{% schema %}
+{
+  "name": "SUS · Historia: inicio",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo (PNG transparente)" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Ropa con <em>segunda vida.</em>" },
+    { "type": "text", "id": "text", "label": "Texto", "default": "Algodón reciclado preconsumo, fibras ya coloreadas y tejido en Puebla. Una prenda que empieza de otra manera." },
+    { "type": "text", "id": "scroll_label", "label": "Indicador", "default": "Desliza" },
+    { "type": "text", "id": "scroll_to", "label": "Ancla de destino", "default": "pasos" },
+    { "type": "header", "content": "Abanico de prendas" },
+    { "type": "paragraph", "content": "Fotos PNG o JPG con fondo blanco o transparente. Orden sugerido: Gris Oxford, Negro, Azul marino, Avena. Las imágenes vacías no se muestran." },
+    { "type": "image_picker", "id": "fan_1", "label": "Prenda 1" },
+    { "type": "image_picker", "id": "fan_2", "label": "Prenda 2 (centro)" },
+    { "type": "image_picker", "id": "fan_3", "label": "Prenda 3 (centro)" },
+    { "type": "image_picker", "id": "fan_4", "label": "Prenda 4" }
+  ],
+  "presets": [{ "name": "SUS · Historia: inicio" }]
+}
+{% endschema %}

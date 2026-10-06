@@ -1,0 +1,177 @@
+{%- comment -%}
+  SUSTENTABLL · Contacto centrado: redes, datos, formulario real de Shopify con menú de intención
+  (Menudeo / Mayoreo / Colaboración / Otro) y ubicación compacta.
+  Archivo: sections/sus-contact.liquid  ·  REEMPLAZA (conserva IDs: anchor, heading, lead, background,
+  whatsapp_number, wa_button, wa_greeting, show_wa_submit, wa_submit_label, wa_intro, submit_label,
+  success_text, label_name, label_phone, label_email, show_city, label_city, show_zip, label_zip,
+  show_message, label_message).
+  El formulario usa {% raw %}{% form 'contact' %}{% endraw %}: los mensajes llegan al correo de la tienda
+  (Configuración › Notificaciones › Correo del remitente / del personal).
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+{%- liquid
+  assign wa = section.settings.whatsapp_number | remove: ' ' | remove: '+' | remove: '-'
+  assign uid = section.id
+  assign opts = section.blocks | where: 'type', 'intent'
+  assign locs = section.blocks | where: 'type', 'location'
+  assign form_id = 'SusContact-' | append: uid
+-%}
+<sus2-contact class="sus2 ct ct--{{ section.settings.background | default: 'linen' }}" id="{{ section.settings.anchor | default: 'contacto' | handleize }}" aria-labelledby="CtT-{{ uid }}">
+  <div class="ct-c4">
+    <h2 class="ct-t" id="CtT-{{ uid }}" data-sus2-split>{{ section.settings.heading }}</h2>
+    {%- if section.settings.lead != blank -%}<p class="ct-lead" data-sus2-reveal>{{ section.settings.lead }}</p>{%- endif -%}
+
+    <ul class="ct-so" role="list" data-sus2-reveal>
+      {%- if wa != blank -%}
+        <li><a class="ct-s ct-wa" href="https://wa.me/{{ wa }}?text={{ section.settings.wa_greeting | url_encode }}" target="_blank" rel="noopener noreferrer" data-ev="click_whatsapp"><i>{% render 'sus-icon', icon: 'whatsapp' %}</i><span>{{ section.settings.wa_button | default: 'WhatsApp' }}</span></a></li>
+      {%- endif -%}
+      {%- if section.settings.email != blank -%}
+        <li><a class="ct-s ct-ml" href="mailto:{{ section.settings.email }}" data-ev="contact"><i>{% render 'sus-icon', icon: 'mail' %}</i><span>Correo</span></a></li>
+      {%- endif -%}
+      {%- if section.settings.instagram != blank -%}
+        <li><a class="ct-s ct-ig" href="{{ section.settings.instagram }}" target="_blank" rel="noopener noreferrer"><i>{% render 'sus-icon', icon: 'instagram' %}</i><span>Instagram</span></a></li>
+      {%- endif -%}
+      {%- if section.settings.linkedin != blank -%}
+        <li><a class="ct-s ct-li" href="{{ section.settings.linkedin }}" target="_blank" rel="noopener noreferrer"><i>{% render 'sus-icon', icon: 'linkedin' %}</i><span>LinkedIn</span></a></li>
+      {%- endif -%}
+    </ul>
+    {%- if section.settings.phone != blank or section.settings.email != blank -%}
+      <p class="ct-data" data-sus2-reveal>
+        {%- if section.settings.phone != blank -%}<a href="tel:{{ section.settings.phone | remove: ' ' }}">{% render 'sus-icon', icon: 'phone' %}{{ section.settings.phone_display | default: section.settings.phone }}</a>{%- endif -%}
+        {%- if section.settings.phone != blank and section.settings.email != blank -%}<span aria-hidden="true">·</span>{%- endif -%}
+        {%- if section.settings.email != blank -%}<a href="mailto:{{ section.settings.email }}">{% render 'sus-icon', icon: 'mail' %}{{ section.settings.email }}</a>{%- endif -%}
+      </p>
+    {%- endif -%}
+
+    {%- form 'contact', id: form_id, class: 'ct-f', novalidate: 'novalidate' -%}
+      {%- if form.posted_successfully? -%}
+        <div class="ct-done" role="status" tabindex="-1" autofocus>
+          <svg viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="22"/><path d="M14 25l7 7 13-15"/></svg>
+          <h3>Mensaje recibido</h3><p>{{ section.settings.success_text }}</p>
+        </div>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <div class="ct-err" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+
+      <div class="dd" data-dd>
+        <span class="dd-l" id="DdL-{{ uid }}">¿Qué necesitas?</span>
+        {%- if opts.size > 0 -%}
+          {%- assign o0 = opts | first -%}
+          {%- assign first_title = o0.settings.title -%}
+          {%- assign first_text = o0.settings.text -%}
+        {%- else -%}
+          {%- assign first_title = 'Menudeo' -%}
+          {%- assign first_text = 'Compra personal, desde 1 prenda' -%}
+        {%- endif -%}
+        <button type="button" class="dd-b" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="DdL-{{ uid }} DdV-{{ uid }}" data-dd-btn>
+          <span id="DdV-{{ uid }}" data-dd-val><b>{{ first_title }}</b><small>{{ first_text }}</small></span>{% render 'sus-icon', icon: 'chevron-down' %}
+        </button>
+        <ul class="dd-m" role="listbox" aria-labelledby="DdL-{{ uid }}" tabindex="-1" hidden data-dd-menu>
+          {%- if opts.size > 0 -%}
+            {%- for b in opts -%}
+              <li role="option" id="Dd-{{ uid }}-{{ forloop.index }}" data-v="{{ b.settings.kind }}" data-label="{{ b.settings.title | escape }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" {{ b.shopify_attributes }}><b>{{ b.settings.title }}</b><small>{{ b.settings.text }}</small></li>
+            {%- endfor -%}
+          {%- else -%}
+            <li role="option" id="Dd-{{ uid }}-1" data-v="menudeo" data-label="Menudeo" aria-selected="true"><b>Menudeo</b><small>Compra personal, desde 1 prenda</small></li>
+            <li role="option" id="Dd-{{ uid }}-2" data-v="mayoreo" data-label="Mayoreo" aria-selected="false"><b>Mayoreo</b><small>Empresas, uniformes y prendas con logo</small></li>
+            <li role="option" id="Dd-{{ uid }}-3" data-v="colab" data-label="Colaboración" aria-selected="false"><b>Colaboración</b><small>Marcas, instituciones y proyectos</small></li>
+            <li role="option" id="Dd-{{ uid }}-4" data-v="otro" data-label="Otro" aria-selected="false"><b>Otro</b><small>Cualquier otra duda</small></li>
+          {%- endif -%}
+        </ul>
+        <input type="hidden" name="contact[Tipo]" value="{{ first_title | escape }}" data-dd-input>
+      </div>
+
+      <div class="ct-g">
+        <div class="ct-in"><input id="CfN-{{ uid }}" name="contact[name]" autocomplete="name" placeholder=" " value="{{ form.name }}" data-required="tu nombre"><label for="CfN-{{ uid }}">{{ section.settings.label_name | default: 'Nombre' }}</label></div>
+        <div class="ct-in"><input id="CfE-{{ uid }}" name="contact[email]" type="email" autocomplete="email" placeholder=" " value="{{ form.email }}" data-required="un correo válido"><label for="CfE-{{ uid }}">{{ section.settings.label_email | default: 'Correo' }}</label></div>
+        <div class="ct-in"><input id="CfT-{{ uid }}" name="contact[phone]" type="tel" autocomplete="tel" placeholder=" " value="{{ form.phone }}"><label for="CfT-{{ uid }}">{{ section.settings.label_phone | default: 'Teléfono' }}</label></div>
+        <div class="ct-in ct-co"><input id="CfC-{{ uid }}" name="contact[Empresa]" autocomplete="organization" placeholder=" "><label for="CfC-{{ uid }}">Empresa</label></div>
+        <div class="ct-in ct-q"><select id="CfQ-{{ uid }}" name="contact[Cantidad aproximada]"><option value="">—</option><option>50 a 200 prendas</option><option>200 a 1,000 prendas</option><option>Más de 1,000 prendas</option></select><label for="CfQ-{{ uid }}" class="up">Cantidad aprox.</label></div>
+        {%- if section.settings.show_city -%}<div class="ct-in"><input id="CfCi-{{ uid }}" name="contact[Ciudad]" autocomplete="address-level2" placeholder=" "><label for="CfCi-{{ uid }}">{{ section.settings.label_city | default: 'Ciudad' }}</label></div>{%- endif -%}
+        {%- if section.settings.show_zip -%}<div class="ct-in"><input id="CfZ-{{ uid }}" name="contact[Código postal]" autocomplete="postal-code" inputmode="numeric" placeholder=" "><label for="CfZ-{{ uid }}">{{ section.settings.label_zip | default: 'Código postal' }}</label></div>{%- endif -%}
+        {%- if section.settings.show_message -%}<div class="ct-in ct-full"><textarea id="CfM-{{ uid }}" name="contact[body]" rows="3" placeholder=" " data-required="tu mensaje">{{ form.body }}</textarea><label for="CfM-{{ uid }}">{{ section.settings.label_message | default: 'Mensaje' }}</label></div>{%- endif -%}
+      </div>
+      <label class="ct-ok"><input type="checkbox" name="contact[Aviso de privacidad]" value="Aceptado" data-privacy><span>Acepto el {% if section.settings.privacy_url != blank %}<a href="{{ section.settings.privacy_url }}" target="_blank" rel="noopener">aviso de privacidad</a>{% else %}aviso de privacidad{% endif %}.</span></label>
+      <div class="ct-err" role="alert" hidden data-err></div>
+      <button type="submit" class="ct-send">{{ section.settings.submit_label | default: 'Enviar mensaje' }} {% render 'sus-icon', icon: 'arrow' %}</button>
+      {%- if section.settings.show_wa_submit and wa != blank -%}
+        <a class="ct-wsend" href="https://wa.me/{{ wa }}?text={{ section.settings.wa_intro | url_encode }}" target="_blank" rel="noopener noreferrer" data-ev="click_whatsapp">{% render 'sus-icon', icon: 'whatsapp' %}<span>{{ section.settings.wa_submit_label | default: 'WhatsApp' }}</span></a>
+      {%- endif -%}
+    {%- endform -%}
+
+    {%- if locs.size > 0 -%}
+      <div class="ct-loc4" data-sus2-reveal>
+        {%- if section.settings.show_map -%}<div class="ct-mini4">{% render 'sus-mini-map' %}</div>{%- endif -%}
+        {%- for b in locs -%}
+          {%- assign q = b.settings.maps_query | default: b.settings.name -%}
+          <a class="lc" href="https://www.google.com/maps/search/?api=1&query={{ q | url_encode }}" target="_blank" rel="noopener noreferrer" {{ b.shopify_attributes }}>
+            <i>{% render 'sus-icon', icon: 'pin' %}</i><span><b>{{ b.settings.name }}</b><small>{{ b.settings.text }}</small></span><em>{% render 'sus-icon', icon: 'arrow' %}</em>
+          </a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</sus2-contact>
+
+{% schema %}
+{
+  "name": "SUS · Contacto",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "contacto" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "¿Hablamos? <em>Escríbenos.</em>" },
+    { "type": "text", "id": "lead", "label": "Texto", "default": "Menudeo, mayoreo o colaboraciones." },
+    { "type": "select", "id": "background", "label": "Fondo", "options": [{ "value": "linen", "label": "Lino (recomendado)" }, { "value": "paper", "label": "Papel" }, { "value": "transparent", "label": "Transparente" }], "default": "linen" },
+    { "type": "header", "content": "Canales" },
+    { "type": "text", "id": "whatsapp_number", "label": "WhatsApp", "default": "522211841803", "info": "Formato internacional sin + ni espacios." },
+    { "type": "text", "id": "wa_button", "label": "Texto del ícono de WhatsApp", "default": "WhatsApp" },
+    { "type": "text", "id": "wa_greeting", "label": "Mensaje inicial de WhatsApp", "default": "Hola SUSTENTABLL, quiero información." },
+    { "type": "text", "id": "email", "label": "Correo", "default": "sustentabllbrand@romelltextil.com" },
+    { "type": "text", "id": "phone", "label": "Teléfono para llamar", "default": "+522211841803" },
+    { "type": "text", "id": "phone_display", "label": "Teléfono como se muestra", "default": "221 184 1803" },
+    { "type": "url", "id": "instagram", "label": "Instagram", "default": "https://www.instagram.com/sustentabll/" },
+    { "type": "url", "id": "linkedin", "label": "LinkedIn", "default": "https://www.linkedin.com/company/sustentabll/" },
+    { "type": "header", "content": "Formulario" },
+    { "type": "url", "id": "privacy_url", "label": "Aviso de privacidad", "info": "Requerido por la LFPDPPP. Crea la página y enlázala aquí." },
+    { "type": "text", "id": "submit_label", "label": "Botón enviar", "default": "Enviar mensaje" },
+    { "type": "text", "id": "success_text", "label": "Mensaje de éxito", "default": "Te contactamos pronto." },
+    { "type": "text", "id": "label_name", "label": "Etiqueta nombre", "default": "Nombre" },
+    { "type": "text", "id": "label_email", "label": "Etiqueta correo", "default": "Correo" },
+    { "type": "text", "id": "label_phone", "label": "Etiqueta teléfono", "default": "Teléfono" },
+    { "type": "checkbox", "id": "show_city", "label": "Pedir ciudad", "default": false },
+    { "type": "text", "id": "label_city", "label": "Etiqueta ciudad", "default": "Ciudad" },
+    { "type": "checkbox", "id": "show_zip", "label": "Pedir código postal", "default": false },
+    { "type": "text", "id": "label_zip", "label": "Etiqueta código postal", "default": "Código postal" },
+    { "type": "checkbox", "id": "show_message", "label": "Pedir mensaje", "default": true },
+    { "type": "text", "id": "label_message", "label": "Etiqueta mensaje", "default": "Mensaje" },
+    { "type": "checkbox", "id": "show_wa_submit", "label": "Mostrar botón de WhatsApp junto a Enviar", "default": false },
+    { "type": "text", "id": "wa_submit_label", "label": "Texto del botón de WhatsApp", "default": "WhatsApp" },
+    { "type": "text", "id": "wa_intro", "label": "Mensaje del botón de WhatsApp", "default": "Hola SUSTENTABLL, quiero cotizar." },
+    { "type": "header", "content": "Ubicación" },
+    { "type": "checkbox", "id": "show_map", "label": "Mostrar minimapa ilustrado (Puebla–Tlaxcala)", "default": true, "info": "Es una ilustración, no un mapa interactivo." }
+  ],
+  "blocks": [
+    { "type": "intent", "name": "Opción del menú", "settings": [
+      { "type": "select", "id": "kind", "label": "Tipo", "options": [{ "value": "menudeo", "label": "Menudeo" }, { "value": "mayoreo", "label": "Mayoreo (muestra Empresa y Cantidad)" }, { "value": "colab", "label": "Colaboración (muestra Empresa)" }, { "value": "otro", "label": "Otro" }], "default": "menudeo" },
+      { "type": "text", "id": "title", "label": "Título", "default": "Menudeo" },
+      { "type": "text", "id": "text", "label": "Descripción", "default": "Compra personal, desde 1 prenda" }
+    ] },
+    { "type": "location", "name": "Ubicación", "settings": [
+      { "type": "text", "id": "name", "label": "Nombre", "default": "Puebla" },
+      { "type": "text", "id": "text", "label": "Descripción", "default": "Oficinas · tejido" },
+      { "type": "text", "id": "maps_query", "label": "Dirección para Google Maps", "info": "Escribe la dirección exacta cuando la tengas. Vacío = se busca el nombre." }
+    ] }
+  ],
+  "presets": [{ "name": "SUS · Contacto", "blocks": [
+    { "type": "intent", "settings": { "kind": "menudeo", "title": "Menudeo", "text": "Compra personal, desde 1 prenda" } },
+    { "type": "intent", "settings": { "kind": "mayoreo", "title": "Mayoreo", "text": "Empresas, uniformes y prendas con logo" } },
+    { "type": "intent", "settings": { "kind": "colab", "title": "Colaboración", "text": "Marcas, instituciones y proyectos" } },
+    { "type": "intent", "settings": { "kind": "otro", "title": "Otro", "text": "Cualquier otra duda" } },
+    { "type": "location", "settings": { "name": "Puebla", "text": "Oficinas · tejido", "maps_query": "Puebla, Puebla, México" } },
+    { "type": "location", "settings": { "name": "Tlaxcala", "text": "Maquila · confección", "maps_query": "Tlaxcala, México" } }
+  ] }]
+}
+{% endschema %}

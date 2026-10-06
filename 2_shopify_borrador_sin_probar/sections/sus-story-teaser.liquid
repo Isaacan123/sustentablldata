@@ -1,0 +1,36 @@
+{%- comment -%}
+  SUSTENTABLL · Adelanto de la historia (bloque negro con botón a la página Historia).
+  Archivo: sections/sus-story-teaser.liquid  ·  NUEVO
+{%- endcomment -%}
+{{ 'sus-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sus-v2.js' | asset_url }}" type="module"></script>
+<sus2-reveal class="sus2 tz" id="{{ section.settings.anchor | default: 'historia' | handleize }}">
+  <div class="tz-w">
+    <div>
+      {%- if section.settings.kicker != blank -%}<span class="tz-k" data-sus2-reveal>{{ section.settings.kicker }}</span>{%- endif -%}
+      <h2 class="hx tz-t" data-sus2-split>{{ section.settings.heading }}</h2>
+    </div>
+    <div>
+      {%- if section.settings.text != blank -%}<p class="tz-p" data-sus2-reveal>{{ section.settings.text }}</p>{%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="tz-btn" href="{{ section.settings.button_link | default: '/pages/historia' }}" data-sus2-reveal>{{ section.settings.button_label }} {% render 'sus-icon', icon: 'arrow' %}</a>
+      {%- endif -%}
+    </div>
+  </div>
+</sus2-reveal>
+{% schema %}
+{
+  "name": "SUS · Adelanto historia",
+  "tag": "section",
+  "class": "sus-section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Ancla", "default": "historia" },
+    { "type": "text", "id": "kicker", "label": "Etiqueta", "default": "THE LAST LIFE" },
+    { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Sobra. Vuelve. <em>continúa.</em>" },
+    { "type": "text", "id": "text", "label": "Texto", "default": "Cómo un recorte de algodón se convierte en tu próxima prenda." },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Conoce la historia" },
+    { "type": "url", "id": "button_link", "label": "Enlace", "info": "Página con la plantilla page.historia, por ejemplo /pages/historia." }
+  ],
+  "presets": [{ "name": "SUS · Adelanto historia" }]
+}
+{% endschema %}

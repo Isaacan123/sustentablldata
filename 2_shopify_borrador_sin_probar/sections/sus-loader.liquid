@@ -1,0 +1,86 @@
+{%- comment -%}
+  SUSTENTABLL · Pantalla de carga (logo, anillo, barra con porcentaje real y salida tipo cortina).
+  Archivo: sections/sus-loader.liquid  ·  NUEVO. Agrégala al grupo "Encabezado" en el editor.
+  No se muestra dentro del editor de temas. Emite el evento "sus:loaded" al terminar.
+  También fija el inicio de página arriba (sin restaurar posición) cuando no hay #ancla.
+{%- endcomment -%}
+{%- liquid
+  assign show = section.settings.enabled
+  if request.design_mode
+    assign show = false
+  endif
+  if section.settings.scope == 'home_story'
+    unless template.name == 'index' or template.suffix == 'historia'
+      assign show = false
+    endunless
+  endif
+  assign label = section.settings.label_home
+  if template.suffix == 'historia'
+    assign label = section.settings.label_story
+  endif
+-%}
+{%- if show -%}
+<style>
+  #sus-ld{position:fixed;inset:0;z-index:2147483000;background:#EFECE5;display:grid;place-items:center;clip-path:inset(0 0 0 0);transition:clip-path 1s cubic-bezier(.76,0,.24,1) .15s,visibility 0s 1.2s}
+  #sus-ld.out{clip-path:inset(0 0 100% 0);visibility:hidden}
+  #sus-ld .ld-in{display:grid;justify-items:center;gap:22px;width:min(360px,80vw);transition:opacity .4s,transform .6s cubic-bezier(.76,0,.24,1)}
+  #sus-ld.out .ld-in{opacity:0;transform:translateY(-30px)}
+  #sus-ld .ld-mark{position:relative;width:104px;height:104px;display:grid;place-items:center}
+  #sus-ld .ld-ic{width:72px;height:auto;opacity:0;transform:scale(.6) rotate(-8deg);animation:susldic .9s cubic-bezier(.2,1.4,.4,1) .1s forwards}
+  #sus-ld .ld-ring{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(47,101,68,.18);border-top-color:#2F6544;animation:susldspin 1s linear infinite}
+  #sus-ld .ld-wm{width:min(300px,72vw);height:auto;opacity:0;clip-path:inset(0 100% 0 0);animation:susldwm 1s cubic-bezier(.6,0,.2,1) .45s forwards}
+  #sus-ld .ld-bar{width:100%;height:3px;background:rgba(26,27,25,.1);overflow:hidden}
+  #sus-ld .ld-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#2F6544,#86B8AE)}
+  #sus-ld .ld-meta{width:100%;display:flex;justify-content:space-between;font:800 11px/1.2 system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#6b6a63}
+  #sus-ld .ld-meta b{color:#1A1B19;font-variant-numeric:tabular-nums}
+  @keyframes susldic{to{opacity:1;transform:none}}@keyframes susldspin{to{transform:rotate(360deg)}}@keyframes susldwm{to{opacity:1;clip-path:inset(0 0 0 0)}}
+  html.sus-ld-lock,html.sus-ld-lock body{overflow:hidden}
+  @media (prefers-reduced-motion:reduce){#sus-ld .ld-ic,#sus-ld .ld-wm{animation:none;opacity:1;transform:none;clip-path:none}#sus-ld .ld-ring{animation:none}#sus-ld{transition:opacity .3s}#sus-ld.out{clip-path:none;opacity:0}}
+</style>
+<div id="sus-ld" role="status" aria-live="polite" aria-label="Cargando {{ shop.name | escape }}">
+  <div class="ld-in">
+    <div class="ld-mark">
+      {%- if section.settings.icon != blank -%}{{ section.settings.icon | image_url: width: 200 | image_tag: class: 'ld-ic', alt: '', loading: 'eager' }}{%- endif -%}
+      <span class="ld-ring" aria-hidden="true"></span>
+    </div>
+    {%- if section.settings.wordmark != blank -%}{{ section.settings.wordmark | image_url: width: 640 | image_tag: class: 'ld-wm', alt: shop.name, loading: 'eager' }}{%- else -%}<strong class="ld-wm" style="font:800 28px system-ui,sans-serif;letter-spacing:.2em">{{ shop.name }}</strong>{%- endif -%}
+    <div class="ld-bar" aria-hidden="true"><i></i></div>
+    <div class="ld-meta" aria-hidden="true"><span>{{ label | escape }}</span><b>0%</b></div>
+  </div>
+</div>
+<script>
+(function(){
+  if('scrollRestoration' in history) history.scrollRestoration='manual';
+  var ld=document.getElementById('sus-ld'); if(!ld) return;
+  var html=document.documentElement; html.classList.add('sus-ld-lock');
+  var bar=ld.querySelector('.ld-bar i'), pct=ld.querySelector('.ld-meta b');
+  var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var t0=performance.now(), MIN=RM?300:{{ section.settings.min_ms | default: 1600 }}, MAX=5000, shown=0, real=0, done=false, loaded=false;
+  function measure(){var im=[].slice.call(document.images),n=im.length||1,ok=0;for(var i=0;i<im.length;i++){if(im[i].complete)ok++;}real=loaded?1:Math.min(.95,ok/n);}
+  function finish(){if(ld.classList.contains('out'))return;if(!location.hash)window.scrollTo(0,0);ld.classList.add('out');setTimeout(function(){html.classList.remove('sus-ld-lock');html.dataset.susLoaded='1';document.dispatchEvent(new Event('sus:loaded'));},RM?80:700);setTimeout(function(){if(ld.parentNode)ld.parentNode.removeChild(ld);},1600);}
+  function tick(){measure();var el=performance.now()-t0,target=Math.min(real,el/MIN);if(done)target=1;shown+=(target-shown)*.18;if(target-shown<.004)shown=target;var p=Math.round(shown*100);bar.style.width=p+'%';pct.textContent=p+'%';if(shown>=.999&&el>=MIN){finish();return;}if(el>MAX)done=true;requestAnimationFrame(tick);}
+  window.addEventListener('load',function(){loaded=true;});
+  if(!location.hash) window.scrollTo(0,0);
+  requestAnimationFrame(tick);
+  window.addEventListener('pageshow',function(e){if(e.persisted){window.scrollTo(0,0);}});
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "SUS · Pantalla de carga",
+  "tag": "div",
+  "settings": [
+    { "type": "checkbox", "id": "enabled", "label": "Activar", "default": true },
+    { "type": "select", "id": "scope", "label": "Mostrar en", "options": [{ "value": "all", "label": "Todas las páginas" }, { "value": "home_story", "label": "Inicio e Historia" }], "default": "home_story" },
+    { "type": "image_picker", "id": "icon", "label": "Ícono (LL con hoja, PNG transparente)" },
+    { "type": "image_picker", "id": "wordmark", "label": "Logo SUSTENTABLL · The Last Life (PNG transparente)" },
+    { "type": "text", "id": "label_home", "label": "Leyenda en inicio", "default": "Hecho en Puebla" },
+    { "type": "text", "id": "label_story", "label": "Leyenda en Historia", "default": "Nuestra historia" },
+    { "type": "range", "id": "min_ms", "label": "Duración mínima", "min": 600, "max": 3000, "step": 100, "unit": "ms", "default": 1600 }
+  ],
+  "enabled_on": { "groups": ["header"] },
+  "presets": [{ "name": "SUS · Pantalla de carga" }]
+}
+{% endschema %}
