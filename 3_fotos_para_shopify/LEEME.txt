@@ -36,3 +36,7 @@ EN SHOPIFY: sube cada foto a su producto, usa como texto alternativo el nombre e
 
 POLO: en la vista previa hay dos tarjetas (Polo Caballero y Polo Dama) y un filtro Hombre / Mujer. En Shopify conviene una opción "Corte" en las variantes
 (Color × Corte × Talla) o dos productos separados; confirmar antes de cargar el catálogo.
+
+REALCE DE LOGO (realce-logo-sudadera1/1b/2/3/3b): retoque web de contraste local para que el logo
+tono sobre tono se lea en Negro, Azul marino y Gris Oxford. La solución definitiva es un render nuevo
+con el logo en contraste o mejor iluminado.

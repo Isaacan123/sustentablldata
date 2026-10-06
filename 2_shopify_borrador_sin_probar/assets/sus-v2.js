@@ -586,7 +586,7 @@ class Sus2Water extends HTMLElement {
       box.innerHTML = h;
     }
     const note = $('[data-gnote]', this); if (note) note.textContent = g.nota || '';
-    const res = $('[data-res-n]', this); if (res) res.textContent = `${n.toLocaleString('es-MX')} ${n === 1 ? g.singular : g.plural}`;
+    $$('[data-res-n]', this).forEach((res) => { res.textContent = `${n.toLocaleString('es-MX')} ${n === 1 ? g.singular : g.plural}`; });
     this.tween($('[data-res-total]', this), w.T, (v) => '≈' + F(v) + ' Lt');
     const sub = $('[data-res-sub]', this); if (sub) sub.textContent = g.sumar ? 'de agua evitada (riego + proceso húmedo)' : 'de agua de riego evitada';
     const a = $('[data-bar-a]', this), b = $('[data-bar-w]', this);

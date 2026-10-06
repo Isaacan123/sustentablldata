@@ -1074,3 +1074,7 @@
 .sus2 .ct-done{position:relative!important;inset:auto!important;margin-bottom:16px}
 .sus2 .ct-f .ct-err:not([hidden]){display:block}
 @media (prefers-reduced-motion:reduce){.sus2 [data-sus2-reveal],.sus2 [data-sus2-hero-in]{opacity:1!important;transform:none!important;transition:none!important}}
+
+.sus2 .wc-g button{display:grid;justify-items:center;gap:3px;min-height:52px;padding:6px 16px}
+.sus2 .wc-g button small{font:700 10px Manrope,sans-serif;letter-spacing:.04em;text-transform:none;opacity:.75}
+.sus2 .wc-eq em{font-style:normal;color:#CFE3D4}

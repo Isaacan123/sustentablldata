@@ -21,7 +21,7 @@
         <div class="wc-head"><span class="wc-k">{{ section.settings.calc_kicker }}</span><h3>{{ section.settings.calc_title }}</h3>{%- if section.settings.calc_text != blank -%}<p>{{ section.settings.calc_text }}</p>{%- endif -%}</div>
         <div class="wc-ctl">
           <div class="wc-g" role="group" aria-label="Prenda">
-            {%- for g in garments -%}<button type="button" data-garment aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" {{ g.shopify_attributes }}>{{ g.settings.name }}</button>{%- endfor -%}
+            {%- for g in garments -%}{%- if g.settings.sumar -%}{%- assign per = g.settings.riego | plus: g.settings.humedo -%}{%- else -%}{%- assign per = g.settings.riego -%}{%- endif -%}<button type="button" data-garment aria-pressed="{% if forloop.first %}true{% else %}false{% endif %}" {{ g.shopify_attributes }}>{{ g.settings.name }}<small>≈{{ per }} Lt c/u</small></button>{%- endfor -%}
           </div>
           <div class="wc-q">
             <button type="button" class="wc-st" data-step-qty="-1" aria-label="Una prenda menos">{% render 'sus-icon', icon: 'minus' %}</button>
@@ -33,7 +33,7 @@
         <label class="sus2-sr" for="WaR-{{ section.id }}">Cantidad de prendas</label>
         <input id="WaR-{{ section.id }}" class="wc-r" type="range" min="1" max="{{ section.settings.range_max }}" value="1" data-range>
         <p class="wc-hint">{% render 'sus-icon', icon: 'swap' %}{{ section.settings.hint }}</p>
-        <div class="wc-eq"><div><span>Agua evitada</span><strong class="aq" data-liters>≈{{ g0.settings.riego }} Lt</strong></div><i aria-hidden="true">=</i><div><span>Equivale a</span><strong data-jugs></strong><span>garrafones de 20 Lt</span></div></div>
+        <div class="wc-eq"><div><span>Agua evitada · ejemplo con <em data-res-n>1 {{ g0.settings.singular }}</em></span><strong class="aq" data-liters>≈{{ g0.settings.riego }} Lt</strong></div><i aria-hidden="true">=</i><div><span>Equivale a</span><strong data-jugs></strong><span>garrafones de 20 Lt</span></div></div>
         <div class="wc-jugs" data-jug-grid aria-hidden="true"></div>
         <p class="fine" data-gnote></p>
         {%- if section.settings.sources != blank -%}<p class="fine">{{ section.settings.sources }}</p>{%- endif -%}
@@ -97,7 +97,7 @@
     { "type": "inline_richtext", "id": "heading", "label": "Título", "default": "Lo <em>esencial.</em>" },
     { "type": "text", "id": "calc_kicker", "label": "Etiqueta de la calculadora", "default": "Calculadora de agua" },
     { "type": "inline_richtext", "id": "calc_title", "label": "Título de la calculadora", "default": "¿Cuánta agua <em>se evita?</em>" },
-    { "type": "textarea", "id": "calc_text", "label": "Explicación", "default": "Elige prenda y cantidad. Te mostramos el agua de riego que ya no se usó porque la prenda lleva algodón reciclado en vez de algodón nuevo." },
+    { "type": "textarea", "id": "calc_text", "label": "Explicación", "default": "Elige prenda y cantidad. Te mostramos el agua de riego que ya no se usó porque la prenda lleva algodón reciclado en vez de algodón nuevo. Cada prenda tiene su propio cálculo: el resultado es un ejemplo solo para el tipo de prenda que elijas." },
     { "type": "text", "id": "hint", "label": "Indicación", "default": "Desliza la barra o escribe la cantidad" },
     { "type": "range", "id": "range_max", "label": "Máximo de la barra", "min": 10, "max": 200, "step": 10, "default": 50, "info": "En el campo numérico se puede escribir cualquier cantidad." },
     { "type": "textarea", "id": "sources", "label": "Fuentes", "default": "Cifras estimadas a partir de estudios publicados: ICAC (2025) para el riego del algodón y Uddin et al. (2023, PLOS Sustainability and Transformation) para el proceso húmedo. No son huella hídrica total ni sustituyen una certificación ISO 14046. RCS respalda el origen del algodón reciclado, no estas cifras." },

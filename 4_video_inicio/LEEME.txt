@@ -1,0 +1,3 @@
+Video de inicio (temporal, armado con las fotos): 1280x720, 28 s en loop, sin audio.
+Orden: 8 hoodies -> 6 pares de polo (caballero y dama) -> 7 playeras, en el orden de colores de la marca.
+Shopify de prueba no permite subir video: usa la portada como imagen alternativa del Hero.
